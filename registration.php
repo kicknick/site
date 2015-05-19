@@ -52,7 +52,7 @@
 <script type="text/javascript">
 $(function() {
 	var users;
-	sendReq({request: "getUsers"}, function(data){
+	sendReq({action: "getUsers"}, function(data){
 		users = data;
 	});
 
