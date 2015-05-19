@@ -8,7 +8,7 @@
 
 	$servername = "localhost";
 	$dbname = "test";
-	$username = "test";
+	$username = "odael";
 	$password = "lol";
 	$action = $_POST['action'];
 
@@ -24,7 +24,7 @@
 		fromPHPToJSON(getListOfUsers());
 	}
 	
-	function isExist(){	
+	function isExist() {	
 		global $servername, $dbname, $username, $password;
 
 		@$firstname = $_POST['firstname'];
@@ -118,10 +118,7 @@
 	}
 
 	function getListOfUsers(){
-		$servername = "localhost";
-		$dbname = "test";
-		$username = "odael";
-		$password = "lol";
+		global $servername, $dbname, $username, $password;
 
 		// Create connection
 		$conn = mysql_connect($servername, $username, $password);
@@ -146,7 +143,7 @@
 
 	function fromPHPToJSON($res){
 		$jsonres = json_encode ( $res );
-		echo $res;
+		echo $jsonres;
 	}	
 
 	function makeDataList($res){
