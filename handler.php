@@ -1,8 +1,7 @@
-<?php include("sql.php"); ?>
 <?php
 	$servername = "localhost";
 	$dbname = "test";
-	$username = "odael";
+	$username = "test";
 	$password = "lol";
 	$action = $_POST['action'];
 
@@ -14,7 +13,7 @@
 		nutrition($res);
 
 
-	$action = $_POST['request'];
+	$action = $_POST['action'];
 	if($action == 'getUsers') {
 		fromPHPToJSON(getListOfUsers());
 	}
@@ -127,7 +126,7 @@
 		return $arr;
 	}
 
-	function getListOfUser(){
+	function getListOfUsers(){
 		$servername = "localhost";
 		$dbname = "test";
 		$username = "odael";
