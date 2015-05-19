@@ -18,7 +18,6 @@
 		fromPHPToJSON(getListOfUsers());
 	}
 	
-
 	function isExist(){	
 		global $servername, $dbname, $username, $password;
 
