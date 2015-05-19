@@ -12,11 +12,10 @@
 	$password = "lol";
 	$action = $_POST['action'];
 
-	@$home = $_POST['home'];
-	if($home == "registration") {
+	if($action == "registration") {
 		registration();
 	}
-	if($home == "nutrition" && $res = isExist())
+	if($action == "nutrition" && $res = isExist())
 		nutrition($res);
 
 
@@ -75,7 +74,6 @@
 			VALUES ("'.$firstname.'","'.$lastname.'","'.$middlename.'",1,'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			echo $querry;
 			mysql_query($querry);
-			$querry = "";
 		}
 		mysql_close ($conn);
 		echo "set to base";
@@ -108,11 +106,6 @@
 		$conn = mysql_connect($servername, $username, $password);
 		mysql_select_db($dbname, $conn);
 		mysql_query("set_client='utf8'");
-
-		// Check connection
-		if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
-		} 
 
 		$res = mysql_query("Select * from `events` where 1");
 		mysql_close ($conn);
