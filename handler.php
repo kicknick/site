@@ -1,4 +1,11 @@
 <?php
+
+	// getListOfEvents() Выдает массив содержащий список событий
+	// getListOfUsers() Выдает массив содержащий список юзеров
+	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
+	// makeDataList($res) По заданному массиву делает option теги с элементами массива
+
+
 	$servername = "localhost";
 	$dbname = "test";
 	$username = "test";
@@ -93,17 +100,9 @@
 		}
 		mysql_close ($conn);
 	}
-	// getListOfEvents() Выдает массив содержащий список событий
-	// getListOfUsers() Выдает массив содержащий список юзеров
-	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
-	// makeDataList($res) По заданному массиву делает option теги с элементами массива
-
 
 	function getListOfEvents(){
-		$servername = "localhost";
-		$dbname = "test";
-		$username = "odael";
-		$password = "lol";
+		global $servername, $dbname, $username, $password;
 
 		// Create connection
 		$conn = mysql_connect($servername, $username, $password);
