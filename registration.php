@@ -54,6 +54,7 @@ $(function() {
 	var users;
 	sendReq({action: "getUsers"}, function(data){
 		users = data;
+		console.log(data);
 	});
 
 	var firstNames = ["sasha", "nikita"];
@@ -89,7 +90,7 @@ var sendData =  function() {
 	var region = $("#region").val();
 	var email = $("#email").val();
 	console.log(name, lastName, middleName, mobNum, region, email);
-	var params = { home: "registration", 
+	var params = { action: "registration", 
 				firstname: firstName,  
 				lastname: lastName, 
 	 			middlename: middleName, 

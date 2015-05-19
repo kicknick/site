@@ -1,4 +1,4 @@
-<?php include("sql.php"); ?>
+
 <?php
 	$servername = "localhost";
 	$dbname = "test";
@@ -16,7 +16,8 @@
 
 	$action = $_POST['request'];
 	if($action == 'getUsers') {
-		fromPHPToJSON(getListOfUsers());
+		//echo fromPHPToJSON(getListOfUsers());
+		echo "dhfhjdkf"
 	}
 	
 
@@ -101,7 +102,7 @@
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
 
-	function getListOfEvents(){
+	function getListOfEvents() {
 		$servername = "localhost";
 		$dbname = "test";
 		$username = "odael";
@@ -156,7 +157,7 @@
 
 	function fromPHPToJSON($res){
 		$jsonres = json_encode ( $res );
-		echo '<script> var res = '.$jsonres.';</script><br>';
+		return $jsonres;
 	}	
 
 	function makeDataList($res){
