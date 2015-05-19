@@ -5,7 +5,6 @@
 	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
-
 	$servername = "localhost";
 	$dbname = "test";
 	$username = "odael";
@@ -18,8 +17,6 @@
 	if($action == "nutrition" && $res = isExist())
 		nutrition($res);
 
-
-	$action = $_POST['action'];
 	if($action == 'getUsers') {
 		fromPHPToJSON(getListOfUsers());
 	}
@@ -126,9 +123,9 @@
 		mysql_query("set_client='utf8'");
 
 		// Check connection
-		if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
-		} 
+		// if ($conn->connect_error) {
+		//     die("Connection failed: " . $conn->connect_error);
+		// } 
 
 		$res = mysql_query("Select * from `user` where 1");
 		mysql_close ($conn);

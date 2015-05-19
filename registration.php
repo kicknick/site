@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>site</title>
+	<title>Регистрация</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -14,15 +14,15 @@
 <br>
 <form role="form" action="" method="post">
 	<div class="form-group">
-		<label for="firstName">Имя</label>
-		<br>
-		<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
-	</div>
-	<div class="form-group">
 		<label for="lastName">Фамилия</label>
 		<br>
     	<input id="lastName" class="ui-widget" type="text" class="form-control" name="lastname" />
     </div>
+	<div class="form-group">
+		<label for="firstName">Имя</label>
+		<br>
+		<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
+	</div>
     <div class="form-group">
 		<label for="middleName">Отчество</label>
 		<br>
@@ -50,18 +50,15 @@
 </div>
 
 <script type="text/javascript">
+var firstNames = new Array();
+var	lastNames = new Array();
+var	middleNames = new Array();
 $(function() {
-	var users;
-	sendReq({action: "getUsers"}, function(data){
-		users = data;
-		console.log(data);
-	});
-
-	var firstNames = ["sasha", "nikita"];
-	var lastNames = ["penko", "rogals"];
 	$( "#firstName" ).autocomplete({source: firstNames}); 
 
 	$( "#lastName" ).autocomplete({source: lastNames});
+
+	$( "#middleName" ).autocomplete({source: middleNames});
 	
 	$( "#firstName" ).on( "autocompleteselect", function( event, ui ) {
 		console.log(ui.item.value);
@@ -75,13 +72,27 @@ $(function() {
 	});
 });
 
-
 var url = "/site/handler.php"
 var sendReq = function(params, callback) {
 	$.post(url, params, function(data) {
 		callback(data);
 	});
 }
+var users;
+sendReq({action: "getUsers"}, function(data){
+	users = JSON.parse(data);
+	for(var i in users) {
+		var firstname = users[i].first_name;
+		var lastname= users[i].last_name;
+		var middlename = users[i].middle_name;
+		firstNames.push(firstname);
+		lastNames.push(lastname);
+		middleNames.push(middlename);
+	}
+	console.log(firstNames);
+	console.log(lastNames);
+	console.log(middleNames);
+});
 var sendData =  function() {
 	var firstName =$("#firstName").val();
 	var lastName = $("#lastName").val();
@@ -102,8 +113,6 @@ var sendData =  function() {
 	});
 	console.log(res);
 };
-
-
 </script>
 
 </body>
