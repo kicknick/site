@@ -29,19 +29,22 @@
     	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
     </div>
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-	<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
+	<button id="button" class="btn btn-default" type="button">Покормить!</button>
 </form>
 </div>
 <script type="text/javascript">
 
 var LFM = new Array();
+var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
 $(function() {
 	$( "#lfm" ).autocomplete({source: LFM}); 
 	
 	$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
 		var res = ui.item.value;
 		var arr = res.split(' ');
-		console.log(arr);																
+		result.lastname = arr[0];
+		result.firstname = arr[1];
+		result.middlename = arr[2];															
 	});
 
 	$("#button").on("click", function() {
@@ -68,8 +71,10 @@ sendReq({action: "getUsers"}, function(data){
 	}
 });
 var sendData = function() {
-	var params = {action: "nutrition"};
-	sendReq(params, function() {});
+	result.start = $("#start").val();
+	result.end = $("#end").val();
+	console.log(result);
+	sendReq(result, function() {});
 }
 
 </script>
