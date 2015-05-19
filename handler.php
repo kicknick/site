@@ -156,7 +156,7 @@
 
 	function fromPHPToJSON($res){
 		$jsonres = json_encode ( $res );
-		echo $res;
+		echo '<script> var res = '.$jsonres.';</script><br>';
 	}	
 
 	function makeDataList($res){
