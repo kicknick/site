@@ -9,7 +9,7 @@
 	$dbname = "test";
 	$username = "odael";
 	$password = "lol";
-	$action = $_POST['action'];
+	@$action = $_POST['action'];
 
 	if($action == "registration") {
 		registration();

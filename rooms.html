@@ -1,0 +1,63 @@
+<html>
+<head>
+	<style type="text/css">
+	#room div{
+		border: solid 3px;
+		width: 100px;
+		height: 100px;
+		margin: 3px;
+	}
+	</style>
+	<title>rooms</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+<div class="container">
+<a href="index.php"><input type="button" value="Home"></a><br>
+<br>
+<form role="form" action="" method="post" class="col-md-6">
+	<div class="form-group">
+		<label for="lfm">ФИО</label>
+		<br>
+    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
+    </div>
+    <div class="form-group">
+		<label for="start">Заезд</label>
+		<br>
+    	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
+    </div>
+    <div class="form-group">
+		<label for="end">Отезд</label>
+		<br>
+    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
+    </div>
+    <div class="form-group">
+		<label for="price">Стоимость</label>
+		<br>
+    	<input id="price" class="ui-widget" type="text" class="form-control" name="price" />
+    </div>
+    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
+	<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
+</form>
+
+	<div id="room" class="col-md-6">
+	</div>
+</div>
+
+<script type="text/javascript">
+var construct = function(flats) {
+	var s = '';
+	for(var i=0; i<flats; i++) {
+		s += '<div>' + '</div>';
+		document.getElementById("room").innerHTML = s;
+	}
+}
+var flats = 4;
+construct(flats);
+</script>
+</body>
+</html>
