@@ -14,14 +14,43 @@
 	if($action == "registration") {
 		registration();
 	}
-	if($action == "nutrition" && $res = isExist())
-		nutrition($res);
+	if($action == "nutrition" && $usr = getUser())
+		nutrition($usr);
+
+	if($action == "lodge" && $usr = getUser() && $app = getRoom())
+		lodge($usr, $app);
 
 	if($action == 'getUsers') {
 		fromPHPToJSON(getListOfUsers());
 	}
 	
-	function isExist() {	
+	function getRoom() {
+		global $servername, $dbname, $username, $password;
+
+		@$room = $_POST['room'];
+
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
+
+		if($room)
+		{	
+			$querry = 'SELECT * FROM `appartment` 
+			WHERE `description` LIKE "'.$room.'"';
+			$res = mysql_query($querry);
+		}
+
+		mysql_close ($conn);
+		$arr = array();
+
+		while(@$row = mysql_fetch_array($res))
+		{
+			array_push($arr, $row);
+		}
+		return $arr;
+	}
+
+	function getUser() {	
 		global $servername, $dbname, $username, $password;
 
 		@$firstname = $_POST['firstname'];
@@ -41,6 +70,7 @@
 				`middle_name` LIKE "'.$middlename.'"';
 			$res = mysql_query($querry);
 		}
+
 		mysql_close ($conn);
 		$arr = array();
 
@@ -76,7 +106,7 @@
 		echo "set to base";
 	}
 
-	function nutrition($res){
+	function nutrition($usr){
 		global $servername, $dbname, $username, $password;
 		
 		$start = $_POST['start'];	
@@ -89,9 +119,33 @@
 		if($start && $end)
 		{	
 			$querry = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
-			VALUES ('.$res[0]["id_user"].',"'.$start.'","'.$end.'")';
+			VALUES ('.$usr[0]["id_user"].',"'.$start.'","'.$end.'")';
 			echo $querry;
 			mysql_query($querry);
+		}
+		mysql_close ($conn);
+	}
+
+	function lodge($usr, $app){
+		global $servername, $dbname, $username, $password;
+		
+		$start = $_POST['start'];	
+		$end = $_POST['end'];	
+		$room = $_POST['room'];
+
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
+
+		if($start && $end)
+		{	
+			$querry = 'UPDATE `user` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
+			echo $querry;
+			//mysql_query($querry);
+			$querry = 'INSERT INTO `appartment`( `id_app`, `start`, `end`, `room`) 
+			VALUES ('.$app[0]["id_app"].',"'.$start.'","'.$end.'", '.$room.')';
+			echo $querry;
+			//mysql_query($querry);
 		}
 		mysql_close ($conn);
 	}
