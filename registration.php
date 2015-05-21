@@ -28,6 +28,25 @@
 		<br>
     	<input id="middleName" class="ui-widget" type="text" class="form-control" name="middlename" />
     </div>
+
+	<div class="container">
+		<div class="row">
+	  	<b>Выберите пол</b> </br>
+	  		<label class="radio-inline">
+	          <input type="radio" id="male" name="radioGroup" id="radio1" value="option1"> М
+	        </label>
+	        <label class="radio-inline">
+	          <input type="radio" id="female "name="radioGroup" id="radio2" value="option2"> Ж
+	        </label>
+	  	</div>
+	</div>
+	<br>
+
+	<div class="form-group">
+		<label for="age">Возраст</label>
+		<br>
+		<input id="age" class="ui-widget" type="text" class="form-control" name="firstname"/>
+	</div>
     <div class="form-group">
 		<label for="mobNum">Мобильный телефон</label>
 		<br>
@@ -53,6 +72,7 @@
 var firstNames = new Array();
 var	lastNames = new Array();
 var	middleNames = new Array();
+var sex = null;
 $(function() {
 	$( "#firstName" ).autocomplete({source: firstNames}); 
 
@@ -67,8 +87,20 @@ $(function() {
 		console.log(ui.item.value);
 	});
 
+	// $( "input" ).on( "click", function() {
+ //  		console.log($("input:checked").val() + " is checked!");
+	// });
 	$("#button").on("click", function() {
-		sendData();
+		var sexCh = $("input:checked").val();
+		if(sexCh=='option1') {
+			sex = "m";
+			sendData();
+		}
+		else if(sexCh=='option2') {
+			sex = "f";
+			sendData();
+		}
+		else alert("веедите пол");
 	});
 });
 
@@ -100,6 +132,7 @@ var sendData =  function() {
 	var mobNum = $("#mobNum").val();
 	var region = $("#region").val();
 	var email = $("#email").val();
+	var age = $("#age").val();
 	console.log(name, lastName, middleName, mobNum, region, email);
 	var params = { action: "registration", 
 				firstname: firstName,  
@@ -107,7 +140,9 @@ var sendData =  function() {
 	 			middlename: middleName, 
 				mobnumber: mobNum,  
 				region: region, 
-				email: email };
+				email: email, 
+				sex: sex, 
+				age: age};
 	var res = sendReq(params, function() {
 		location.reload();
 	});
