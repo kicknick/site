@@ -73,11 +73,10 @@ var LFM = new Array();
 var sex = null;
 $(function() {
 
-	
 	$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
 		var res = ui.item.value;
 		var arr = res.split(' ');
-		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2]};
+		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
 		sendReq(request, function(data) {
 			console.log(data);
 		});														
