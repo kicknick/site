@@ -72,19 +72,32 @@
 var LFM = new Array();
 var sex = null;
 $(function() {
-
 	$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
 		var res = ui.item.value;
 		var arr = res.split(' ');
 		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
 		sendReq(request, function(data) {
-			console.log(data);
+			var user = JSON.parse(data);
+			console.log(user[0]);
+			$( "#lastName" ).val(user[0].last_name);
+			$( "#firstName" ).val(user[0].first_name);
+			$( "#middleName" ).val(user[0].middle_name);
+			$("#mobNum").val(user[0].mobile_number);
+			$("#email").val(user[0].email);
+			$("#age").val(user[0].age);
+			var rb = user[0].sex;
+			console.log(rb);
+			if(rb == 'm') {
+				$("#radio1").prop( "checked", true );
+			}
+			if(rb == 'f') {
+				$("#radio2").prop( "checked", true );
+			}
+			
+
+
 		});														
 	});
-
-	// $( "input" ).on( "click", function() {
- //  		console.log($("input:checked").val() + " is checked!");
-	// });
 	$("#button").on("click", function() {
 		var sexCh = $("input:checked").val();
 		if(sexCh=='option1') {
@@ -95,7 +108,7 @@ $(function() {
 			sex = "f";
 			sendData();
 		}
-		else alert("веедите пол");
+		else alert("Введите пол");
 	});
 });
 
@@ -107,6 +120,7 @@ var sendReq = function(params, callback) {
 }
 var users;
 sendReq({action: "getUsers"}, function(data){
+	//console.log(data);
 	users = JSON.parse(data);
 	for(var i in users) {
 		var firstname = users[i].first_name;
@@ -115,7 +129,7 @@ sendReq({action: "getUsers"}, function(data){
 		var lfm = lastname+' '+firstname+' '+middlename;
 		LFM.push(lfm);
 	}
-	console.log(LFM);
+	//console.log(LFM);
 	$( "#lastName" ).autocomplete({source: LFM}); 
 });
 

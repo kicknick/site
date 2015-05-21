@@ -5,10 +5,14 @@
 	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
+	// $servername = "localhost";
+	// $dbname = "u922837214_test";
+	// $username = "u922837214_odael";
+	// $password = "lollol";
 	$servername = "localhost";
-	$dbname = "u922837214_test";
-	$username = "u922837214_odael";
-	$password = "lollol";
+	$dbname = "test";
+	$username = "odael";
+	$password = "lol";
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
@@ -58,7 +62,7 @@
 		@$firstname = $_POST['firstname'];
 		@$lastname = $_POST['lastname'];
 		@$middlename = $_POST['middlename'];
-		echo $firstname.' '.$lastname;
+		//echo $firstname.' '.$lastname;
 
 		$conn =  new mysqli($servername, $username, $password, $dbname);
 		$conn->query("set_client='utf8'");
@@ -88,7 +92,9 @@
 		$middlename = $_POST['middlename'];
 		$email = $_POST['email'];
 		$mobnumber = $_POST['mobnumber'];
-
+		$age = $_POST['age'];
+		$sex = $_POST['sex'];
+		
 		$conn =  new mysqli($servername, $username, $password, $dbname);
 		$conn->query("set_client='utf8'");
 
