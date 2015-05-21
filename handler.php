@@ -160,19 +160,17 @@
 		global $servername, $dbname, $username, $password;
 
 		// Create connection
-		$conn = mysql_connect($servername, $username, $password);
-		mysql_select_db($dbname, $conn);
-		mysql_query("set_client='utf8'");
+		$conn =  new mysqli($servername, $username, $password, $dbname);
+		$conn->query("set_client='utf8'");
 
 		// Check connection
 		// if ($conn->connect_error) {
 		//     die("Connection failed: " . $conn->connect_error);
 		// } 
 
-		$res = mysql_query("Select * from `user` where 1");
-		mysql_close ($conn);
+		$res =$conn->query("Select * from `user` where 1");
 		$arr = array();
-		while(@$row = mysql_fetch_array($res))
+		while(@$row = $res->fetch.assoc())
 		{
 			array_push($arr, $row);
 			//echo $arr[0]." ";
