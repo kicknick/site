@@ -6,9 +6,9 @@
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
 	$servername = "localhost";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u922837214_test";
+	$username = "u922837214_odael";
+	$password = "lollol";
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
