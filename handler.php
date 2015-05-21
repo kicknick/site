@@ -61,7 +61,7 @@
 
 		if($firstname && $lastname && $middlename)
 		{	
-			$query = 'SELECT * FROM `user` 
+			$query = 'SELECT * FROM `users` 
 			WHERE `first_name` LIKE "'.$firstname.'" AND
 				`last_name` LIKE "'.$lastname.'" AND
 				`middle_name` LIKE "'.$middlename.'"';
@@ -92,7 +92,7 @@
 
 		if($firstname)
 		{	
-			$query = 'INSERT INTO `user`( `first_name`, `last_name`, `middle_name`, `id_event`, `mobile_number`,`email`,`age`, `sex`) 
+			$query = 'INSERT INTO `users`( `first_name`, `last_name`, `middle_name`, `id_event`, `mobile_number`,`email`,`age`, `sex`) 
 			VALUES ("'.$firstname.'","'.$lastname.'","'.$middlename.'",1,'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			//echo $query;
 			$conn->query($query);
@@ -130,7 +130,7 @@
 
 		if($start && $end)
 		{	
-			$query = 'UPDATE `user` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
+			$query = 'UPDATE `users` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
 			//echo $querry;
 			$conn->query($query);
 			$query = 'INSERT INTO `appartment`( `id_app`, `start`, `end`, `room`) 
@@ -168,7 +168,7 @@
 		//     die("Connection failed: " . $conn->connect_error);
 		// } 
 
-		$res =$conn->query("Select * from `user` where 1");
+		$res =$conn->query("Select * from `users` where 1");
 		$arr = array();
 		while(@$row = $res->fetch.assoc())
 		{
