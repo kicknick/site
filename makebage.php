@@ -61,6 +61,10 @@ sendReq({action: "getUsers"}, function(data){
 	}
 });
 var sendData = function() {
+	console.log(result);
+	$('#lfm').val('');
+	url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
+	window.location.href=url;
 }
 
 </script>
