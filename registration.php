@@ -16,7 +16,7 @@
 	<div class="form-group">
 		<label for="lastName">Фамилия</label>
 		<br>
-    	<input id="lastName" class="ui-widget" type="text" class="form-control" name="lastname" />
+    	<input id="lastName" autofocus class="ui-widget" type="text" class="form-control" name="lastname" />
     </div>
 	<div class="form-group">
 		<label for="firstName">Имя</label>
@@ -72,7 +72,7 @@ $(function() {
 	});
 });
 
-var url = "handler.php"
+var url = "handler.php";
 var sendReq = function(params, callback) {
 	$.post(url, params, function(data) {
 		callback(data);
@@ -80,6 +80,7 @@ var sendReq = function(params, callback) {
 }
 var users;
 sendReq({action: "getUsers"}, function(data){
+	//console.log(data);
 	users = JSON.parse(data);
 	for(var i in users) {
 		var firstname = users[i].first_name;

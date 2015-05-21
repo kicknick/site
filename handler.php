@@ -6,9 +6,9 @@
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
 	$servername = "localhost";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u922837214_test";
+	$username = "u922837214_odael";
+	$password = "lollol";
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
@@ -41,7 +41,7 @@
 
 		$arr = array();
 
-		while(@$row = $res->fetch.assoc())
+		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
 		}
@@ -70,7 +70,7 @@
 
 		$arr = array();
 
-		while(@$row = $res->fetch.assoc())
+		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
 		}
@@ -82,9 +82,7 @@
 		$firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$middlename = $_POST['middlename'];
-		$email = $_POST['email'];	
-		$age = 12;	
-		$sex = "f";
+		$email = $_POST['email'];
 		$mobnumber = $_POST['mobnumber'];
 
 		$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -149,7 +147,7 @@
 
 		$res =$conn->query("Select * from `events` where 1");
 		$arr = array();
-		while(@$row = $res->fetch.assoc())
+		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row["description"]);
 		}
@@ -162,18 +160,11 @@
 		// Create connection
 		$conn =  new mysqli($servername, $username, $password, $dbname);
 		$conn->query("set_client='utf8'");
-
-		// Check connection
-		// if ($conn->connect_error) {
-		//     die("Connection failed: " . $conn->connect_error);
-		// } 
-
-		$res =$conn->query("Select * from `users` where 1");
+		$res = $conn->query('Select * from `users` where 1');
 		$arr = array();
-		while(@$row = $res->fetch.assoc())
+		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
-			//echo $arr[0]." ";
 		}
 		return $arr;
 	}
