@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-<a href="index.php"><input type="button" value="Home"></a><br>
+<a href="/site/index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
 <br>
 <form role="form" action="" method="post">
 	<div class="form-group">
