@@ -6,9 +6,9 @@
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
 	$servername = "localhost";
-	$dbname = "u922837214_test";
-	$username = "u922837214_odael";
-	$password = "lollol";
+	$dbname = "test";
+	$username = "odael";
+	$password = "lol";
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
@@ -29,19 +29,21 @@
 
 		@$room = $_POST['room'];
 
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
 		if($room)
 		{	
 			$querry = 'SELECT * FROM `appartment` 
 			WHERE `description` LIKE "'.$room.'"';
-			$res = $conn->query($query);
+			$res = mysql_query($querry);
 		}
 
+		mysql_close ($conn);
 		$arr = array();
 
-		while(@$row = $res->fetch_assoc())
+		while(@$row = mysql_fetch_array($res))
 		{
 			array_push($arr, $row);
 		}
@@ -56,21 +58,23 @@
 		@$middlename = $_POST['middlename'];
 		echo $firstname.' '.$lastname;
 
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
 		if($firstname && $lastname && $middlename)
 		{	
-			$query = 'SELECT * FROM `users` 
+			$querry = 'SELECT * FROM `user` 
 			WHERE `first_name` LIKE "'.$firstname.'" AND
 				`last_name` LIKE "'.$lastname.'" AND
 				`middle_name` LIKE "'.$middlename.'"';
-			$res = $conn->query($query);
+			$res = mysql_query($querry);
 		}
 
+		mysql_close ($conn);
 		$arr = array();
 
-		while(@$row = $res->fetch_assoc())
+		while(@$row = mysql_fetch_array($res))
 		{
 			array_push($arr, $row);
 		}
@@ -82,19 +86,23 @@
 		$firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$middlename = $_POST['middlename'];
-		$email = $_POST['email'];
+		$email = $_POST['email'];	
+		$age = 12;	
+		$sex = "f";
 		$mobnumber = $_POST['mobnumber'];
 
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
 		if($firstname)
 		{	
-			$query = 'INSERT INTO `users`( `first_name`, `last_name`, `middle_name`, `id_event`, `mobile_number`,`email`,`age`, `sex`) 
+			$querry = 'INSERT INTO `user`( `first_name`, `last_name`, `middle_name`, `id_event`, `mobile_number`,`email`,`age`, `sex`) 
 			VALUES ("'.$firstname.'","'.$lastname.'","'.$middlename.'",1,'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
-			//echo $query;
-			$conn->query($query);
+			echo $querry;
+			mysql_query($querry);
 		}
+		mysql_close ($conn);
 		echo "set to base";
 	}
 
@@ -104,16 +112,18 @@
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
 		
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
 		if($start && $end)
 		{	
-			$query = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
+			$querry = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
 			VALUES ('.$usr[0]["id_user"].',"'.$start.'","'.$end.'")';
-			//echo $querry;
-			$conn->query($query);
+			echo $querry;
+			mysql_query($querry);
 		}
+		mysql_close ($conn);
 	}
 
 	function lodge($usr, $app){
@@ -123,31 +133,35 @@
 		$end = $_POST['end'];	
 		$room = $_POST['room'];
 
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
 		if($start && $end)
 		{	
-			$query = 'UPDATE `users` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
-			//echo $querry;
-			$conn->query($query);
-			$query = 'INSERT INTO `appartment`( `id_app`, `start`, `end`, `room`) 
+			$querry = 'UPDATE `user` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
+			echo $querry;
+			//mysql_query($querry);
+			$querry = 'INSERT INTO `appartment`( `id_app`, `start`, `end`, `room`) 
 			VALUES ('.$app[0]["id_app"].',"'.$start.'","'.$end.'", '.$room.')';
-			//echo $querry;
-			$conn->query($query);
+			echo $querry;
+			//mysql_query($querry);
 		}
+		mysql_close ($conn);
 	}
 
 	function getListOfEvents(){
 		global $servername, $dbname, $username, $password;
 
 		// Create connection
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
 
-		$res =$conn->query("Select * from `events` where 1");
+		$res = mysql_query("Select * from `events` where 1");
+		mysql_close ($conn);
 		$arr = array();
-		while(@$row = $res->fetch_assoc())
+		while(@$row = mysql_fetch_array($res))
 		{
 			array_push($arr, $row["description"]);
 		}
@@ -158,13 +172,22 @@
 		global $servername, $dbname, $username, $password;
 
 		// Create connection
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
-		$res = $conn->query('Select * from `users` where 1');
+		$conn = mysql_connect($servername, $username, $password);
+		mysql_select_db($dbname, $conn);
+		mysql_query("set_client='utf8'");
+
+		// Check connection
+		// if ($conn->connect_error) {
+		//     die("Connection failed: " . $conn->connect_error);
+		// } 
+
+		$res = mysql_query("Select * from `user` where 1");
+		mysql_close ($conn);
 		$arr = array();
-		while(@$row = $res->fetch_assoc())
+		while(@$row = mysql_fetch_array($res))
 		{
 			array_push($arr, $row);
+			//echo $arr[0]." ";
 		}
 		return $arr;
 	}

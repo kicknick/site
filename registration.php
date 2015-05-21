@@ -69,22 +69,18 @@
 </div>
 
 <script type="text/javascript">
-var firstNames = new Array();
-var	lastNames = new Array();
-var	middleNames = new Array();
+var LFM = new Array();
 var sex = null;
 $(function() {
-	$( "#firstName" ).autocomplete({source: firstNames}); 
 
-	$( "#lastName" ).autocomplete({source: lastNames});
-
-	$( "#middleName" ).autocomplete({source: middleNames});
 	
-	$( "#firstName" ).on( "autocompleteselect", function( event, ui ) {
-		console.log(ui.item.value);
-	});
 	$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
-		console.log(ui.item.value);
+		var res = ui.item.value;
+		var arr = res.split(' ');
+		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2]};
+		sendReq(request, function(data) {
+			console.log(data);
+		});														
 	});
 
 	// $( "input" ).on( "click", function() {
@@ -112,20 +108,18 @@ var sendReq = function(params, callback) {
 }
 var users;
 sendReq({action: "getUsers"}, function(data){
-	//console.log(data);
 	users = JSON.parse(data);
 	for(var i in users) {
 		var firstname = users[i].first_name;
 		var lastname= users[i].last_name;
 		var middlename = users[i].middle_name;
-		firstNames.push(firstname);
-		lastNames.push(lastname);
-		middleNames.push(middlename);
+		var lfm = lastname+' '+firstname+' '+middlename;
+		LFM.push(lfm);
 	}
-	console.log(firstNames);
-	console.log(lastNames);
-	console.log(middleNames);
+	console.log(LFM);
+	$( "#lastName" ).autocomplete({source: LFM}); 
 });
+
 var sendData =  function() {
 	var firstName =$("#firstName").val();
 	var lastName = $("#lastName").val();
