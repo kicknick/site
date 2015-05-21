@@ -5,14 +5,14 @@
 	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
 	// makeDataList($res) По заданному массиву делает option теги с элементами массива
 
-	// $servername = "localhost";
-	// $dbname = "u922837214_test";
-	// $username = "u922837214_odael";
-	// $password = "lollol";
 	$servername = "localhost";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u922837214_test";
+	$username = "u922837214_odael";
+	$password = "lollol";
+	// $servername = "localhost";
+	// $dbname = "test";
+	// $username = "odael";
+	// $password = "lol";
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
