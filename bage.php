@@ -1,13 +1,13 @@
 <?php
-	function win2uni($s)
-	{
-		$s = convert_cyr_string($s,'w','i'); 
-		for ($result='', $i=0; $i<strlen($s); $i++) {
-			$charcode = ord($s[$i]);
-			$result .= ($charcode>175)?"&#".(1040+($charcode-176)).";":$s[$i];
-		}
-		return $result;
-	}
+	// function win2uni($s)
+	// {
+	// 	$s = convert_cyr_string($s,'w','i'); 
+	// 	for ($result='', $i=0; $i<strlen($s); $i++) {
+	// 		$charcode = ord($s[$i]);
+	// 		$result .= ($charcode>175)?"&#".(1040+($charcode-176)).";":$s[$i];
+	// 	}
+	// 	return $result;
+	// }
 
 
 	define('FONT_NAME', 'arial.ttf');

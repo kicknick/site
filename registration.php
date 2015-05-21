@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-<a href="/site/index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
+<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
 <br>
 <form role="form" action="" method="post">
 	<div class="form-group">
@@ -72,7 +72,7 @@ $(function() {
 	});
 });
 
-var url = "/site/handler.php"
+var url = "handler.php"
 var sendReq = function(params, callback) {
 	$.post(url, params, function(data) {
 		callback(data);
