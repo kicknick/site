@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="ias/css/imgareaselect-animated.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="ias/scripts/jquery.imgareaselect.js"></script>
+</head>
+<body>
+
+
+<img id="img" class="imgareaselect-selection" src="1.jpg">
+<script type="text/javascript">
+
+
+$(document).ready(function () {
+    $('#img').imgAreaSelect({ aspectRatio: '3:4', x1: 100, y1: 100, x2: 175, y2: 200, 
+        onSelectEnd: function (img, selection) { 
+            console.log("x1:",selection.x1);         
+        }
+    });
+});
+</script>
+
+</body>
+</html>
