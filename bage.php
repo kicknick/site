@@ -41,15 +41,15 @@
 	define('FONT_NAME', 'arial.ttf');
 	define('FONT_SIZE', 20);
 
-	@$foto_x = $_GET['foto_x'];
-	@$foto_y = $_GET['foto_y'];
-	@$foto_width = $_GET['foto_width'];
-	@$foto_height = $_GET['foto_height'];
+	@$foto_x = $_POST['foto_x'];
+	@$foto_y = $_POST['foto_y'];
+	@$foto_width = $_POST['foto_width'];
+	@$foto_height = $_POST['foto_height'];
 
-	$foto_x = 0;
-	$foto_y = 0;
-	$foto_width = 300;
-	$foto_height = 400;
+	//$foto_x = 0;
+	//$foto_y = 0;
+	//$foto_width = 300;
+	//$foto_height = 400;
 
 	@$firstname = $_GET['firstname'];
 	@$lastname = $_GET['lastname'];

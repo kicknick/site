@@ -30,13 +30,13 @@
 <h1>Отправляем изображение на сервер</h1>
 
 <form action="bage.php" method="post" enctype="multipart/form-data">
+
+
 	<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 	<label for="user_pic">Отправка изображения:</label>
 	<input id="user_pic" type="file" name="user_pic" size="30">
 	<input type="hidden" name="foto_x" value="" />
   	<input type="hidden" name="foto_y" value="" />
-  	<input type="hidden" name="x2" value="" />
-  	<input type="hidden" name="y2" value="" />
   	<input type="hidden"name="foto_width" value="" />
   	<input type="hidden"name="foto_height" value="" />
 
@@ -47,7 +47,6 @@
 </div>
 
 <script type="text/javascript">
-
 
 	var LFM = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
@@ -76,6 +75,7 @@
                 $('#imgField').attr('src', e.target.result);
                 image = e.target.result;
                 handleImgInit();
+
             }       
             reader.readAsDataURL(input.files[0]);
         }
@@ -91,10 +91,13 @@ var handleImgInit = function() {
 	$("#imgField").imgAreaSelect({ aspectRatio: '3:4', x1: 100, y1: 100, x2: 175, y2: 200,
        	onSelectEnd: function (img, selection) { 
             $('input[name="foto_x"]').val(selection.x1);
-            $('input[name="foto_x"]').val(selection.y1);
-            $('input[name="x2"]').val(selection.x2);
-            $('input[name="foto_width"]').val(selection.y2);   
-            $('input[name="foto_height"]').val(selection.imageHeight);    
+            $('input[name="foto_y"]').val(selection.y1);
+            $('input[name="foto_width"]').val(selection.x2 - selection.x1);   
+            $('input[name="foto_height"]').val(selection.y2 - selection.y1);   
+            console.log(selection.x1); 
+            console.log(selection.y1); 
+            console.log(selection.x2); 
+            console.log(selection.y2); 
         	}
     });
 } 
