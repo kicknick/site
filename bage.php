@@ -51,9 +51,9 @@
 	//$foto_width = 300;
 	//$foto_height = 400;
 
-	@$firstname = $_GET['firstname'];
-	@$lastname = $_GET['lastname'];
-	@$middlename = $_GET['middlename'];
+	@$firstname = $_POST['firstname'];
+	@$lastname = $_POST['lastname'];
+	@$middlename = $_POST['middlename'];
 	$fio = $lastname.' '.$firstname.' '.$middlename;
 
 

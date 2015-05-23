@@ -9,41 +9,47 @@
   	<script type="text/javascript" src="ias/scripts/jquery.imgareaselect.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
+	<style type="text/css">
+		#imgField{
+			width:400px;
+		}
+	</style>
+
 </head>
 <body>
 <div class="container">
-<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
-<br>
+<div class="col-md-6">
+	<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
+	<br>
+	<form action="bage.php" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="lfm">ФИО</label>
+			<br>
+	    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
+	    </div>
+<!-- 		<button id="button" class="btn btn-default" type="button">Получить бэйдж</button> -->
 
-<form role="form" action="" method="post">
-	<div class="form-group">
-		<label for="lfm">ФИО</label>
+	
+		<!-- <input type="hidden" name="MAX_FILE_SIZE" value="2000000"> -->
+		<label for="user_pic">Отправка изображения:</label>
+		<input id="user_pic" type="file" class="btn btn-default" name="user_pic" size="30">
 		<br>
-    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
-    </div>
-    
-	<button id="button" class="btn btn-default" type="button">Получить бэйдж</button>
-</form>
+		<input type="hidden" name="foto_x" value="" />
+		<input type="hidden" name="foto_y" value="" />
+		<input type="hidden"name="foto_width" value="" />
+		<input type="hidden"name="foto_height" value="" />
+
+		<input type="hidden" name="firstname" value="" />
+		<input type="hidden"name="lastname" value="" />
+		<input type="hidden"name="middlename" value="" />
+
+		<input type="submit" class="btn btn-default" value="Получить бэйдж">
+	</form>
 </div>
 
-<div id="content">
-<h1>Отправляем изображение на сервер</h1>
-
-<form action="bage.php" method="post" enctype="multipart/form-data">
-
-
-	<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-	<label for="user_pic">Отправка изображения:</label>
-	<input id="user_pic" type="file" name="user_pic" size="30">
-	<input type="hidden" name="foto_x" value="" />
-  	<input type="hidden" name="foto_y" value="" />
-  	<input type="hidden"name="foto_width" value="" />
-  	<input type="hidden"name="foto_height" value="" />
-
+<div class="col-md-6">
 	<img id="imgField">
-
-	<input type="submit" value="Отправить">
-</form>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -51,14 +57,21 @@
 	var LFM = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
+
+
+
+		$("#lfm").val("");
+		$("#user_pic").val("");
 		$( "#lfm" ).autocomplete({source: LFM}); 
-		
 		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
 			var res = ui.item.value;
 			var arr = res.split(' ');
 			result.lastname = arr[0];
 			result.firstname = arr[1];
-			result.middlename = arr[2];															
+			result.middlename = arr[2];		
+			$('input[name="firstname"]').val(result.firstname);
+			$('input[name="lastname"]').val(result.lastname);
+			$('input[name="middlename"]').val(result.middlename);														
 		});
 
 		$("#button").on("click", function() {
@@ -110,6 +123,7 @@ var handleImgInit = function() {
 			callback(data);
 		});
 	}
+
 	var users;
 	sendReq({action: "getUsers"}, function(data){
 		users = JSON.parse(data);
