@@ -36,7 +36,7 @@
 	}
 
 	if($action == 'getRooms') {
-		getListOfRooms();
+		fromPHPToJSON(getListOfRooms());
 	}
 	
 	function getRoom() {
@@ -194,6 +194,7 @@
 	}	
 
 	function getListOfRooms(){
+		global $servername, $dbname, $username, $password, $conn;
 		$query = 'SELECT * FROM `appartment` WHERE 1';
 		$res = $conn->query($query);
 		$arr = array();
@@ -201,12 +202,12 @@
 		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
-			$query = 'SELECT * FROM `uresr` WHERE id_app = '.$row['id_app'];
+			$query = 'SELECT * FROM `users` WHERE id_app = '.$row['id_app'];
 			$usrs = $conn->query($query);
 			$allusr = array();
 			while(@$usr = $usrs->fetch_assoc())
 			{
-				array_push($arr, $row);
+				array_push($allusr, $usr);
 			}
 			$arr[$i]['users'] = $allusr;
 			$i++;
