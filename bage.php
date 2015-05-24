@@ -43,7 +43,7 @@
 
 
 	define('FONT_NAME', 'arial.ttf');
-	define('FONT_SIZE', 30);
+	define('FONT_SIZE', 40);
 
 	@$foto_x = $_POST['foto_x'];
 	@$foto_y = $_POST['foto_y'];
@@ -57,14 +57,19 @@
 	@$middlename = $_POST['middlename'];
 	$fio = $lastname.' '.$firstname.' '.$middlename;
 
-
+	$bagename = './bage.jpg';
 	$imgname = getImageName('user_pic');
-	//echo $imgname;
+	
 	$foto = LoadJPEGfromPOST($imgname);
-	$image = imagecreatetruecolor(1000,1000) // создаем изображение...
+	$bage = LoadJPEGfromPOST($bagename);
+	$size = getimagesize($bagename);
+	$image = imagecreatetruecolor($size[0],$size[1]) // создаем изображение...
 	or die('Cannot create image');     // ...или прерываем работу скрипта в случае ошибки
 
-	@$size = getimagesize($imgname);
+
+	imagecopy ($image, $bage, 0, 0, 0, 0, $size[0],$size[1]);
+
+	$size = getimagesize($imgname);
 	$true_width = $size[0];
 
 	$prop = $true_width / 400;
@@ -80,15 +85,25 @@
 	    $image,      // как всегда, идентификатор ресурса
 	    FONT_SIZE,   	// размер шрифта
 	    0,           // угол наклона шрифта
-	    20,300,      // координаты (x,y), соответствующие левому нижнему
+	    520,650,      // координаты (x,y), соответствующие левому нижнему
 	                 // углу первого символа
 	    0x000000,    // цвет шрифта
 	    FONT_NAME,   // имя ttf-файла
-	    $fio
+	    $lastname
+  	);
+	imagettftext(
+	    $image,      // как всегда, идентификатор ресурса
+	    FONT_SIZE,   	// размер шрифта
+	    0,           // угол наклона шрифта
+	    520,700,      // координаты (x,y), соответствующие левому нижнему
+	                 // углу первого символа
+	    0x000000,    // цвет шрифта
+	    FONT_NAME,   // имя ttf-файла
+	    $firstname.' '.$middlename
   	);
 	header('Content-type: image/png'); 
 
-	imagecopyresized ($image, $foto, 0, 0, $foto_x, $foto_y, 150, 200, $foto_width, $foto_height);
+	imagecopyresized ($image, $foto, 105, 450, $foto_x, $foto_y, 345, 460, $foto_width, $foto_height);
 
 	imagepng($image);
 
