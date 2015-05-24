@@ -2,7 +2,7 @@
 	
 	function LoadJPEGfromPOST($imgname)
 	{
-	    $uploaddir = '.\\tmpimg\\';
+	    $uploaddir = './tmpimg/';
 		$uploadfile = $uploaddir . basename($_FILES[$imgname]['name']);
 		if (!move_uploaded_file($_FILES[$imgname]['tmp_name'], $uploadfile)){
     		/* Создаем пустое изображение */
@@ -34,22 +34,14 @@
 	    return $im;
 	}
 
-	
-	
-	
 
 	define('FONT_NAME', 'arial.ttf');
-	define('FONT_SIZE', 20);
+	define('FONT_SIZE', 30);
 
 	@$foto_x = $_POST['foto_x'];
 	@$foto_y = $_POST['foto_y'];
 	@$foto_width = $_POST['foto_width'];
 	@$foto_height = $_POST['foto_height'];
-
-	//$foto_x = 0;
-	//$foto_y = 0;
-	//$foto_width = 300;
-	//$foto_height = 400;
 
 	@$firstname = $_POST['firstname'];
 	@$lastname = $_POST['lastname'];
@@ -67,7 +59,7 @@
 	    $image,      // как всегда, идентификатор ресурса
 	    FONT_SIZE,   	// размер шрифта
 	    0,           // угол наклона шрифта
-	    0,25,      // координаты (x,y), соответствующие левому нижнему
+	    100,25,      // координаты (x,y), соответствующие левому нижнему
 	                 // углу первого символа
 	    0x000000,    // цвет шрифта
 	    FONT_NAME,   // имя ttf-файла

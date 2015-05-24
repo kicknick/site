@@ -13,6 +13,8 @@
 	// $dbname = "test";
 	// $username = "odael";
 	// $password = "lol";
+	$conn =  new mysqli($servername, $username, $password, $dbname);
+	$conn->query("set_client='utf8'");
 
 	@$action = $_POST['action'];
 
@@ -87,7 +89,7 @@
 	}
 
 	function registration(){
-		global $servername, $dbname, $username, $password;
+		global $servername, $dbname, $username, $password, $conn;
 		$firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$middlename = $_POST['middlename'];
@@ -96,13 +98,13 @@
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
 		
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		// $conn =  new mysqli($servername, $username, $password, $dbname);
+		// $conn->query("set_client='utf8'");
 
 		if($firstname)
 		{	
-			$query = 'INSERT INTO `users`( `first_name`, `last_name`, `middle_name`, `id_event`, `mobile_number`,`email`,`age`, `sex`) 
-			VALUES ("'.$firstname.'","'.$lastname.'","'.$middlename.'",1,'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
+			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`) 
+			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			//echo $query;
 			$conn->query($query);
 		}
@@ -118,11 +120,13 @@
 		$conn =  new mysqli($servername, $username, $password, $dbname);
 		$conn->query("set_client='utf8'");
 
+		$query = 'DELETE FROM `food` WHERE id_user = '.$usr[0]["id_user"];
+		$conn->query($query);
+
 		if($start && $end)
 		{	
 			$query = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
 			VALUES ('.$usr[0]["id_user"].',"'.$start.'","'.$end.'")';
-			//echo $querry;
 			$conn->query($query);
 		}
 	}
@@ -139,12 +143,12 @@
 
 		if($start && $end)
 		{	
-			$query = 'UPDATE `users` SET `id_app`='.$app[0]["id_app"].' WHERE `id_user` = '.$usr[0]["id_user"];
-			//echo $querry;
-			$conn->query($query);
-			$query = 'INSERT INTO `appartment`( `id_app`, `start`, `end`, `room`) 
-			VALUES ('.$app[0]["id_app"].',"'.$start.'","'.$end.'", '.$room.')';
-			//echo $querry;
+			$query = 'UPDATE `users` SET 
+					`id_app`='.$app[0]["id_app"].' , 
+					`start` ='.$start.', 
+					`end` = '.$end.' 
+				WHERE 
+					`id_user` = '.$usr[0]["id_user"];
 			$conn->query($query);
 		}
 	}
@@ -184,11 +188,4 @@
 		$jsonres = json_encode ( $res );
 		echo $jsonres;
 	}	
-
-	function makeDataList($res){
-		for($i = 0 ; $i < count($res) ; $i++)
-		{
-			echo '<option value="'.$res[$i].'">';
-		}
-	}
 ?>
