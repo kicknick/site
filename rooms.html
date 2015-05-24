@@ -17,47 +17,64 @@
 </head>
 <body>
 <div class="container">
-<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
-<br>
-<form role="form" action="" method="post" class="col-md-6">
-	<div class="form-group">
-		<label for="lfm">ФИО</label>
-		<br>
-    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
-    </div>
-    <div class="form-group">
-		<label for="start">Заезд</label>
-		<br>
-    	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
-    </div>
-    <div class="form-group">
-		<label for="end">Отезд</label>
-		<br>
-    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
-    </div>
-    <div class="form-group">
-		<label for="price">Стоимость</label>
-		<br>
-    	<input id="price" class="ui-widget" type="text" class="form-control" name="price" />
-    </div>
-    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-	<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
-</form>
+	<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
+	<br>
+	<form role="form" action="" method="post" class="col-md-6">
+		<div class="form-group">
+			<label for="lfm">ФИО</label>
+			<br>
+	    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
+	    </div>
+	    <div class="form-group">
+			<label for="start">Заезд</label>
+			<br>
+	    	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
+	    </div>
+	    <div class="form-group">
+			<label for="end">Отезд</label>
+			<br>
+	    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
+	    </div>
+	    <div class="form-group">
+			<label for="price">Стоимость</label>
+			<br>
+	    	<input id="price" class="ui-widget" type="text" class="form-control" name="price" />
+	    </div>
+	    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
+		<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
+	</form>
 
-	<div id="room" class="col-md-6">
-	</div>
+	<div id="room" class="col-md-6"></div>
 </div>
 
+
+
 <script type="text/javascript">
-var construct = function(flats) {
-	var s = '';
-	for(var i=0; i<flats; i++) {
-		s += '<div>' + '</div>';
-		document.getElementById("room").innerHTML = s;
+	var construct = function(flats) {
+		var s = '';
+		for(var i=0; i<flats; i++) {
+			s += '<div>' + '</div>';
+			document.getElementById("room").innerHTML = s;
+		}
 	}
-}
-var flats = 4;
-construct(flats);
+	var flats = 4;
+	construct(flats);
+
+
+
+
+	var sendReq = function(params, callback) {
+		$.post(url, params, function(data) {
+			callback(data);
+		})
+	}
+
+	var url = "handler.php";
+	sendReq({action: "getRooms"}, function(data) {
+		var res = JSON.parse(data);
+		console.log(res);
+	})
+
 </script>
 </body>
 </html>
