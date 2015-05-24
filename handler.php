@@ -34,9 +34,13 @@
 	if($action == 'getUser') {
 		fromPHPToJSON(getUser());
 	}
+
+	if($action == 'getRooms') {
+		getListOfRooms();
+	}
 	
 	function getRoom() {
-		global $servername, $dbname, $username, $password;
+		global $servername, $dbname, $username, $password, $conn;
 
 		@$room = $_POST['room'];
 
@@ -60,7 +64,7 @@
 	}
 
 	function getUser() {	
-		global $servername, $dbname, $username, $password;
+		global $servername, $dbname, $username, $password, $conn;
 
 		@$firstname = $_POST['firstname'];
 		@$lastname = $_POST['lastname'];
@@ -89,7 +93,7 @@
 	}
 
 	function registration(){
-		global $servername, $dbname, $username, $password, $conn;
+		global $conn;
 		$firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$middlename = $_POST['middlename'];
@@ -170,7 +174,7 @@
 	}
 
 	function getListOfUsers(){
-		global $servername, $dbname, $username, $password;
+		global $servername, $dbname, $username, $password, $conn;
 
 		// Create connection
 		$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -188,4 +192,25 @@
 		$jsonres = json_encode ( $res );
 		echo $jsonres;
 	}	
+
+	function getListOfRooms(){
+		$query = 'SELECT * FROM `appartment` WHERE 1';
+		$res = $conn->query($query);
+		$arr = array();
+		$i = 0;
+		while(@$row = $res->fetch_assoc())
+		{
+			array_push($arr, $row);
+			$query = 'SELECT * FROM `uresr` WHERE id_app = '.$row['id_app'];
+			$usrs = $conn->query($query);
+			$allusr = array();
+			while(@$usr = $usrs->fetch_assoc())
+			{
+				array_push($arr, $row);
+			}
+			$arr[$i]['users'] = $allusr;
+			$i++;
+		}
+		return $arr;
+	}
 ?>
