@@ -7,6 +7,15 @@
 		height: 100px;
 		margin: 3px;
 	}
+	#roomsList div {
+		border: solid 2px;
+		width: 500px;
+		border-radius: 10px;
+		margin: 10px;
+		padding: 5px;
+		font-size: 20px;
+		cursor: pointer;
+	}
 	</style>
 	<title>rooms</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -35,32 +44,55 @@
 			<br>
 	    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
 	    </div>
-	    <div class="form-group">
+<!-- 	    <div class="form-group">
 			<label for="price">Стоимость</label>
 			<br>
 	    	<input id="price" class="ui-widget" type="text" class="form-control" name="price" />
-	    </div>
+	    </div> -->
 	    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
 		<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
 	</form>
 
-	<div id="room" class="col-md-6"></div>
+	<div id="roomsList" class="col-md-6"></div>
+</div>
+
+<div id="roomsList">
 </div>
 
 
-
 <script type="text/javascript">
-	var construct = function(flats) {
-		var s = '';
-		for(var i=0; i<flats; i++) {
-			s += '<div>' + '</div>';
-			document.getElementById("room").innerHTML = s;
-		}
-	}
-	var flats = 4;
-	construct(flats);
 
+	var LFM = new Array();
+	var result = new Array();
+	$(function() {
+		$( "#lfm" ).autocomplete({source: LFM}); 
+		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
+			var res = ui.item.value;
+			var arr = res.split(' ');
+			result.lastname = arr[0];
+			result.firstname = arr[1];
+			result.middlename = arr[2];															
+		});
 
+		$("#button").on("click", function() {
+			sendData();
+		});
+
+		//set today data ex. 2013-01-08
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		if(dd<10) {
+    		dd='0'+dd
+		} 
+		if(mm<10) {
+		    mm='0'+mm
+		} 
+		var today = yyyy+'-'+mm+'-'+dd;
+		console.log(today);
+		$("#start").val(today);
+	});
 
 
 	var sendReq = function(params, callback) {
@@ -69,12 +101,60 @@
 		})
 	}
 
+
+	var url = "handler.php";
+	sendReq({action: "getUsers"}, function(data){
+	users = JSON.parse(data);
+	for(var i in users) {
+		var firstname = users[i].first_name;
+		var lastname= users[i].last_name;
+		var middlename = users[i].middle_name;
+		var lfm = lastname+' '+firstname+' '+middlename;
+		LFM.push(lfm);
+		}
+	});
+
 	var url = "handler.php";
 	sendReq({action: "getRooms"}, function(data) {	
+		var s = ""; 
 		var res = JSON.parse(data);
-		console.log(res);
+		for(var i in res) {
+			s += '<div class="item">' + res[i].id_app  + ' | ' +
+			res[i].description + " | " +
+			res[i].users.length + '</div>';
+		}
+		$("#roomsList").html(s);
+		$(".item").on("click", function() {
+			var self = $( this );
+			$(".bg-success").removeClass("bg-success");
+			self.addClass("bg-success");
+			var data = self.html();
+			var a = data.split(" ");
+			result.id_app = a[0];
+		})
 	})
 
+
+	var sendData = function() {
+		if(!result.id_app) {
+			alert("Выберите комнату из списка");
+		}
+		var start = $("#start").val();
+		var end = $("#end").val();
+		sendReq({action: "settle",
+			id_app: result.id_app, 
+			lastname: result.lastname, 
+			firstname: result.firstname, 
+			middlename: result.middlename, 
+			start: start, 
+			end: end},
+			function(data) {
+				console.log(data)
+			});
+	};
+
+
+//comment: "ROOM"description: "this is room"end: "2015-05-16"id_app: "315"max: "4"start: "2015-05-14"
 </script>
 </body>
 </html>

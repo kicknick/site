@@ -34,48 +34,48 @@
 </div>
 <script type="text/javascript">
 
-var LFM = new Array();
-var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
-$(function() {
-	$( "#lfm" ).autocomplete({source: LFM}); 
-	
-	$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-		var res = ui.item.value;
-		var arr = res.split(' ');
-		result.lastname = arr[0];
-		result.firstname = arr[1];
-		result.middlename = arr[2];															
+	var LFM = new Array();
+	var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
+	$(function() {
+		$( "#lfm" ).autocomplete({source: LFM}); 
+		
+		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
+			var res = ui.item.value;
+			var arr = res.split(' ');
+			result.lastname = arr[0];
+			result.firstname = arr[1];
+			result.middlename = arr[2];															
+		});
+
+		$("#button").on("click", function() {
+			sendData();
+		});
 	});
 
-	$("#button").on("click", function() {
-		sendData();
-	});
-});
 
-
-var url = "handler.php"
-var sendReq = function(params, callback) {
-	$.post(url, params, function(data) {
-		callback(data);
-	});
-}
-var users;
-sendReq({action: "getUsers"}, function(data){
-	users = JSON.parse(data);
-	for(var i in users) {
-		var firstname = users[i].first_name;
-		var lastname= users[i].last_name;
-		var middlename = users[i].middle_name;
-		var lfm = lastname+' '+firstname+' '+middlename;
-		LFM.push(lfm);
+	var url = "handler.php"
+	var sendReq = function(params, callback) {
+		$.post(url, params, function(data) {
+			callback(data);
+		});
 	}
-});
-var sendData = function() {
-	result.start = $("#start").val();
-	result.end = $("#end").val();
-	console.log(result);
-	sendReq(result, function() {});
-}
+	var users;
+	sendReq({action: "getUsers"}, function(data){
+		users = JSON.parse(data);
+		for(var i in users) {
+			var firstname = users[i].first_name;
+			var lastname= users[i].last_name;
+			var middlename = users[i].middle_name;
+			var lfm = lastname+' '+firstname+' '+middlename;
+			LFM.push(lfm);
+		}
+	});
+	var sendData = function() {
+		result.start = $("#start").val();
+		result.end = $("#end").val();
+		console.log(result);
+		sendReq(result, function() {});
+	}
 
 </script>
 </body>

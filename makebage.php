@@ -58,8 +58,6 @@
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
 
-
-
 		$("#lfm").val("");
 		$("#user_pic").val("");
 		$( "#lfm" ).autocomplete({source: LFM}); 
