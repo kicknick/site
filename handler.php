@@ -1,18 +1,11 @@
 <?php
 
-	// getListOfEvents() Выдает массив содержащий список событий
-	// getListOfUsers() Выдает массив содержащий список юзеров
-	// fromResToJSON($res) По заданному массиву в php выдает в javascript JSON массив
-	// makeDataList($res) По заданному массиву делает option теги с элементами массива
-
-	// $servername = "localhost";
-	// $dbname = "u922837214_test";
-	// $username = "u922837214_odael";
-	// $password = "lollol";
 	$servername = "localhost";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u922837214_test";
+	$username = "u922837214_odael";
+	$password = "lollol";
+
+	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
 	$conn->query("set_client='utf8'");
 
@@ -24,8 +17,9 @@
 	if($action == "nutrition" && $usr = getUser())
 		nutrition($usr);
 
-	if($action == "lodge" && $usr = getUser() && $app = getRoom())
+	if(($action == "lodge") && ($app = getRoom()) && ($usr = getUser())){
 		lodge($usr, $app);
+	}
 
 	if($action == 'getUsers') {
 		fromPHPToJSON(getListOfUsers());
@@ -38,26 +32,18 @@
 	if($action == 'getRooms') {
 		fromPHPToJSON(getListOfRooms());
 	}
-
-
-	if($action == 'settle') {
-		$room = $_POST['id_app'];
-		echo $room." success";
-	}
 	
 	function getRoom() {
-		global $servername, $dbname, $username, $password, $conn;
+		global $conn;
 
-		@$room = $_POST['room'];
+		@$id_app = $_POST['id_app'];
 
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
-
-		if($room)
+		if($id_app)
 		{	
-			$querry = 'SELECT * FROM `appartment` 
-			WHERE `description` LIKE "'.$room.'"';
+			$query = 'SELECT * FROM `appartment` 
+			WHERE `id_app` LIKE '.$id_app;
 			$res = $conn->query($query);
+			//echo $query;
 		}
 
 		$arr = array();
@@ -70,15 +56,12 @@
 	}
 
 	function getUser() {	
-		global $servername, $dbname, $username, $password, $conn;
+		global $conn;
 
 		@$firstname = $_POST['firstname'];
 		@$lastname = $_POST['lastname'];
 		@$middlename = $_POST['middlename'];
 		//echo $firstname.' '.$lastname;
-
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
 
 		if($firstname && $lastname && $middlename)
 		{	
@@ -108,9 +91,6 @@
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
 		
-		// $conn =  new mysqli($servername, $username, $password, $dbname);
-		// $conn->query("set_client='utf8'");
-
 		if($firstname)
 		{	
 			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`) 
@@ -122,13 +102,10 @@
 	}
 
 	function nutrition($usr){
-		global $servername, $dbname, $username, $password;
+		global $conn;
 		
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
-		
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
 
 		$query = 'DELETE FROM `food` WHERE id_user = '.$usr[0]["id_user"];
 		$conn->query($query);
@@ -142,14 +119,10 @@
 	}
 
 	function lodge($usr, $app){
-		global $servername, $dbname, $username, $password;
-		
+		global $conn;
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
 		$room = $_POST['room'];
-
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
 
 		if($start && $end)
 		{	
@@ -164,11 +137,7 @@
 	}
 
 	function getListOfEvents(){
-		global $servername, $dbname, $username, $password;
-
-		// Create connection
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
+		global $conn;
 
 		$res =$conn->query("Select * from `events` where 1");
 		$arr = array();
@@ -180,11 +149,8 @@
 	}
 
 	function getListOfUsers(){
-		global $servername, $dbname, $username, $password, $conn;
+		global $conn;
 
-		// Create connection
-		$conn =  new mysqli($servername, $username, $password, $dbname);
-		$conn->query("set_client='utf8'");
 		$res = $conn->query('Select * from `users` where 1');
 		$arr = array();
 		while(@$row = $res->fetch_assoc())
