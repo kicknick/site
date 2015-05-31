@@ -45,6 +45,8 @@
 			$res = $conn->query($query);
 			//echo $query;
 		}
+		else
+			die("Заполните все поля");
 
 		$arr = array();
 
@@ -71,6 +73,8 @@
 				`middle_name` LIKE "'.$middlename.'"';
 			$res = $conn->query($query);
 		}
+		else
+			die("Заполните все поля");
 
 		$arr = array();
 
@@ -91,14 +95,15 @@
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
 		
-		if($firstname)
+		if($firstname && $lastname && $middlename && $email && $mobnumber && $age && $sex)
 		{	
 			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`) 
 			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			//echo $query;
-			$conn->query($query);
+			$conn->query($query) or die("Error");
 		}
-		echo "set to base";
+		else
+			die("Заполните все поля");
 	}
 
 	function nutrition($usr){
@@ -114,16 +119,16 @@
 		{	
 			$query = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
 			VALUES ('.$usr[0]["id_user"].',"'.$start.'","'.$end.'")';
-			$conn->query($query);
+			$conn->query($query) or die("Error");
 		}
+		else
+			die("Заполните все поля");
 	}
 
 	function lodge($usr, $app){
 		global $conn;
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
-		$room = $_POST['room'];
-
 		if($start && $end)
 		{	
 			$query = 'UPDATE `users` SET 
@@ -132,8 +137,11 @@
 					`end` = '.$end.' 
 				WHERE 
 					`id_user` = '.$usr[0]["id_user"];
-			$conn->query($query);
+			$conn->query($query) or die( "Error" );
 		}
+		else
+			die("Заполните все поля");
+		
 	}
 
 	function getListOfEvents(){
@@ -161,10 +169,13 @@
 	}
 
 	function fromPHPToJSON($res){
-		$jsonres = json_encode ( $res );
-		echo $jsonres;
+		echo  json_encode ( $res );
 	}	
 
+	function cmpAppCrowd($a, $b)
+	{
+	    return $a['num'] - $b['num'];
+	}	
 	function getListOfRooms(){
 		global $servername, $dbname, $username, $password, $conn;
 		$query = 'SELECT * FROM `appartment` WHERE 1';
@@ -182,8 +193,10 @@
 				array_push($allusr, $usr);
 			}
 			$arr[$i]['users'] = $allusr;
+			$arr[$i]['num'] = count($allusr);
 			$i++;
 		}
+		usort($arr, "cmpAppCrowd");
 		return $arr;
 	}
 ?>

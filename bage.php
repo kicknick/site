@@ -3,6 +3,12 @@
 	function getImageName($postname)
 	{
 		$uploaddir = './tmpimg/';
+		//echo $_FILES[$postname]['name'];
+		if(!$_FILES[$postname]['name'])
+		{
+			echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			die("Выберите изображение!");
+		}
 		$uploadfile = $uploaddir . basename($_FILES[$postname]['name']);
 		if (!move_uploaded_file($_FILES[$postname]['tmp_name'], $uploadfile)){
     		/* Создаем пустое изображение */
@@ -14,7 +20,9 @@
 
 	        /* Выводим сообщение об ошибке */
 	        imagestring($im, 1, 5, 5, 'Ошибка загрузки ' . $uploadfile, $tc);
-	        return '';
+
+	        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			die("Ошибка загрузки фото!");
 		}
 		return $uploadfile;
 	}
@@ -50,17 +58,21 @@
 	@$foto_width = $_POST['foto_width'];
 	@$foto_height = $_POST['foto_height'];
 
-
-
 	@$firstname = $_POST['firstname'];
 	@$lastname = $_POST['lastname'];
 	@$middlename = $_POST['middlename'];
 	$fio = $lastname.' '.$firstname.' '.$middlename;
 
-	$bagename = './bage.jpg';
 	$imgname = getImageName('user_pic');
-	
+
+	if(!$foto_x && !$foto_y && !$foto_width && !$foto_height)
+	{
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+		die("Выделите область на изображении!");
+	}
+
 	$foto = LoadJPEGfromPOST($imgname);
+	$bagename = './bage.jpg';
 	$bage = LoadJPEGfromPOST($bagename);
 	$size = getimagesize($bagename);
 	$image = imagecreatetruecolor($size[0],$size[1]) // создаем изображение...

@@ -34,17 +34,14 @@
 </div>
 <script type="text/javascript">
 
+	var fio = "";
 	var LFM = new Array();
 	var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
 		$( "#lfm" ).autocomplete({source: LFM}); 
 		
 		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-			var res = ui.item.value;
-			var arr = res.split(' ');
-			result.lastname = arr[0];
-			result.firstname = arr[1];
-			result.middlename = arr[2];															
+			window.fio = ui.item.value;														
 		});
 
 		$("#button").on("click", function() {
@@ -84,10 +81,20 @@
 		}
 	});
 	var sendData = function() {
+		var res = window.fio;
+		var arr = res.split(' ');
+		result.lastname = arr[0];
+		result.firstname = arr[1];
+		result.middlename = arr[2];
 		result.start = $("#start").val();
 		result.end = $("#end").val();
 		console.log(result);
-		sendReq(result, function() {});
+		sendReq(result, function(data) {
+			if(data)
+				alert(data);
+			else
+				location.reload();
+		});
 	}
 
 </script>

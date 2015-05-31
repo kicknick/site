@@ -62,16 +62,13 @@
 
 <script type="text/javascript">
 
+	var fio = "";
 	var LFM = new Array();
 	var result = new Array();
 	$(function() {
 		$( "#lfm" ).autocomplete({source: LFM}); 
 		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-			var res = ui.item.value;
-			var arr = res.split(' ');
-			result.lastname = arr[0];
-			result.firstname = arr[1];
-			result.middlename = arr[2];
+			window.fio = ui.item.value;
 		});
 
 		$("#button").on("click", function() {
@@ -116,28 +113,36 @@
 	var url = "handler.php";
 	sendReq({action: "getRooms"}, function(data) {	
 		var s = ""; 
+		//console.log(data);
 		var res = JSON.parse(data);
 		for(var i in res) {
 			s += '<div class="item">' + res[i].id_app  + ' | ' +
-			res[i].description + " | " +
-			res[i].users.length + '</div>';
+			res[i].room_num + " | " +
+			'Мест: ' + res[i].max + " | Занято: " + res[i].users.length + '</div>';
 		}
 		$("#roomsList").html(s);
 		$(".item").on("click", function() {
 			var self = $( this );
-			$(".bg-success").removeClass("bg-success");
-			self.addClass("bg-success");
-			var data = self.html();
-			var a = data.split(" ");
-			result.id_app = a[0];
+			var text = self.html();
+			var a = text.split(" ");
+			// console.log(parseInt(a[5], 10));
+			// console.log(parseInt(a[8], 10));
+			if(parseInt(a[5], 10) > parseInt(a[8], 10))
+			{
+				$(".bg-success").removeClass("bg-success");
+				self.addClass("bg-success");
+				result.id_app = a[0];
+			}
 		})
 	})
 
 
 	var sendData = function() {
-		if(!result.id_app) {
-			alert("Выберите комнату из списка");
-		}
+		var res = window.fio;
+		var arr = res.split(' ');
+		result.lastname = arr[0];
+		result.firstname = arr[1];
+		result.middlename = arr[2];
 		var start = $("#start").val();
 		var end = $("#end").val();
 		sendReq({action: "lodge",
@@ -148,12 +153,13 @@
 			start: start, 
 			end: end},
 			function(data) {
-				console.log(data);
+				if(data)
+					alert(data)
+				else
+					location.reload();
 			});
 	};
 
-
-//comment: "ROOM"description: "this is room"end: "2015-05-16"id_app: "315"max: "4"start: "2015-05-14"
 </script>
 </body>
 </html>
