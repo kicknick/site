@@ -29,8 +29,12 @@
 		fromPHPToJSON(getUser());
 	}
 
-	if($action == 'getRooms') {
-		fromPHPToJSON(getListOfRooms());
+	if($action == 'getUser') {
+		fromPHPToJSON(getUser());
+	}
+
+	if($action == 'usrinfo') {
+		fromPHPToJSON(getUser());
 	}
 	
 	function getRoom() {
@@ -74,7 +78,7 @@
 			$res = $conn->query($query);
 		}
 		else
-			die("Заполните все поля");
+			die("Заполните ФИО!");
 
 		$arr = array();
 
@@ -82,6 +86,8 @@
 		{
 			array_push($arr, $row);
 		}
+		if(count($arr) == 0)
+			die("Такого пользователя не существует!");
 		return $arr;
 	}
 
@@ -95,8 +101,10 @@
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
 		
-		if($firstname && $lastname && $middlename && $email && $mobnumber && $age && $sex)
-		{	
+		if($firstname && $lastname && $middlename && $mobnumber && $age && $sex)
+		{
+			if(!isEmailAccept($email))
+				die("Некорректный eMail!");
 			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`) 
 			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			//echo $query;
@@ -140,8 +148,7 @@
 			$conn->query($query) or die( "Error" );
 		}
 		else
-			die("Заполните все поля");
-		
+			die("Заполните все поля");	
 	}
 
 	function getListOfEvents(){
@@ -168,14 +175,6 @@
 		return $arr;
 	}
 
-	function fromPHPToJSON($res){
-		echo  json_encode ( $res );
-	}	
-
-	function cmpAppCrowd($a, $b)
-	{
-	    return $a['num'] - $b['num'];
-	}	
 	function getListOfRooms(){
 		global $servername, $dbname, $username, $password, $conn;
 		$query = 'SELECT * FROM `appartment` WHERE 1';
@@ -198,5 +197,22 @@
 		}
 		usort($arr, "cmpAppCrowd");
 		return $arr;
+	}
+
+	function fromPHPToJSON($res){
+		echo  json_encode ( $res );
+	}	
+
+	function cmpAppCrowd($a, $b){
+	    return $a['num'] - $b['num'];
+	}
+
+	function isEmailAccept($em){
+		if(@count($arr = split('[@]', $em)) != 2)
+			return 0;
+		$site = $arr[1];
+		if(count(split('[.]', $site)) >= 2)
+			return 1;
+		return 0;
 	}
 ?>

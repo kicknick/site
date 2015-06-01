@@ -78,23 +78,30 @@ $(function() {
 		var arr = res.split(' ');
 		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
 		sendReq(request, function(data) {
-			var user = JSON.parse(data);
-			console.log(user[0]);
-			$( "#lastName" ).val(user[0].last_name);
-			$( "#firstName" ).val(user[0].first_name);
-			$( "#middleName" ).val(user[0].middle_name);
-			$("#mobNum").val(user[0].mobile_number);
-			$("#email").val(user[0].email);
-			$("#age").val(user[0].age);
-			var rb = user[0].sex;
-			console.log(rb);
-			if(rb == 'm') {
-				$("#male").prop( "checked", true );
+			if(data[0] == '[')
+			{
+				//console.log(111111);
+				var user = JSON.parse(data);
+				console.log(user[0]);
+				$( "#lastName" ).val(user[0].last_name);
+				$( "#firstName" ).val(user[0].first_name);
+				$( "#middleName" ).val(user[0].middle_name);
+				$("#mobNum").val(user[0].mobile_number);
+				$("#email").val(user[0].email);
+				$("#age").val(user[0].age);
+				var rb = user[0].sex;
+				console.log(rb);
+				if(rb == 'm') {
+					$("#male").prop( "checked", true );
+				}
+				if(rb == 'f') {
+					$("#female").prop( "checked", true );
+				}
 			}
-			if(rb == 'f') {
-				$("#female").prop( "checked", true );
+			else
+			{
+				alert(data);
 			}
-
 		});														
 	});
 	$("#button").on("click", function() {
@@ -120,13 +127,20 @@ var sendReq = function(params, callback) {
 var users;
 sendReq({action: "getUsers"}, function(data){
 	//console.log(data);
-	users = JSON.parse(data);
-	for(var i in users) {
-		var firstname = users[i].first_name;
-		var lastname= users[i].last_name;
-		var middlename = users[i].middle_name;
-		var lfm = lastname+' '+firstname+' '+middlename;
-		LFM.push(lfm);
+	if(data[0] == '[')
+	{
+		users = JSON.parse(data);
+		for(var i in users) {
+			var firstname = users[i].first_name;
+			var lastname= users[i].last_name;
+			var middlename = users[i].middle_name;
+			var lfm = lastname+' '+firstname+' '+middlename;
+			LFM.push(lfm);
+			}
+	}
+	else
+	{
+		alert(data);
 	}
 	//console.log(LFM);
 	$( "#lastName" ).autocomplete({source: LFM}); 

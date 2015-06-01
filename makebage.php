@@ -62,10 +62,6 @@
 		$("#lfm").val("");
 		$("#user_pic").val("");
 		$( "#lfm" ).autocomplete({source: LFM}); 
-		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-			window.fio = ui.item.value;													
-		});
-
 		$("#button").on("click", function() {
 			sendData();
 		});
@@ -131,6 +127,7 @@ var handleImgInit = function() {
 
 
 	var sendData = function() {
+		fio = $( "#lfm" ).val();
 		var res = window.fio;
 		var arr = res.split(' ');
 		result.lastname = arr[0];
