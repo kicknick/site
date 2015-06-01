@@ -107,27 +107,24 @@
 	});
 
 	var url = "handler.php";
-	sendReq({action: "getRooms"}, function(data) {	
+	sendReq({action: "getRooms"}, function(data) {
 		var s = ""; 
-		//console.log(data);
 		var res = JSON.parse(data);
 		for(var i in res) {
-			s += '<div class="item">' + res[i].id_app  + ' | ' +
+			s += '<div data-id="' + i + '"" class="item">' + res[i].id_app  + ' | ' +
 			res[i].room_num + " | " +
 			'Мест: ' + res[i].max + " | Занято: " + res[i].users.length + '</div>';
 		}
 		$("#roomsList").html(s);
 		$(".item").on("click", function() {
 			var self = $( this );
-			var text = self.html();
-			var a = text.split(" ");
-			// console.log(parseInt(a[5], 10));
-			// console.log(parseInt(a[8], 10));
-			if(parseInt(a[5], 10) > parseInt(a[8], 10))
+			var i = self.attr("data-id");
+			console.log(i);
+			if(res[i]["max"] > res[i]["num"]) 
 			{
 				$(".bg-success").removeClass("bg-success");
 				self.addClass("bg-success");
-				result.id_app = a[0];
+				result.id_app = res[i]["id_app"];
 			}
 		})
 	})
