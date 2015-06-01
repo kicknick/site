@@ -5,6 +5,8 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="ias/css/imgareaselect-animated.css">
+    <link rel="stylesheet" type="text/css" href="css/statusBar.css">
+
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script type="text/javascript" src="ias/scripts/jquery.imgareaselect.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -17,10 +19,25 @@
 
 </head>
 <body>
+<div>
+	<nav class="navbar navbar-default navbar-top">
+		<div class="container-fluid">
+			<div class="navbar-header"> 
+				<a class="navbar-brand" href="index.html">Главная</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="registration.php">Регистрация</a></li>
+				<li><a href="nutrition.php">Питание</a></li>
+				<li><a href="rooms.html">Поселение</a></li>
+				<li><a href="makebage.php">Сделать Бэйдж</a></li>
+				<li><a href="info.php">Информация о юзере</a></li>
+
+			</ul>
+		</div>
+	</nav>	
+</div>	
 <div class="container">
 <div class="col-md-6">
-	<a href="index.html"><input type="button" class="btn btn-default" value="Главная"></a><br>
-	<br>
 	<form action="bage.php" method="post" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="lfm">ФИО</label>

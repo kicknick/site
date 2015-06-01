@@ -1,9 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	$dbname = "u922837214_test";
-	$username = "u922837214_odael";
-	$password = "lollol";
+	// $dbname = "u922837214_test";
+	// $username = "u922837214_odael";
+	// $password = "lollol";
+	$dbname = "test";
+	$username = "odael";
+	$password = "lol";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -29,9 +32,6 @@
 		fromPHPToJSON(getUser());
 	}
 
-	if($action == 'getUser') {
-		fromPHPToJSON(getUser());
-	}
 
 	if($action == 'usrinfo') {
 		fromPHPToJSON(getUser());
@@ -109,10 +109,12 @@
 			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
 			//echo $query;
 			$conn->query($query) or die("Error");
+
 		}
 		else
 			die("Заполните все поля");
 	}
+
 
 	function nutrition($usr){
 		global $conn;
