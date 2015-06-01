@@ -25,9 +25,13 @@
 </nav>
 
 <script type="text/javascript">
-var status = 1;
-status = status << 4;
-console.log(status);
+var status = 0;
+/*
+00 00 00 00 
+ba ro nu re 
+*/
+localStorage.setItem("status", status);
+
 </script>
 
 </body>

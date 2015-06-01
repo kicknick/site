@@ -8,6 +8,7 @@
 
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  	<script type="text/javascript" src="js/custom.js"></script>
 
 </head>
 <body>
@@ -18,12 +19,11 @@
 				<a class="navbar-brand" href="index.html">Главная</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="registration.php">Регистрация</a></li>
-				<li><a href="nutrition.php">Питание</a></li>
-				<li><a href="rooms.html">Поселение</a></li>
-				<li><a href="makebage.php">Сделать Бэйдж</a></li>
-				<li><a href="info.php">Информация о юзере</a></li>
-
+				<li id="reg"><a href="registration.php">Регистрация</a></li>
+				<li id="nut"><a href="nutrition.php">Питание</a></li>
+				<li id="room"><a href="rooms.html">Поселение</a></li>
+				<li id="bage"><a href="makebage.php">Сделать Бэйдж</a></li>
+				<li id="userInfo"><a href="info.php">Информация о юзере</a></li>
 			</ul>
 		</div>
 	</nav>	
@@ -40,6 +40,8 @@
 </form>
 </div>
 <script type="text/javascript">
+var status = localStorage.getItem("status");
+paintBars(status);
 
 	var fio = "";
 	var LFM = new Array();
