@@ -33,10 +33,10 @@
 		<div class="row">
 	  	<b>Выберите пол</b> </br>
 	  		<label class="radio-inline">
-	          <input type="radio" id="male" name="radioGroup" id="radio1" value="option1"> М
+	          <input type="radio" name="radioGroup" id="male" value="option1"> М
 	        </label>
 	        <label class="radio-inline">
-	          <input type="radio" id="female "name="radioGroup" id="radio2" value="option2"> Ж
+	          <input type="radio" name="radioGroup" id="female" value="option2"> Ж
 	        </label>
 	  	</div>
 	</div>
@@ -71,44 +71,50 @@
 <script type="text/javascript">
 var LFM = new Array();
 var sex = null;
+var type
 $(function() {
 	$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
 		var res = ui.item.value;
 		var arr = res.split(' ');
 		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
 		sendReq(request, function(data) {
-			var user = JSON.parse(data);
-			console.log(user[0]);
-			$( "#lastName" ).val(user[0].last_name);
-			$( "#firstName" ).val(user[0].first_name);
-			$( "#middleName" ).val(user[0].middle_name);
-			$("#mobNum").val(user[0].mobile_number);
-			$("#email").val(user[0].email);
-			$("#age").val(user[0].age);
-			var rb = user[0].sex;
-			console.log(rb);
-			if(rb == 'm') {
-				$("#radio1").prop( "checked", true );
+			if(data[0] == '[')
+			{
+				//console.log(111111);
+				var user = JSON.parse(data);
+				console.log(user[0]);
+				$( "#lastName" ).val(user[0].last_name);
+				$( "#firstName" ).val(user[0].first_name);
+				$( "#middleName" ).val(user[0].middle_name);
+				$("#mobNum").val(user[0].mobile_number);
+				$("#email").val(user[0].email);
+				$("#age").val(user[0].age);
+				var rb = user[0].sex;
+				console.log(rb);
+				if(rb == 'm') {
+					$("#male").prop( "checked", true );
+				}
+				if(rb == 'f') {
+					$("#female").prop( "checked", true );
+				}
 			}
-			if(rb == 'f') {
-				$("#radio2").prop( "checked", true );
+			else
+			{
+				alert(data);
 			}
-			
-
-
 		});														
 	});
 	$("#button").on("click", function() {
+		sex = null;
 		var sexCh = $("input:checked").val();
 		if(sexCh=='option1') {
 			sex = "m";
-			sendData();
 		}
 		else if(sexCh=='option2') {
 			sex = "f";
-			sendData();
 		}
-		else alert("Введите пол");
+		sendData();
+		//else alert("Введите пол");
 	});
 });
 
@@ -121,13 +127,20 @@ var sendReq = function(params, callback) {
 var users;
 sendReq({action: "getUsers"}, function(data){
 	//console.log(data);
-	users = JSON.parse(data);
-	for(var i in users) {
-		var firstname = users[i].first_name;
-		var lastname= users[i].last_name;
-		var middlename = users[i].middle_name;
-		var lfm = lastname+' '+firstname+' '+middlename;
-		LFM.push(lfm);
+	if(data[0] == '[')
+	{
+		users = JSON.parse(data);
+		for(var i in users) {
+			var firstname = users[i].first_name;
+			var lastname= users[i].last_name;
+			var middlename = users[i].middle_name;
+			var lfm = lastname+' '+firstname+' '+middlename;
+			LFM.push(lfm);
+			}
+	}
+	else
+	{
+		alert(data);
 	}
 	//console.log(LFM);
 	$( "#lastName" ).autocomplete({source: LFM}); 
@@ -141,7 +154,7 @@ var sendData =  function() {
 	var region = $("#region").val();
 	var email = $("#email").val();
 	var age = $("#age").val();
-	console.log(name, lastName, middleName, mobNum, region, email);
+	//console.log(name, lastName, middleName, mobNum, region, email);
 	var params = { action: "registration", 
 				firstname: firstName,  
 				lastname: lastName, 
@@ -151,10 +164,13 @@ var sendData =  function() {
 				email: email, 
 				sex: sex, 
 				age: age};
-	var res = sendReq(params, function() {
-		location.reload();
+	sendReq(params, function(data) {
+		if(data)
+			alert(data);
+		else
+			location.reload();
 	});
-	console.log(res);
+	//console.log(res);
 };
 </script>
 

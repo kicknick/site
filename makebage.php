@@ -54,6 +54,7 @@
 
 <script type="text/javascript">
 
+ 	var fio = "";
 	var LFM = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
@@ -61,17 +62,6 @@
 		$("#lfm").val("");
 		$("#user_pic").val("");
 		$( "#lfm" ).autocomplete({source: LFM}); 
-		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-			var res = ui.item.value;
-			var arr = res.split(' ');
-			result.lastname = arr[0];
-			result.firstname = arr[1];
-			result.middlename = arr[2];		
-			$('input[name="firstname"]').val(result.firstname);
-			$('input[name="lastname"]').val(result.lastname);
-			$('input[name="middlename"]').val(result.middlename);														
-		});
-
 		$("#button").on("click", function() {
 			sendData();
 		});
@@ -137,9 +127,15 @@ var handleImgInit = function() {
 
 
 	var sendData = function() {
+		fio = $( "#lfm" ).val();
+		var res = window.fio;
+		var arr = res.split(' ');
+		result.lastname = arr[0];
+		result.firstname = arr[1];
+		result.middlename = arr[2];
 		$('#lfm').val('');
 		url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
-		window.location.href=url;
+		window.open(url);
 	}
 
 </script>

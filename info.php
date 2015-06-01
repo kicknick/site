@@ -18,16 +18,6 @@
 		<br>
     	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
     </div>
-    <div class="form-group">
-		<label for="start">Заезд</label>
-		<br>
-    	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
-    </div>
-    <div class="form-group">
-		<label for="end">Отезд</label>
-		<br>
-    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
-    </div>
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
 	<button id="button" class="btn btn-default" type="button">Покормить!</button>
 </form>
@@ -36,26 +26,13 @@
 
 	var fio = "";
 	var LFM = new Array();
-	var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
+	var result = {action: "usrinfo", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
 		$( "#lfm" ).autocomplete({source: LFM}); 
 
 		$("#button").on("click", function() {
 			sendData();
 		});
-
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth() + 1; //January is 0!
-		var yyyy = today.getFullYear();
-		if(dd < 10) {
-    		dd = '0' + dd
-		} 
-		if(mm < 10) {
-		    mm = '0' + mm
-		} 
-		var today = yyyy + '-' + mm + '-' + dd;
-		$("#start").val(today);
 	});
 
 
@@ -75,7 +52,7 @@
 			var lfm = lastname+' '+firstname+' '+middlename;
 			LFM.push(lfm);
 		}
-	});
+	});	
 	var sendData = function() {
 		fio = $( "#lfm" ).val();
 		var res = window.fio;
@@ -83,14 +60,15 @@
 		result.lastname = arr[0];
 		result.firstname = arr[1];
 		result.middlename = arr[2];
-		result.start = $("#start").val();
-		result.end = $("#end").val();
 		console.log(result);
 		sendReq(result, function(data) {
-			if(data)
+			if(data[0] != '[')
 				alert(data);
 			else
-				location.reload();
+			{
+				var res = JSON.parse(data);
+				console.log(res);
+			}
 		});
 	}
 
