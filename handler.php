@@ -25,8 +25,8 @@
 		fromPHPToJSON(getListOfUsers());
 	}
 
-	if($action == 'getUser') {
-		fromPHPToJSON(getUser());
+	if($action == 'getRooms') {
+		fromPHPToJSON(getListOfRooms());
 	}
 
 	if($action == 'getUser') {
