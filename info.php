@@ -36,12 +36,12 @@
     	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
     </div>
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-	<button id="button" class="btn btn-default" type="button">Покормить!</button>
+	<button id="button" class="btn btn-default" type="button">OK</button>
 </form>
 </div>
 <script type="text/javascript">
-var status = localStorage.getItem("status");
-paintBars(status);
+	var status = localStorage.getItem("status");
+	paintBars(status, "userInfo");
 
 	var fio = "";
 	var LFM = new Array();

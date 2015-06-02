@@ -78,14 +78,20 @@
 
 
 <script type="text/javascript">
-var status = localStorage.getItem("status");
-paintBars(status);
+	var status = localStorage.getItem("status");
+	paintBars(status, "room");
 
 	var fio = "";
 	var LFM = new Array();
 	var result = new Array();
 
 	$(function() {
+		if(status & 1) {
+			var firstName = localStorage.getItem("firstName");
+			var lastName = localStorage.getItem("lastName");
+			var middleName = localStorage.getItem("middleName");
+			$("#lfm").val(lastName+' '+firstName+' '+middleName);
+		}
 		$( "#lfm" ).autocomplete({source: LFM}); 
 		$("#button").on("click", function() {
 			sendData();
@@ -154,6 +160,7 @@ paintBars(status);
 	var sendData = function() {
 		fio = $( "#lfm" ).val();
 		var res = window.fio;
+		console.log(res);
 		var arr = res.split(' ');
 		result.lastname = arr[0];
 		result.firstname = arr[1];
@@ -170,8 +177,11 @@ paintBars(status);
 			function(data) {
 				if(data)
 					alert(data)
-				else
-					location.reload();
+				else {
+					status = status | 32;
+					localStorage.setItem("status", status);
+					window.location.href = "makebage.php";
+				}
 			});
 	};
 

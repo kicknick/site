@@ -86,118 +86,118 @@
 </div>
 
 <script type="text/javascript">
-var LFM = new Array();
-var sex = null;
-var status = localStorage.getItem("status");
-paintBars(status);
+	var LFM = new Array();
+	var sex = null;
+	var status = localStorage.getItem("status");
+	paintBars(status, "reg");
 
-var type
-$(function() {
-	$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
-		var res = ui.item.value;
-		var arr = res.split(' ');
-		var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
-		sendReq(request, function(data) {
-			if(data[0] == '[')
-			{
-				//console.log(111111);
-				var user = JSON.parse(data);
-				console.log(user[0]);
-				$( "#lastName" ).val(user[0].last_name);
-				$( "#firstName" ).val(user[0].first_name);
-				$( "#middleName" ).val(user[0].middle_name);
-				$("#mobNum").val(user[0].mobile_number);
-				$("#email").val(user[0].email);
-				$("#age").val(user[0].age);
-				var rb = user[0].sex;
-				console.log(rb);
-				if(rb == 'm') {
-					$("#male").prop( "checked", true );
+	var type
+	$(function() {
+		$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
+			var res = ui.item.value;
+			var arr = res.split(' ');
+			var request = {lastname: arr[0], firstname: arr[1], middlename: arr[2], action: "getUser"};
+			sendReq(request, function(data) {
+				if(data[0] == '[')
+				{
+					var user = JSON.parse(data);
+					console.log(user[0]);
+					$( "#lastName" ).val(user[0].last_name);
+					$( "#firstName" ).val(user[0].first_name);
+					$( "#middleName" ).val(user[0].middle_name);
+					$("#mobNum").val(user[0].mobile_number);
+					$("#email").val(user[0].email);
+					$("#age").val(user[0].age);
+					var rb = user[0].sex;
+					console.log(rb);
+					if(rb == 'm') {
+						$("#male").prop( "checked", true );
+					}
+					if(rb == 'f') {
+						$("#female").prop( "checked", true );
+					}
 				}
-				if(rb == 'f') {
-					$("#female").prop( "checked", true );
+				else
+				{
+					alert(data);
 				}
+			});														
+		});
+		$("#button").on("click", function() {
+			sex = null;
+			var sexCh = $("input:checked").val();
+			if(sexCh=='option1') {
+				sex = "m";
 			}
-			else
-			{
-				alert(data);
+			else if(sexCh=='option2') {
+				sex = "f";
 			}
-		});														
+			sendData();
+			//else alert("Введите пол");
+		});
 	});
-	$("#button").on("click", function() {
-		sex = null;
-		var sexCh = $("input:checked").val();
-		if(sexCh=='option1') {
-			sex = "m";
-		}
-		else if(sexCh=='option2') {
-			sex = "f";
-		}
-		sendData();
-		//else alert("Введите пол");
-	});
-});
 
-var url = "handler.php";
-var sendReq = function(params, callback) {
-	$.post(url, params, function(data) {
-		callback(data);
-	});
-}
-var users;
-sendReq({action: "getUsers"}, function(data){
-	//console.log(data);
-	if(data[0] == '[')
-	{
-		users = JSON.parse(data);
-		for(var i in users) {
-			var firstname = users[i].first_name;
-			var lastname= users[i].last_name;
-			var middlename = users[i].middle_name;
-			var lfm = lastname+' '+firstname+' '+middlename;
-			LFM.push(lfm);
-			}
+	var url = "handler.php";
+	var sendReq = function(params, callback) {
+		$.post(url, params, function(data) {
+			callback(data);
+		});
 	}
-	else
-	{
-		alert(data);
-	}
-	console.log(users);
-	$( "#lastName" ).autocomplete({source: LFM}); 
-});
-
-var sendData =  function() {
-	firstName =$("#firstName").val();
-	lastName = $("#lastName").val();
-	middleName = $("#middleName").val();
-	var mobNum = $("#mobNum").val();
-	var region = $("#region").val();
-	var email = $("#email").val();
-	var age = $("#age").val();
-	//console.log(name, lastName, middleName, mobNum, region, email);
-	var params = { action: "registration", 
-				firstname: firstName,  
-				lastname: lastName, 
-	 			middlename: middleName, 
-				mobnumber: mobNum,  
-				region: region, 
-				email: email, 
-				sex: sex, 
-				age: age, 
-				status: status};
-	sendReq(params, function(data) {
-		if(data)
-			alert(data);
+	var users;
+	sendReq({action: "getUsers"}, function(data){
+		//console.log(data);
+		if(data[0] == '[')
+		{
+			users = JSON.parse(data);
+			for(var i in users) {
+				var firstname = users[i].first_name;
+				var lastname= users[i].last_name;
+				var middlename = users[i].middle_name;
+				var lfm = lastname+' '+firstname+' '+middlename;
+				LFM.push(lfm);
+				}
+		}
 		else
-			status = status | 1;
-			localStorage.setItem("status", status);
-			localStorage.setItem("firstName", firstName);
-			localStorage.setItem("lastName", lastName);
-			localStorage.setItem("middleName", middleName);
-			location.reload();
+		{
+			alert(data);
+		}
+		console.log(users);
+		$( "#lastName" ).autocomplete({source: LFM}); 
 	});
-	//console.log(res);
-};
+
+	var sendData =  function() {
+		firstName =$("#firstName").val();
+		lastName = $("#lastName").val();
+		middleName = $("#middleName").val();
+		var mobNum = $("#mobNum").val();
+		var region = $("#region").val();
+		var email = $("#email").val();
+		var age = $("#age").val();
+		//console.log(name, lastName, middleName, mobNum, region, email);
+		var params = { action: "registration", 
+					firstname: firstName,  
+					lastname: lastName, 
+		 			middlename: middleName, 
+					mobnumber: mobNum,  
+					region: region, 
+					email: email, 
+					sex: sex, 
+					age: age, 
+					status: status};
+		sendReq(params, function(data) {
+			if(data)
+				alert(data);
+			else{
+				status = status | 1;
+				localStorage.setItem("status", status);
+				localStorage.setItem("firstName", firstName);
+				localStorage.setItem("lastName", lastName);
+				localStorage.setItem("middleName", middleName);
+				window.location.href = "nutrition.php";
+			}
+		});
+		//console.log(res);
+	};
 </script>
 
 </body>

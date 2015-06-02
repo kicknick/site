@@ -70,15 +70,19 @@
 </div>
 
 <script type="text/javascript">
-var status = localStorage.getItem("status");
-paintBars(status);
+	var status = localStorage.getItem("status");
+	paintBars(status, "bage");
 
  	var fio = "";
 	var LFM = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
-
-		$("#lfm").val("");
+		if(status & 1) {
+			var firstName = localStorage.getItem("firstName");
+			var lastName = localStorage.getItem("lastName");
+			var middleName = localStorage.getItem("middleName");
+			$("#lfm").val(lastName+' '+firstName+' '+middleName);
+		}
 		$("#user_pic").val("");
 		$( "#lfm" ).autocomplete({source: LFM}); 
 		$("#button").on("click", function() {

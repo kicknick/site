@@ -55,11 +55,16 @@
 	var LFM = new Array();
 	var result = {action: "nutrition", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	var status = localStorage.getItem("status");
-	paintBars(status);
+	paintBars(status, "nut");	
 
 	$(function() {
+		if(status & 1) {
+			var firstName = localStorage.getItem("firstName");
+			var lastName = localStorage.getItem("lastName");
+			var middleName = localStorage.getItem("middleName");
+			$("#lfm").val(lastName+' '+firstName+' '+middleName);
+		}
 		$( "#lfm" ).autocomplete({source: LFM}); 
-
 		$("#button").on("click", function() {
 			sendData();
 		});
@@ -109,8 +114,11 @@
 		sendReq(result, function(data) {
 			if(data)
 				alert(data);
-			else
-				location.reload();
+			else {
+				status = status | 8;
+				localStorage.setItem("status", status);
+				window.location.href = "rooms.html";
+			}
 		});
 	}
 

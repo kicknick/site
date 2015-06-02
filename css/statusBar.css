@@ -1,3 +1,6 @@
 .ready {
 	background: lightgreen;
 }
+.current {
+	background: yellow;
+}
