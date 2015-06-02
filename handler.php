@@ -124,10 +124,10 @@
 		
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
-
+		//echo $start;
 		$query = 'DELETE FROM `food` WHERE id_user = '.$usr[0]["id_user"];
-		$conn->query($query);
-
+		$conn->query($query) or die("Error");
+		
 		if($start && $end)
 		{	
 			$query = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
@@ -146,8 +146,8 @@
 		{	
 			$query = 'UPDATE `users` SET 
 					`id_app`='.$app[0]["id_app"].' , 
-					`start` ='.$start.', 
-					`end` = '.$end.' 
+					`start` = "'.$start.'", 
+					`end` = "'.$end.'" 
 				WHERE 
 					`id_user` = '.$usr[0]["id_user"];
 			$conn->query($query) or die( "Error" );
