@@ -53,12 +53,12 @@
 		<br>
 		<input type="hidden" name="foto_x" value="" />
 		<input type="hidden" name="foto_y" value="" />
-		<input type="hidden"name="foto_width" value="" />
-		<input type="hidden"name="foto_height" value="" />
+		<input type="hidden" name="foto_width" value="" />
+		<input type="hidden" name="foto_height" value="" />
 
-		<input type="hidden" name="firstname" value="" />
-		<input type="hidden"name="lastname" value="" />
-		<input type="hidden"name="middlename" value="" />
+		<input type="hidden" id="firstname" name="firstname" value="" />
+		<input type="hidden" id="lastname" name="lastname" value="" />
+		<input type="hidden" id="middlename" name="middlename" value="" />
 
 		<input type="submit" class="btn btn-default" value="Получить бэйдж">
 	</form>
@@ -73,7 +73,6 @@
 	var status = localStorage.getItem("status");
 	paintBars(status, "bage");
 
- 	var fio = "";
 	var LFM = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
@@ -84,10 +83,16 @@
 			$("#lfm").val(lastName+' '+firstName+' '+middleName);
 		}
 		$("#user_pic").val("");
+		fillLFM($("#lfm").val());
 		$( "#lfm" ).autocomplete({source: LFM}); 
-		$("#button").on("click", function() {
-			sendData();
+
+		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
+			var string = ui.item.value;
+			fillLFM(string);
 		});
+		// $("#button").on("click", function() {
+		// 		sendData();
+		// });
 	});
 
 
@@ -99,7 +104,6 @@
                 $('#imgField').attr('src', e.target.result);
                 image = e.target.result;
                 handleImgInit();
-
             }       
             reader.readAsDataURL(input.files[0]);
         }
@@ -111,20 +115,20 @@
 
 
 
-var handleImgInit = function() {
-	$("#imgField").imgAreaSelect({ aspectRatio: '3:4', x1: 100, y1: 100, x2: 175, y2: 200,
-       	onSelectEnd: function (img, selection) { 
-            $('input[name="foto_x"]').val(selection.x1);
-            $('input[name="foto_y"]').val(selection.y1);
-            $('input[name="foto_width"]').val(selection.x2 - selection.x1);   
-            $('input[name="foto_height"]').val(selection.y2 - selection.y1);   
-            console.log(selection.x1); 
-            console.log(selection.y1); 
-            console.log(selection.x2); 
-            console.log(selection.y2); 
-        	}
-    });
-} 
+	var handleImgInit = function() {
+		$("#imgField").imgAreaSelect({ aspectRatio: '3:4', x1: 100, y1: 100, x2: 175, y2: 200,
+	       	onSelectEnd: function (img, selection) { 
+	            $('input[name="foto_x"]').val(selection.x1);
+	            $('input[name="foto_y"]').val(selection.y1);
+	            $('input[name="foto_width"]').val(selection.x2 - selection.x1);   
+	            $('input[name="foto_height"]').val(selection.y2 - selection.y1);   
+	            console.log(selection.x1); 
+	            console.log(selection.y1); 
+	            console.log(selection.x2); 
+	            console.log(selection.y2); 
+	        	}
+	    });
+	} 
 
 
 
@@ -150,15 +154,15 @@ var handleImgInit = function() {
 
 
 	var sendData = function() {
-		fio = $( "#lfm" ).val();
-		var res = window.fio;
+		console.log("dfdf");
+		var res = $( "#lfm" ).val()
 		var arr = res.split(' ');
 		result.lastname = arr[0];
 		result.firstname = arr[1];
 		result.middlename = arr[2];
-		$('#lfm').val('');
+		console.log(result.lastname);
 		url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
-		window.open(url);
+		//window.open(url);
 	}
 
 </script>

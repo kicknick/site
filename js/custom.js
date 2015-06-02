@@ -11,3 +11,12 @@ var paintBars = function(status, id) {
 	$("#"+id).attr('class', '');
 	$("#"+id).addClass("active");
 }
+
+
+
+var fillLFM = function(string) {
+	var arr = string.split(' ');
+	$("#lastname").val(arr[0]);
+	$("#firstname").val(arr[1]);
+	$("#middlename").val(arr[2]);
+}
