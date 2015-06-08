@@ -92,7 +92,7 @@
 		});
 	}
 	var users;
-	sendReq({action: "getUsers", localStorage.getItem('event')}, function(data){
+	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
 			console.log(data);
 			users = JSON.parse(data);
