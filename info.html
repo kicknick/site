@@ -29,11 +29,11 @@
 				<a class="navbar-brand" href="index.html">Главная</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li id="reg"><a href="registration.php">Регистрация</a></li>
-				<li id="nut"><a href="nutrition.php">Питание</a></li>
+				<li id="reg"><a href="registration.html">Регистрация</a></li>
+				<li id="nut"><a href="nutrition.html">Питание</a></li>
 				<li id="room"><a href="rooms.html">Поселение</a></li>
-				<li id="bage"><a href="makebage.php">Сделать Бэйдж</a></li>
-				<li id="userInfo"><a href="info.php">Информация о юзере</a></li>
+				<li id="bage"><a href="makebage.html">Сделать Бэйдж</a></li>
+				<li id="userInfo"><a href="info.html">Информация о юзере</a></li>
 			</ul>
 		</div>
 	</nav>	
@@ -41,11 +41,19 @@
 <div class="container">
 	<div class="col-md-6">
 		<form role="form" action="" method="post">
+
+			<div class="form-group"> 						
+				<label for="event">Мероприятие</label>
+				<br>
+	    		<input id="event" class="ui-widget" type="text" class="form-control" name="event" />
+	    	</div>
+
 			<div class="form-group">
 				<label for="lfm">ФИО</label>
 				<br>
 		    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
 		    </div>
+
 		    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
 			<button id="button" class="btn btn-default" type="button">OK</button>
 		</form>
@@ -67,6 +75,13 @@
 		$("#button").on("click", function() {
 			sendData();
 		});
+
+		$( "#event" ).on( "autocompleteselect", function( event, ui ) {
+			localStorage.setItem("event", ui.item.value);							
+		});
+
+		if(e = localStorage.getItem("event"))
+			$( "#event" ).val(e);
 	});
 
 
@@ -77,16 +92,37 @@
 		});
 	}
 	var users;
-	sendReq({action: "getUsers"}, function(data){
-		users = JSON.parse(data);
-		for(var i in users) {
-			var firstname = users[i].first_name;
-			var lastname= users[i].last_name;
-			var middlename = users[i].middle_name;
-			var lfm = lastname+' '+firstname+' '+middlename;
-			LFM.push(lfm);
+	sendReq({action: "getUsers", localStorage.getItem('event')}, function(data){
+		if(data[0] == '['){
+			console.log(data);
+			users = JSON.parse(data);
+			for(var i in users) {
+				var firstname = users[i].first_name;
+				var lastname= users[i].last_name;
+				var middlename = users[i].middle_name;
+				var lfm = lastname+' '+firstname+' '+middlename;
+				LFM.push(lfm);
+			}
+			$( "#lfm" ).autocomplete({source: LFM}); 
 		}
+		else
+			alert(data);
 	});	
+
+	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
+		//console.log(data);
+		if(data[0] == '[')
+		{
+			events = JSON.parse(data);
+		}
+		else
+		{
+			alert(data);
+		}
+		console.log(events);
+		$( "#event" ).autocomplete({source: events}); 
+	});
+
 	var sendData = function() {
 		fio = $( "#lfm" ).val();
 		var res = window.fio;
@@ -104,6 +140,7 @@
 			}
 		});
 	}
+
 
 	var printUser = function(res) {
 		for(var i in res) {

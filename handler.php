@@ -1,12 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	// $dbname = "u922837214_test";
-	// $username = "u922837214_odael";
-	// $password = "lollol";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u405631617_test";
+	$username = "u405631617_odael";
+	$password = "lollol";
+	// $dbname = "test";
+	// $username = "odael";
+	// $password = "lol";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -28,16 +28,46 @@
 		fromPHPToJSON(getUser());
 	}
 	if($action == 'getUsers') {
-		fromPHPToJSON(getListOfUsers());
+		$event = getEvent();
+		fromPHPToJSON(getListOfUsers($event));
 	}
 
 	if($action == 'getRooms') {
 		fromPHPToJSON(getListOfRooms());
 	}
 
+	if($action == 'getEvents'){
+		fromPHPToJSON(getListOfEvents());
+	}
 
 	if($action == 'usrinfo') {
 		fromPHPToJSON(getUser());
+	}
+
+	function getEvent() {
+		global $conn;
+
+		@$event = $_POST['event'];
+		//echo $event;
+		if($event)
+		{	
+			$query = 'SELECT * FROM `events` 
+			WHERE `description` LIKE "' . $event . '"';
+
+			$res = $conn->query($query);
+			//echo $query;
+		}
+		else
+			return;
+
+		$arr = array();
+
+		while(@$row = $res->fetch_assoc())
+		{
+			array_push($arr, $row);
+		}
+		//echo $arr[0]["id_event"];
+		return $arr;
 	}
 	
 	function getRoom() {
@@ -118,7 +148,6 @@
 			die("Заполните все поля");
 	}
 
-
 	function nutrition($usr){
 		global $conn;
 		
@@ -168,10 +197,18 @@
 		return $arr;
 	}
 
-	function getListOfUsers(){
+	function getListOfUsers($event){
 		global $conn;
 
-		$res = $conn->query('Select * from `users` where 1');
+		echo $event['id_event'];
+		$query = 'Select * from `users` where ';
+		if($event)
+			$query = $query . '`id_event` LIKE ' . $event[0]['id_event'];
+		else
+			$query = $query . '1';
+
+
+		$res = $conn->query($query);
 		$arr = array();
 		while(@$row = $res->fetch_assoc())
 		{
