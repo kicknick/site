@@ -10,6 +10,16 @@
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   	<script type="text/javascript" src="js/custom.js"></script>
 
+  	<style type="text/css">
+  		#info div{
+  			border-radius: 10px;
+  			border: solid 3px black;
+  			/*font-size: 30px;*/
+  			padding: 15px;
+  			width: 300px;
+  		}
+  	</style>
+
 </head>
 <body>
 <div>
@@ -29,15 +39,20 @@
 	</nav>	
 </div>	
 <div class="container">
-<form role="form" action="" method="post">
-	<div class="form-group">
-		<label for="lfm">ФИО</label>
-		<br>
-    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
-    </div>
-    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-	<button id="button" class="btn btn-default" type="button">OK</button>
-</form>
+	<div class="col-md-6">
+		<form role="form" action="" method="post">
+			<div class="form-group">
+				<label for="lfm">ФИО</label>
+				<br>
+		    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
+		    </div>
+		    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
+			<button id="button" class="btn btn-default" type="button">OK</button>
+		</form>
+	</div>
+	<div id="info" class="col-md-6">
+
+	</div>
 </div>
 <script type="text/javascript">
 	var status = localStorage.getItem("status");
@@ -79,16 +94,26 @@
 		result.lastname = arr[0];
 		result.firstname = arr[1];
 		result.middlename = arr[2];
-		console.log(result);
 		sendReq(result, function(data) {
 			if(data[0] != '[')
 				alert(data);
 			else
 			{
 				var res = JSON.parse(data);
-				console.log(res);
+				printUser(res);
 			}
 		});
+	}
+
+	var printUser = function(res) {
+		for(var i in res) {
+			console.log(res[i]);
+			var user = res[i];
+			var s = '';
+			s += '<div>'+'<b>'+user.last_name+' '+user.first_name+' '+user.middle_name+'</b>'+'<br>'+'Возраст: '+user.age+'<br>'
+				+'email:  '+user.email+'<br>'+'Номер:  '+user.mobile_number+'<br>'+'</div>'
+			$("#info").html(s);
+		}
 	}
 
 </script>
