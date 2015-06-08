@@ -8,12 +8,12 @@
 		margin: 3px;
 	}
 	#roomsList div {
-		border: solid 2px;
-		width: 500px;
+/*		border: solid 2px;
 		border-radius: 5px;
 		margin: 10px;
-		padding: 5px;
-		font-size: 20px;
+		padding: 15px;
+		width: 500px;
+		font-size: 20px;*/
 		cursor: pointer;
 	}
 	</style>
@@ -135,12 +135,29 @@
 
 	var url = "handler.php";
 	sendReq({action: "getRooms"}, function(data) {
-		var s = ""; 
+		var s = ''; 
 		var res = JSON.parse(data);
 		for(var i in res) {
-			s += '<div data-id="' + i + '"" class="item">' + res[i].id_app  + ' | ' +
-			res[i].room_num + " | " +
-			'Мест: ' + res[i].max + " | Занято: " + res[i].users.length + '</div>';
+			console.log(res[i]);
+			var free = res[i].max - res[i].users.length;
+			var percentBusy = res[i].users.length * 100 / res[i].max;
+			var percentFree = 100 - percentBusy;
+			console.log(free);
+			s += 
+			'<div data-id="' + i + '" class="item">'+
+				'<div>'+ res[i].id_app  + ' | ' +
+					res[i].room_num + ' | ' +
+					'Мест: ' + res[i].max + ' | Занято: ' + res[i].users.length + 
+				'</div>'+
+				'<div class="progress">'+
+					'<div class="progress-bar progress-bar-warning" role="progressbar" style="width:'+percentBusy+'%">'+
+	   				 	res[i].users.length+
+	  				'</div>'+
+ 				 '<div class="progress-bar progress-bar-success" role="progressbar" style="width:'+percentFree+'%">'+
+   						free+
+  					'</div>'+
+				'</div>'+
+			'</div>';
 		}
 		$("#roomsList").html(s);
 		$(".item").on("click", function() {
