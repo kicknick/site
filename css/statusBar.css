@@ -4,3 +4,7 @@
 .current {
 	background: yellow;
 }
+
+body {
+    background: url(cubes.png);
+}
