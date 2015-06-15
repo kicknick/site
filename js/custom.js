@@ -13,6 +13,11 @@ var paintBars = function(status, id) {
 }
 
 
+var putEvent = function() {
+	if(e = localStorage.getItem("event"))
+		$("#events b").html(e);
+}
+
 
 var fillLFM = function(string) {
 	var arr = string.split(' ');

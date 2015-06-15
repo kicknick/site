@@ -23,14 +23,65 @@
 		</ul>
 	</div>
 </nav>
+<div class="container">
+	<div class="form-group"> 						
+		<label for="events">Мероприятие</label>
+		<br>
+	<!-- 	<input id="event" class="ui-widget" type="text" class="form-control" name="event" /> -->
+		<div id="events">
+			<select>
+			</select>
+		</div>
+	</div>
+</div>
+
 
 <script type="text/javascript">
-var status = 0;
-/*
-00 00 00 00 
-ba ro nu re 
-*/
-localStorage.setItem("status", status);
+
+	$(function() {
+		sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
+			//console.log(data);
+			if(data[0] == '[')
+			{
+				events = JSON.parse(data);
+			}
+			else
+			{
+				alert(data);
+			}
+			console.log(events);
+			var s = '';
+			for(var i in events) {
+				s += '<option class="option">' + events[i] + '</option>';
+			}
+			//$( "#event" ).autocomplete({source: events}); 
+			$("#events select").html(s);
+
+			localStorage.setItem("event", events[0]);
+			$('#events select').on('click', function() {
+				var selectedEvent = $('#events select').find(":selected").text();
+				localStorage.setItem("event", selectedEvent);
+				console.log(selectedEvent);
+			})
+		})
+	})
+
+
+
+	var url = "handler.php";
+	var sendReq = function(params, callback) {
+		$.post(url, params, function(data) {
+			callback(data);
+		});
+	}
+
+
+	var status = 0;
+	/*
+	00 00 00 00 
+	ba ro nu re 
+	*/
+	localStorage.setItem("status", status);
 
 </script>
 
