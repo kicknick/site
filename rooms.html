@@ -152,8 +152,9 @@
 				var middlename = users[i].middle_name;
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
-				}
 			}
+			console.log(LFM);
+		}
 		else
 			alert(data);
 	});
@@ -236,7 +237,7 @@
 				else {
 					status = status | 32;
 					localStorage.setItem("status", status);
-					window.location.href = "makebage.php";
+					window.location.href = "makebage.html";
 				}
 			});
 	};

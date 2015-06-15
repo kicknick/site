@@ -115,7 +115,6 @@
 	var users;
 	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
-			console.log(data);
 			users = JSON.parse(data);
 			for(var i in users) {
 				var firstname = users[i].first_name;
@@ -124,7 +123,7 @@
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
 			}
-			$( "#lfm" ).autocomplete({source: LFM}); 
+			console.log(LFM);
 		}
 		else
 			alert(data);

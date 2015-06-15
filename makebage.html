@@ -91,6 +91,8 @@
 		$("#user_pic").val("");
 		fillLFM($("#lfm").val());
 
+		$( "#lfm" ).autocomplete({source: LFM}); 
+
 		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
 			var string = ui.item.value;
 			fillLFM(string);
@@ -161,7 +163,7 @@
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
 			}
-			$( "#lfm" ).autocomplete({source: LFM}); 
+			console.log(LFM);
 		}
 		else
 			alert(data);
