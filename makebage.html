@@ -84,12 +84,7 @@
 	var events = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
-		if(status & 1) {
-			var firstName = localStorage.getItem("firstName");
-			var lastName = localStorage.getItem("lastName");
-			var middleName = localStorage.getItem("middleName");
-			$("#lfm").val(lastName+' '+firstName+' '+middleName);
-		}
+		fillFio();
 		$("#user_pic").val("");
 		fillLFM($("#lfm").val());
 
@@ -167,20 +162,6 @@
 		}
 		else
 			alert(data);
-	});
-
-	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
-		//console.log(data);
-		if(data[0] == '[')
-		{
-			events = JSON.parse(data);
-		}
-		else
-		{
-			alert(data);
-		}
-		console.log(events);
-		$( "#event" ).autocomplete({source: events}); 
 	});
 
 	var sendData = function() {
