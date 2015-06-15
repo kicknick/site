@@ -30,12 +30,15 @@
 </div>
 <div class="container">
 <form role="form" action="" method="post">
-
+	
 	<div class="form-group"> 						
-			<label for="event">Мероприятие</label>
-			<br>
-	    	<input id="event" class="ui-widget" type="text" class="form-control" name="event" />
+		<label for="events">Мероприятие:</label>
+		<br>
+		<div id="events">
+			<b>-----</b>
+		</div>
 	</div>
+
 
 	<div class="form-group">
 		<label for="lastName">Фамилия</label>
@@ -102,8 +105,9 @@
 	var sex = null;
 	var status = localStorage.getItem("status");
 	paintBars(status, "reg");
+	putEvent();
 
-	var type
+	var type;
 	$(function() {
 
 		$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
@@ -147,12 +151,13 @@
 				sex = "f";
 			}
 			sendData();
+
 			//else alert("Введите пол");
 		});
 
-		$( "#event" ).on( "autocompleteselect", function( event, ui ) {
-			localStorage.setItem("event", ui.item.value);							
-		});
+		// $( "#event" ).on( "autocompleteselect", function( event, ui ) {
+		// 	localStorage.setItem("event", ui.item.value);							
+		// });
 
 		if(e = localStorage.getItem("event"))
 			$( "#event" ).val(e);
@@ -183,19 +188,7 @@
 		$( "#lastName" ).autocomplete({source: LFM}); 
 	});
 
-	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
-		//console.log(data);
-		if(data[0] == '[')
-		{
-			events = JSON.parse(data);
-		}
-		else
-		{
-			alert(data);
-		}
-		console.log(events);
-		$( "#event" ).autocomplete({source: events}); 
-	});
+
 
 	var sendData =  function() {
 		firstName =$("#firstName").val();
@@ -221,6 +214,8 @@
 				alert(data);
 			else{
 				status = status | 1;
+
+
 				localStorage.setItem("status", status);
 				localStorage.setItem("firstName", firstName);
 				localStorage.setItem("lastName", lastName);
