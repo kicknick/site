@@ -37,7 +37,7 @@
 
 
 <script type="text/javascript">
-<<<<<<< HEAD
+//<<<<<<< HEAD
 var status = 0;
 /*
 00 00 00 00 
@@ -47,7 +47,7 @@ localStorage.setItem("firstname", '');
 localStorage.setItem("lastname", '');
 localStorage.setItem("middlename", '');
 localStorage.setItem("status", status);
-=======
+//=======
 
 	$(function() {
 		sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
@@ -68,9 +68,18 @@ localStorage.setItem("status", status);
 			//$( "#event" ).autocomplete({source: events}); 
 			$("#events select").html(s);
 
+
+
 			localStorage.setItem("event", events[0]);
 			$('#events select').on('click', function() {
 				var selectedEvent = $('#events select').find(":selected").text();
+
+				sendReq({action: "getEvent", event: selectedEvent}, function(ev){
+					var selEvent = JSON.parse(ev);
+					console.log(selEvent);
+					localStorage.setItem("price_app", selEvent[0]["price_app"]);
+					localStorage.setItem("price_food", selEvent[0]["price_food"]);
+				});
 				localStorage.setItem("event", selectedEvent);
 				console.log(selectedEvent);
 			})
@@ -87,13 +96,15 @@ localStorage.setItem("status", status);
 	}
 
 
+
+
 	var status = 0;
 	/*
 	00 00 00 00 
 	ba ro nu re 
 	*/
 	localStorage.setItem("status", status);
->>>>>>> origin/master
+//>>>>>>> origin/master
 
 </script>
 
