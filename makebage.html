@@ -82,7 +82,7 @@
 	var LFM = new Array();
 	var e;
 	var events = new Array();
-	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null};
+	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null, event: null, usertype: null};
 	$(function() {
 		if(status & 1) {
 			var firstName = localStorage.getItem("firstName");
@@ -156,7 +156,7 @@
 	var users;
 	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
-			console.log(data);
+			//console.log(data);
 			users = JSON.parse(data);
 			for(var i in users) {
 				var firstname = users[i].first_name;
@@ -192,6 +192,8 @@
 		result.lastname = arr[0];
 		result.firstname = arr[1];
 		result.middlename = arr[2];
+		result.event = localStorage.getItem("event");
+		result.usertype = "abit"; ////////////////////////////////////////////////////////////// 1!!!!11!1!!!1111!1!!!11!1
 		console.log(result.lastname);
 		url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
 		//window.open(url);
