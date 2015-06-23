@@ -1,16 +1,16 @@
 <?php
 
-	// $servername = "localhost";
-	// $dbname = "u405631617_test";
-	// $username = "u405631617_odael";
-	// $password = "lollol";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$servername = "localhost";
+	$dbname = "u405631617_test";
+	$username = "u405631617_odael";
+	$password = "lollol";
+	// $dbname = "test";
+	// $username = "odael";
+	// $password = "lol";
 
 	// Create connection
-	@$conn =  new mysqli($servername, $username, $password, $dbname);
-	@$conn->query("set_client='utf8'");
+	$conn =  new mysqli($servername, $username, $password, $dbname);
+	$conn->query("set_client='utf8'");
 
 	@$action = $_POST['action'];
 
@@ -38,6 +38,10 @@
 
 	if($action == 'getEvents'){
 		fromPHPToJSON(getListOfEvents());
+	}
+
+	if($action == 'getEvent'){
+		fromPHPToJSON(getEvent());
 	}
 
 	if($action == 'usrinfo') {
@@ -200,7 +204,7 @@
 	function getListOfUsers($event){
 		global $conn;
 
-		//echo $event['id_event'];
+		echo $event['id_event'];
 		$query = 'Select * from `users` where ';
 		if($event)
 			$query = $query . '`id_event` LIKE ' . $event[0]['id_event'];

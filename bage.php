@@ -50,8 +50,9 @@
 	}
 
 
-	define('FONT_NAME', 'arial.ttf');
-	define('FONT_SIZE', 40);
+	define("event1", "test");
+	define("event2", "test");
+	
 
 	@$foto_x = $_POST['foto_x'];
 	@$foto_y = $_POST['foto_y'];
@@ -61,6 +62,8 @@
 	@$firstname = $_POST['firstname'];
 	@$lastname = $_POST['lastname'];
 	@$middlename = $_POST['middlename'];
+	@$event = $_POST['event'];
+
 	$fio = $lastname.' '.$firstname.' '.$middlename;
 
 	$imgname = getImageName('user_pic');
@@ -72,7 +75,23 @@
 	}
 
 	$foto = LoadJPEGfromPOST($imgname);
-	$bagename = './bage.jpg';
+
+	if($event != event1)
+	{
+		$bagename = './bage.jpg';
+		define('FONT_NAME', 'arial.ttf');
+		define('FONT_SIZE', 50);
+		define('X_FACE', 60);
+		define('Y_FACE', 200);
+		define('W_FACE', 300);
+		define('H_FACE', 400);
+		define('X_TEXT_1', 400);
+		define('Y_TEXT_1', 350);
+		define('X_TEXT_2', 400);
+		define('Y_TEXT_2', 400);
+		define('TEXT_COLOR', 0x222222);
+	}
+	
 	$bage = LoadJPEGfromPOST($bagename);
 	$size = getimagesize($bagename);
 	$image = imagecreatetruecolor($size[0],$size[1]) // создаем изображение...
@@ -93,13 +112,15 @@
 
 	imagefill($image, 0, 0, 0xFFFFFF);
 
+	
+
 	imagettftext(
 	    $image,      // как всегда, идентификатор ресурса
 	    FONT_SIZE,   	// размер шрифта
 	    0,           // угол наклона шрифта
-	    520,650,      // координаты (x,y), соответствующие левому нижнему
+	    X_TEXT_1,Y_TEXT_1,      // координаты (x,y), соответствующие левому нижнему
 	                 // углу первого символа
-	    0x000000,    // цвет шрифта
+	    TEXT_COLOR,    // цвет шрифта
 	    FONT_NAME,   // имя ttf-файла
 	    $lastname
   	);
@@ -107,15 +128,17 @@
 	    $image,      // как всегда, идентификатор ресурса
 	    FONT_SIZE,   	// размер шрифта
 	    0,           // угол наклона шрифта
-	    520,700,      // координаты (x,y), соответствующие левому нижнему
+	    X_TEXT_2,Y_TEXT_2,      // координаты (x,y), соответствующие левому нижнему
 	                 // углу первого символа
-	    0x000000,    // цвет шрифта
+	    TEXT_COLOR,    // цвет шрифта
 	    FONT_NAME,   // имя ttf-файла
-	    $firstname.' '.$middlename
+	    $firstname//.' '.$middlename
   	);
 	header('Content-type: image/png'); 
 
-	imagecopyresized ($image, $foto, 105, 450, $foto_x, $foto_y, 345, 460, $foto_width, $foto_height);
+	
+
+	imagecopyresized ($image, $foto, X_FACE, Y_FACE, $foto_x, $foto_y, W_FACE, H_FACE, $foto_width, $foto_height);
 
 	imagepng($image);
 

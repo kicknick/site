@@ -12,6 +12,9 @@
 
 </head>
 <body>
+
+	
+
 <div>
 	<nav class="navbar navbar-default navbar-top">
 		<div class="container-fluid">
@@ -39,6 +42,11 @@
 		</div>
 	</div>
 
+	<div class="form-group">
+		<label for="price_food">Цена</label>
+			<br>
+	    <input id="price_food" class="ui-widget" type="text" class="form-control" name="price_food" />
+	</div>
 
 	<div class="form-group">
 		<label for="lfm">ФИО</label>
@@ -82,6 +90,24 @@
 
 	});
 
+	setInterval(function(){
+		var d1 = $("#start").val();
+		var d2 = $("#end").val();
+		// console.log(d1);
+		// console.log(d2);
+		if(d1 && d2)
+		{
+			D1 = new Date(d1);
+			D2 = new Date(d2);
+			D = (D2-D1)/86400000;
+			if(D < 0)
+				$("#price_food").val("Выберите правильные даты");
+			else
+				$("#price_food").val(D * localStorage.getItem("price_food"));
+		}
+		else 
+			$("#price_food").val("0");
+	}, 1000);
 
 	var setToday = function(){
 		var today = new Date();
