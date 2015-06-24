@@ -204,7 +204,6 @@
 	function getListOfUsers($event){
 		global $conn;
 
-		echo $event['id_event'];
 		$query = 'Select * from `users` where ';
 		if($event)
 			$query = $query . '`id_event` LIKE ' . $event[0]['id_event'];
@@ -250,7 +249,7 @@
 	}	
 
 	function cmpAppCrowd($a, $b){
-	    return $a['num'] - $b['num'];
+	    return -($a['max'] - $a['num']) + ($b['max'] - $b['num']);
 	}
 
 	function isEmailAccept($em){

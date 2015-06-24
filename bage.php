@@ -81,10 +81,10 @@
 		$bagename = './bage.jpg';
 		define('FONT_NAME', 'arial.ttf');
 		define('FONT_SIZE', 50);
-		define('X_FACE', 60);
-		define('Y_FACE', 200);
-		define('W_FACE', 300);
-		define('H_FACE', 400);
+		define('X_FACE', 62);
+		define('Y_FACE', 232);
+		define('W_FACE', 250);
+		define('H_FACE', 250);
 		define('X_TEXT_1', 400);
 		define('Y_TEXT_1', 350);
 		define('X_TEXT_2', 400);
