@@ -1,12 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	// $dbname = "u405631617_test";
-	// $username = "u405631617_odael";
-	// $password = "lollol";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u405631617_test";
+	$username = "u405631617_odael";
+	$password = "lollol";
+	// $dbname = "test";
+	// $username = "odael";
+	// $password = "lol";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -241,6 +241,9 @@
 		{
 			array_push($arr, $row);
 		}
+
+		usort($arr, "cmpUsrName");
+
 		return $arr;
 	}
 
@@ -274,6 +277,16 @@
 
 	function cmpAppCrowd($a, $b){
 	    return -($a['max'] - $a['num']) + ($b['max'] - $b['num']);
+	}
+
+	function cmpUsrName($a, $b){
+	    //return $a['lastname'].localeCompare($b['lastname']);
+	    //return ( ( $a['lastname'] == $b['lastname'] ) ? 0 : ( ( $a['lastname'] > $b['lastname'] ) ? 1 : -1 ) );
+	    if($a['last_name'] > $b['last_name'])
+	    	return 1;
+	    else if($b['last_name'] > $a['last_name'])
+	    	return -1;
+	    return 0;
 	}
 
 	function isEmailAccept($em){
