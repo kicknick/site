@@ -115,7 +115,8 @@
 				LFM.push(lfm);
 				s += '<b class="clickableUser">'+firstname + ' '+lastname+' '+middlename+'</b>' + '<br>';
 			}
-			console.log(LFM);
+
+			console.log(s);
 			$("#displayUsers").html(s);
 			$(".clickableUser").on("click", function() {
 				var selectedUser = $(this).text();

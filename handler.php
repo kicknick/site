@@ -1,12 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	$dbname = "u405631617_test";
-	$username = "u405631617_odael";
-	$password = "lollol";
-	// $dbname = "test";
-	// $username = "odael";
-	// $password = "lol";
+	//$dbname = "u405631617_test";
+	// $username = "u405631617_odael";
+	// $password = "lollol";
+	$dbname = "test";
+	$username = "odael";
+	$password = "lol";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -204,7 +204,7 @@
 	function getListOfUsers($event){
 		global $conn;
 
-		echo $event['id_event'];
+		//echo $event['id_event'];
 		$query = 'Select * from `users` where ';
 		if($event)
 			$query = $query . '`id_event` LIKE ' . $event[0]['id_event'];
