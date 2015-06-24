@@ -80,15 +80,15 @@
 	{
 		$bagename = './bage.jpg';
 		define('FONT_NAME', 'arial.ttf');
-		define('FONT_SIZE', 50);
+		define('FONT_SIZE', 55);
 		define('X_FACE', 62);
 		define('Y_FACE', 232);
 		define('W_FACE', 250);
 		define('H_FACE', 250);
-		define('X_TEXT_1', 400);
-		define('Y_TEXT_1', 350);
-		define('X_TEXT_2', 400);
-		define('Y_TEXT_2', 400);
+		define('X_TEXT_1', 350);
+		define('Y_TEXT_1', 300);
+		define('X_TEXT_2', 350);
+		define('Y_TEXT_2', 370);
 		define('TEXT_COLOR', 0x222222);
 	}
 	

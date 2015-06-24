@@ -1,12 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	// $dbname = "u405631617_test";
-	// $username = "u405631617_odael";
-	// $password = "lollol";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u405631617_test";
+	$username = "u405631617_odael";
+	$password = "lollol";
+	// $dbname = "test";
+	// $username = "odael";
+	// $password = "lol";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -161,13 +161,14 @@
 		$mobnumber = $_POST['mobnumber'];
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
+		$usertype = $_POST['usertype'];
 		
-		if($firstname && $lastname && $middlename && $mobnumber && $age && $sex)
+		if($firstname && $lastname && $middlename && $mobnumber && $age && $sex && $usertype)
 		{
 			if(!isEmailAccept($email))
 				die("Некорректный eMail!");
-			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`) 
-			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'")';
+			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`) 
+			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'", '.$usertype.')';
 			//echo $query;
 			$conn->query($query) or die("Error");
 
