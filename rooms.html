@@ -175,7 +175,6 @@
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
 			}
-			console.log(LFM);
 		}
 		else
 			alert(data);
@@ -187,11 +186,15 @@
 		var s = ''; 
 		var res = JSON.parse(data);
 		for(var i in res) {
-			console.log(res[i]);
+			//console.log(res[i]);
+			for(var j in res[i].users) {
+				sex = res[i].users[j].sex;
+			}
+			var color = sex=='f' ? 'danger':'info';
+
 			var free = res[i].max - res[i].users.length;
 			var percentBusy = res[i].users.length * 100 / res[i].max;
 			var percentFree = 100 - percentBusy;
-			console.log(free);
 			s += 
 			'<div data-id="' + i + '" class="item">'+
 				'<div>'+ res[i].id_app  + ' | ' +
@@ -199,7 +202,7 @@
 					'Мест: ' + res[i].max + ' | Занято: ' + res[i].users.length + 
 				'</div>'+
 				'<div class="progress">'+
-					'<div class="progress-bar progress-bar-warning" role="progressbar" style="width:'+percentBusy+'%">'+
+					'<div class="progress-bar progress-bar-'+color+'" role="progressbar" style="width:'+percentBusy+'%">'+
 	   				 	res[i].users.length+
 	  				'</div>'+
  				 '<div class="progress-bar progress-bar-success" role="progressbar" style="width:'+percentFree+'%">'+
