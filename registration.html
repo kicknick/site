@@ -28,81 +28,97 @@
 		</div>
 	</nav>	
 </div>
-<div class="container">
-<form role="form" action="" method="post">
 
-	<div class="form-group"> 						
-		<label for="events">Мероприятие:</label>
-		<br>
+	<div style="margin-left:100px"> 						
 		<div id="events">
-			<b>-----</b>
+			<h3>Мероприятие: <b>-----</b></h3> 
 		</div>
 	</div>
+</br>
 
+<div class="container">
+<form role="form" action="" method="post">
+	<div class="col-md-6">
 
-	<div class="form-group">
-		<label for="lastName">Фамилия</label>
+	    <div id="userType">
+		  	<b>Тип юзера</b> </br>
+		  	<label class="radio-inline">
+		    	<input type="radio" name="radioGroup" value="option1"> Абитуриет
+		    </label>
+		    <label class="radio-inline">
+		    	<input type="radio" name="radioGroup" value="option2"> Провожающий
+		    </label>
+		    <label class="radio-inline">
+		    	<input type="radio" name="radioGroup" value="option3"> Куратор
+		    </label>
+		</div>
+		</br>
+		<div class="form-group">
+			<label for="lastName">Фамилия</label>
+			<br>
+	    	<input id="lastName" autofocus class="ui-widget" type="text" class="form-control" name="lastname" />
+	    </div>
+
+		<div class="form-group">
+			<label for="firstName">Имя</label>
+			<br>
+			<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
+		</div>
+
+	    <div class="form-group">
+			<label for="middleName">Отчество</label>
+			<br>
+	    	<input id="middleName" class="ui-widget" type="text" class="form-control" name="middlename" />
+	    </div>
+
+		<div class="container" id='sex'>
+			<div class="row">
+		  	<b>Пол</b> </br>
+		  		<label class="radio-inline">
+		          <input type="radio" name="radioGroup" value="option1"> М
+		        </label>
+		        <label class="radio-inline">
+		          <input type="radio" name="radioGroup" value="option2"> Ж
+		        </label>
+		  	</div>
+		</div>
 		<br>
-    	<input id="lastName" autofocus class="ui-widget" type="text" class="form-control" name="lastname" />
-    </div>
-
-	<div class="form-group">
-		<label for="firstName">Имя</label>
-		<br>
-		<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
 	</div>
 
-    <div class="form-group">
-		<label for="middleName">Отчество</label>
-		<br>
-    	<input id="middleName" class="ui-widget" type="text" class="form-control" name="middlename" />
-    </div>
+	<div class="col-md-6">
+		<div class="form-group">
+			<label for="age">Возраст</label>
+			<br>
+			<input id="age" class="ui-widget" type="text" class="form-control" name="firstname"/>
+		</div>
 
-	<div class="container">
-		<div class="row">
-	  	<b>Выберите пол</b> </br>
-	  		<label class="radio-inline">
-	          <input type="radio" name="radioGroup" id="male" value="option1"> М
-	        </label>
-	        <label class="radio-inline">
-	          <input type="radio" name="radioGroup" id="female" value="option2"> Ж
-	        </label>
-	  	</div>
+	    <div class="form-group">
+			<label for="mobNum">Мобильный телефон</label>
+			<br>
+	    	<input id="mobNum" class="ui-widget" type="text" class="form-control" name="mobnum" />
+	    </div>
+
+	    <div class="form-group">
+			<label for="region">Область</label>
+			<br>
+	    	<input id="region" class="ui-widget" type="text" class="form-control" name="region" />
+	    </div>
+
+	    <div class="form-group">
+			<label for="email">Email</label>
+			<br>
+	    	<input id="email" class="ui-widget" type="email" class="form-control" name="email" />
+	    </div>
+	    <button id="button" class="btn btn-default" type="button">Подтвердить!</button>
 	</div>
-	<br>
-
-	<div class="form-group">
-		<label for="age">Возраст</label>
-		<br>
-		<input id="age" class="ui-widget" type="text" class="form-control" name="firstname"/>
-	</div>
-
-    <div class="form-group">
-		<label for="mobNum">Мобильный телефон</label>
-		<br>
-    	<input id="mobNum" class="ui-widget" type="text" class="form-control" name="mobnum" />
-    </div>
-
-    <div class="form-group">
-		<label for="region">Область</label>
-		<br>
-    	<input id="region" class="ui-widget" type="text" class="form-control" name="region" />
-    </div>
-
-    <div class="form-group">
-		<label for="email">Email</label>
-		<br>
-    	<input id="email" class="ui-widget" type="email" class="form-control" name="email" />
-    </div>
-
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-	<button id="button" class="btn btn-default" type="button">Подтвердить!</button>
 </form>
 </div>
 
+
 <script type="text/javascript">
 	var LFM = new Array();
-	var sex = null;
+	var sex, userType;
 	var status = localStorage.getItem("status");
 	paintBars(status, "reg");
 	putEvent();
@@ -143,12 +159,24 @@
 
 		$("#button").on("click", function() {
 			sex = null;
-			var sexCh = $("input:checked").val();
+			var sexCh = $("#sex input:checked").val();
 			if(sexCh=='option1') {
 				sex = "m";
 			}
 			else if(sexCh=='option2') {
 				sex = "f";
+			}
+
+			var userType= null;
+			var ut = $("#userType input:checked").val();
+			if(ut=='option1') {
+				userType = "1";
+			}
+			else if(sexCh=='option2') {
+				userType = "2"
+			}
+			else {
+				userType = "3";
 			}
 			sendData();
 		});
@@ -202,7 +230,8 @@
 					region: region, 
 					email: email, 
 					sex: sex, 
-					age: age, 
+					age: age,
+					usertype: userType, 
 					status: status};
 		sendReq(params, function(data) {
 			if(data)
