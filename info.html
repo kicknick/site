@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Кормление</title>
+	<title>Информация о юзере</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -85,9 +85,9 @@
 			sendData();
 		});
 
-		$( "#event" ).on( "autocompleteselect", function( event, ui ) {
-			localStorage.setItem("event", ui.item.value);							
-		});
+		// $( "#event" ).on( "autocompleteselect", function( event, ui ) {
+		// 	localStorage.setItem("event", ui.item.value);							
+		// });
 
 		if(e = localStorage.getItem("event"))
 			$( "#event" ).val(e);
@@ -113,7 +113,7 @@
 				var middlename = users[i].middle_name;
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
-				s += '<b class="clickableUser">'+firstname + ' '+lastname+' '+middlename+'</b>' + '<br>';
+				s += '<b class="clickableUser">' + lastname + ' ' + firstname + ' ' + middlename + '</b>' + '<br>';
 			}
 
 			console.log(s);
