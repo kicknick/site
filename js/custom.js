@@ -25,3 +25,13 @@ var fillLFM = function(string) {
 	$("#firstname").val(arr[1]);
 	$("#middlename").val(arr[2]);
 }
+
+var fillFio = function() {
+	if(status & 1) {
+		var firstName = localStorage.getItem("firstName");
+		var lastName = localStorage.getItem("lastName");
+		var middleName = localStorage.getItem("middleName");
+		$("#lfm").val(lastName+' '+firstName+' '+middleName);
+	}	
+}
+

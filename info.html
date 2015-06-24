@@ -18,10 +18,14 @@
   			padding: 15px;
   			width: 300px;
   		}
+  		.clickableUser {
+  			cursor: pointer;
+  		}
   	</style>
 
 </head>
 <body>
+
 <div>
 	<nav class="navbar navbar-default navbar-top">
 		<div class="container-fluid">
@@ -52,14 +56,17 @@
 			<div class="form-group">
 				<label for="lfm">ФИО</label>
 				<br>
-		    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
+		    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm"/>
 		    </div>
 
 		    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
 			<button id="button" class="btn btn-default" type="button">OK</button>
 		</form>
+		<div id="info">
+
+		</div>
 	</div>
-	<div id="info" class="col-md-6">
+	<div id="displayUsers" class="col-md-6">
 
 	</div>
 </div>
@@ -93,37 +100,36 @@
 			callback(data);
 		});
 	}
+
 	var users;
 	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
 			//console.log(data);
 			users = JSON.parse(data);
+			var s = '';
 			for(var i in users) {
 				var firstname = users[i].first_name;
 				var lastname= users[i].last_name;
 				var middlename = users[i].middle_name;
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
+				s += '<b class="clickableUser">'+firstname + ' '+lastname+' '+middlename+'</b>' + '<br>';
 			}
-			console.log(LFM);
+
+			console.log(s);
+			$("#displayUsers").html(s);
+			$(".clickableUser").on("click", function() {
+				var selectedUser = $(this).text();
+				$("#lfm").html(selectedUser);
+				$("#lfm").val(selectedUser);
+				$("#button").click();
+			});
+			$( "#lfm" ).autocomplete({source: LFM}); 
 		}
 		else
 			alert(data);
 	});	
 
-	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
-		//console.log(data);
-		if(data[0] == '[')
-		{
-			events = JSON.parse(data);
-		}
-		else
-		{
-			alert(data);
-		}
-		console.log(events);
-		$( "#event" ).autocomplete({source: events}); 
-	});
 
 	var sendData = function() {
 		fio = $( "#lfm" ).val();

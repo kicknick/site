@@ -30,7 +30,7 @@
 </div>
 <div class="container">
 <form role="form" action="" method="post">
-	
+
 	<div class="form-group"> 						
 		<label for="events">Мероприятие:</label>
 		<br>
@@ -151,13 +151,8 @@
 				sex = "f";
 			}
 			sendData();
-
-			//else alert("Введите пол");
 		});
 
-		// $( "#event" ).on( "autocompleteselect", function( event, ui ) {
-		// 	localStorage.setItem("event", ui.item.value);							
-		// });
 
 		if(e = localStorage.getItem("event"))
 			$( "#event" ).val(e);

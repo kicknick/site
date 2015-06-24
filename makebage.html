@@ -85,12 +85,7 @@
 	var events = new Array();
 	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null, event: null, usertype: null};
 	$(function() {
-		if(status & 1) {
-			var firstName = localStorage.getItem("firstName");
-			var lastName = localStorage.getItem("lastName");
-			var middleName = localStorage.getItem("middleName");
-			$("#lfm").val(lastName+' '+firstName+' '+middleName);
-		}
+		fillFio();
 		$("#user_pic").val("");
 		fillLFM($("#lfm").val());
 
@@ -174,6 +169,7 @@
 			alert(data);
 	});
 
+<<<<<<< HEAD
 	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
 		//console.log(data);
 		if(data[0] == '[')
@@ -201,6 +197,21 @@
 	// 	url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
 	// 	//window.open(url);
 	// }
+=======
+	var sendData = function() {
+		console.log("dfdf");
+		var res = $( "#lfm" ).val()
+		var arr = res.split(' ');
+		result.lastname = arr[0];
+		result.firstname = arr[1];
+		result.middlename = arr[2];
+		result.event = localStorage.getItem("event");
+		result.usertype = "abit"; ////////////////////////////////////////////////////////////// 1!!!!11!1!!!1111!1!!!11!1
+		console.log(result.lastname);
+		url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
+		//window.open(url);
+	}
+>>>>>>> origin/master
 
 </script>
 </body>
