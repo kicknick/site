@@ -120,6 +120,7 @@
 			$("#displayUsers").html(s);
 			$(".clickableUser").on("click", function() {
 				var selectedUser = $(this).text();
+				console.log(selectedUser);
 				$("#lfm").html(selectedUser);
 				$("#lfm").val(selectedUser);
 				$("#button").click();
