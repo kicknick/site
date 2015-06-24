@@ -155,9 +155,15 @@
 		for(var i in res) {
 			console.log(res[i]);
 			var user = res[i];
+			console.log(user.start);
 			var s = '';
-			s += '<div>'+'<b>'+user.last_name+' '+user.first_name+' '+user.middle_name+'</b>'+'<br>'+'Возраст: '+user.age+'<br>'
-				+'email:  '+user.email+'<br>'+'Номер:  '+user.mobile_number+'<br>'+'</div>'
+			s += '<div>'+'<b>'+user.last_name+' '+user.first_name+' '+user.middle_name+'</b>'+'</br>'+'Возраст: '+user.age+'<br>'
+				+'email: '+user.email+'</br>'+'номер:  '+user.mobile_number+'<br>'
+				+'въезд: '+user.start+'</br>'
+				+'отъезд: '+user.end+'</br>'
+				+'комната: '+user.hostel_num+'/'+user.room_num+'</br>'
+				+'питание: '+user.nut_start+' / '+user.nut_end+'</br>'
+				+'</div>'
 			$("#info").html(s);
 		}
 	}

@@ -60,17 +60,26 @@ localStorage.setItem("status", status);
 			{
 				alert(data);
 			}
-			console.log(events);
+
+			var e = localStorage.getItem('event');
+			console.log(e);
 			var s = '';
 			for(var i in events) {
-				s += '<option class="option">' + events[i] + '</option>';
+				if(events[i]!=e) {
+					s += '<option class="option">' + events[i] + '</option>';
+				}
 			}
+			if(e!="") {
+				s = '<option class="option">' + e + '</option>' + s;
+			}
+
 			//$( "#event" ).autocomplete({source: events}); 
 			$("#events select").html(s);
 
 
-
-			localStorage.setItem("event", events[0]);
+			if(!localStorage.getItem){
+				localStorage.setItem("event", events[0]);
+			}
 			$('#events select').on('click', function() {
 				var selectedEvent = $('#events select').find(":selected").text();
 
