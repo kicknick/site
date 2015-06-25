@@ -57,13 +57,13 @@
     </div>
 
     <div class="form-group">
-		<label for="start">Въезд</label>
+		<label for="start">Заезд</label>
 		<br>
     	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
     </div>
 
     <div class="form-group">
-		<label for="end">Оътезд</label>
+		<label for="end">Отезд</label>
 		<br>
     	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
     </div>
@@ -108,7 +108,7 @@
 				$("#price_food b").html(D * localStorage.getItem("price_food"));
 		}
 		else 
-			$("#price_food").val("0");
+			$("#price_food b").html("-");
 	}, 1000);
 
 	var setToday = function(){

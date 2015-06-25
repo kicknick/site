@@ -222,6 +222,7 @@
 		var region = $("#region").val();
 		var email = $("#email").val();
 		var age = $("#age").val();
+		var Event = localStorage.getItem('event');
 		//console.log(name, lastName, middleName, mobNum, region, email);
 		var params = { action: "registration", 
 					firstname: firstName,  
@@ -232,6 +233,7 @@
 					email: email, 
 					sex: sex, 
 					age: age,
+					event: Event,
 					usertype: userType, 
 					status: status};
 		sendReq(params, function(data) {

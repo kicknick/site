@@ -136,12 +136,12 @@
 			D2 = new Date(d2);
 			D = (D2-D1)/86400000;
 			if(D < 0)
-				$("#price_app").val("Выберите правильные даты");
+				$("#price_app b").html("Выберите правильные даты");
 			else
-				$("#price_app").val(D * localStorage.getItem("price_app"));
+				$("#price_app b").html(D * localStorage.getItem("price_app"));
 		}
 		else 
-			$("#price_app").val("0");
+			$("#price_app b").html("-");
 	}, 1000);
 
 	var sendReq = function(params, callback) {

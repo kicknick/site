@@ -1,12 +1,12 @@
 <?php
 
 	$servername = "localhost";
-	// $dbname = "u405631617_test";
-	// $username = "u405631617_odael";
-	// $password = "lollol";
-	$dbname = "test";
-	$username = "odael";
-	$password = "lol";
+	$dbname = "u405631617_test";
+	$username = "u405631617_odael";
+	$password = "lollol";
+	// $dbname = "u359935278_test";
+	// $username = "u359935278_leto";
+	// $password = "q1w2e3r4";
 
 	// Create connection
 	$conn =  new mysqli($servername, $username, $password, $dbname);
@@ -15,7 +15,8 @@
 	@$action = $_POST['action'];
 
 	if($action == "registration") {
-		registration();
+		$event = getEvent();
+		registration($event);
 	}
 	if($action == "nutrition" && $usr = getUser())
 		nutrition($usr);
@@ -52,6 +53,7 @@
 		global $conn;
 
 		@$event = $_POST['event'];
+		//die($event);
 		//echo $event;
 		if($event)
 		{	
@@ -70,6 +72,7 @@
 		{
 			array_push($arr, $row);
 		}
+		//die($arr[0]['id_event']);
 		//echo $arr[0]["id_event"];
 		return $arr;
 	}
@@ -152,8 +155,66 @@
 		return $arr;
 	}
 
-	function registration(){
+	function getUserBy($firstname, $lastname, $middlename) {	
 		global $conn;
+
+		//@$firstname = $_POST['firstname'];
+		// @$lastname = $_POST['lastname'];
+		 // @$middlename = $_POST['middlename'];
+		//echo $firstname.' '.$lastname;
+
+		if($firstname && $lastname && $middlename)
+		{	
+			$query = 'SELECT * FROM `users` 
+			WHERE `first_name` LIKE "'.$firstname.'" AND
+				`last_name` LIKE "'.$lastname.'" AND
+				`middle_name` LIKE "'.$middlename.'"';
+			$res = $conn->query($query) or die("Error");
+		}
+		else
+			die("Заполните ФИО!");
+
+		$arr = array();
+
+		while(@$row = $res->fetch_assoc())
+		{
+			array_push($arr, $row);
+		}
+
+		if(count($arr) == 0)
+			die("Такого пользователя не существует!");
+
+		if($arr[0]['id_app'])
+		{	
+			$query = 'SELECT * FROM `appartment` 
+			WHERE `id_app` LIKE '.$arr[0]['id_app'];
+			$res = $conn->query($query) or die("Error");
+		}
+
+		@$row = $res->fetch_assoc();
+		$arr[0]['room_num'] = $row['room_num'];
+		$arr[0]['hostel_num'] = $row['hostel_num'];
+
+		if($arr[0]['id_user'])
+		{	
+			$query = 'SELECT * FROM `food` 
+			WHERE `id_user` LIKE '.$arr[0]['id_user'];
+			$res = $conn->query($query) or die("Error");
+		}
+
+		@$row = $res->fetch_assoc();
+		$arr[0]['nut_start'] = $row['start'];
+		$arr[0]['nut_end'] = $row['end'];
+
+		return $arr;
+	}
+
+	function registration($event){
+		global $conn;
+
+		if(!$event)
+			die('Select Event');
+
 		$firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$middlename = $_POST['middlename'];
@@ -168,7 +229,7 @@
 			if(!isEmailAccept($email))
 				die("Некорректный eMail!");
 			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`) 
-			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	1,		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'", '.$usertype.')';
+			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	'.$event[0]['id_event'].',		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'", '.$usertype.')';
 			//echo $query;
 			$conn->query($query) or die("Error");
 
@@ -241,6 +302,16 @@
 		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
+		}
+
+		$l = count($arr);
+		for($i = 0 ; $i < $l ; $i++)
+		{
+			$usr = getUserBy($arr[$i]['first_name'], $arr[$i]['last_name'], $arr[$i]['middle_name']);
+			$arr[$i]['room_num'] = $usr[0]['room_num'];
+			$arr[$i]['hostel_num'] = $usr[0]['hostel_num'];
+			$arr[$i]['nut_start'] = $usr[0]['nut_start'];
+			$arr[$i]['nut_end'] = $usr[0]['nut_end'];
 		}
 
 		usort($arr, "cmpUsrName");
