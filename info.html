@@ -107,7 +107,7 @@
 	var users;
 	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
-			//console.log(data);
+			console.log(data);
 			users = JSON.parse(data);
 			var s = '';
 			for(var i in users) {
@@ -158,7 +158,6 @@
 		for(var i in res) {
 			console.log(res[i]);
 			var user = res[i];
-			console.log(user.start);
 			var s = '';
 			s += '<div>'+'<b>'+user.last_name+' '+user.first_name+' '+user.middle_name+'</b>'+'</br>'+'Возраст: '+user.age+'<br>'
 				+'email: '+user.email+'</br>'+'номер:  '+user.mobile_number+'<br>'

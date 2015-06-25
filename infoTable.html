@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
 	var status = localStorage.getItem("status");
-	paintBars(status, "userInfo");
+	paintBars(status, "infoTable");
 	putEvent();
 
 	var fio = "";
@@ -95,7 +95,7 @@
 	var users;
 	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
 		if(data[0] == '['){
-			//console.log(data);
+			console.log(data);
 			users = JSON.parse(data);
 			var s = '';
 			for(var i in users) {
@@ -111,7 +111,7 @@
 					'</tr>';
 			}
 
-			console.log(s);
+			//console.log(s);
 			$("#displayUsers table tbody").html(s);
 		}
 		else
