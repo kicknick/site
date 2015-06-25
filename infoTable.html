@@ -53,26 +53,24 @@
 </br>
 
 <div class="container">
-	<div class="col-md-6">
-		<form role="form" action="" method="post">
-
-			<div class="form-group">
-				<label for="lfm">ФИО</label>
-				<br>
-		    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm"/>
-		    </div>
-
-		    <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
-			<button id="button" class="btn btn-default" type="button">OK</button>
-		</form>
-		<div id="info">
-
-		</div>
-	</div>
 	<div id="displayUsers" class="col-md-6">
-
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>ФИО</th>
+					<th>Номер</th>
+					<th>Email</th>
+					<th>Комната</th>
+					<th>Въезд</th>
+					<th>Отъезд</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 </div>
+
 <script type="text/javascript">
 	var status = localStorage.getItem("status");
 	paintBars(status, "userInfo");
@@ -82,16 +80,6 @@
 	var LFM = new Array();
 	var result = {action: "usrinfo", firstname: null, lastname: null, middlename: null, start: null, end: null};
 	$(function() {
-		$( "#lfm" ).autocomplete({source: LFM}); 
-
-		$("#button").on("click", function() {
-			sendData();
-		});
-
-		// $( "#event" ).on( "autocompleteselect", function( event, ui ) {
-		// 	localStorage.setItem("event", ui.item.value);							
-		// });
-
 		if(e = localStorage.getItem("event"))
 			$( "#event" ).val(e);
 	});
@@ -116,61 +104,22 @@
 				var middlename = users[i].middle_name;
 				var lfm = lastname+' '+firstname+' '+middlename;
 				LFM.push(lfm);
-				s += '<b class="clickableUser">' + lastname + ' ' + firstname + ' ' + middlename + '</b>' + '<br>';
+				s +='<tr>'+'<td>'+lastname+' '+firstname+' '+middlename+ '</td><td>'+users[i].email+'</td><td>'+users[i].mobile_number+'</td>'+
+					'<td>'+users[i].hostel_num+'/'+users[i].room_num +'</td>'+
+					'<td>'+users[i].start+'</td>'+
+					'<td>'+users[i].end+'</td>'+
+					'</tr>';
 			}
 
 			console.log(s);
-			$("#displayUsers").html(s);
-			$(".clickableUser").on("click", function() {
-				var selectedUser = $(this).text();
-				console.log(selectedUser);
-				$("#lfm").html(selectedUser);
-				$("#lfm").val(selectedUser);
-				$("#button").click();
-			});
-			$( "#lfm" ).autocomplete({source: LFM}); 
+			$("#displayUsers table tbody").html(s);
 		}
 		else
 			alert(data);
 	});	
 
 
-	var sendData = function() {
-		fio = $( "#lfm" ).val();
-		var res = window.fio;
-		var arr = res.split(' ');
-		result.lastname = arr[0];
-		result.firstname = arr[1];
-		result.middlename = arr[2];
-		sendReq(result, function(data) {
-			if(data[0] != '[')
-				alert(data);
-			else
-			{
-				var res = JSON.parse(data);
-				printUser(res);
-			}
-		});
-	}
-
-
-	var printUser = function(res) {
-		for(var i in res) {
-			console.log(res[i]);
-			var user = res[i];
-			console.log(user.start);
-			var s = '';
-			s += '<div>'+'<b>'+user.last_name+' '+user.first_name+' '+user.middle_name+'</b>'+'</br>'+'Возраст: '+user.age+'<br>'
-				+'email: '+user.email+'</br>'+'номер:  '+user.mobile_number+'<br>'
-				+'въезд: '+user.start+'</br>'
-				+'отъезд: '+user.end+'</br>'
-				+'комната: '+user.hostel_num+'/'+user.room_num+'</br>'
-				+'питание: '+user.nut_start+' / '+user.nut_end+'</br>'
-				+'</div>'
-			$("#info").html(s);
-		}
-	}
-
 </script>
+
 </body>
 </html>

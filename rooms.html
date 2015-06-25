@@ -40,6 +40,7 @@
 				<li id="room"><a href="rooms.html">Поселение</a></li>
 				<li id="bage"><a href="makebage.html">Сделать Бэйдж</a></li>
 				<li id="userInfo"><a href="info.html">Информация о юзере</a></li> 
+				<li id="infoTable"><a href="infoTable.html">Таблица</a></li>
 			</ul>
 		</div>
 	</nav>	
@@ -69,13 +70,13 @@
 	    </div>
 
 	    <div class="form-group">
-			<label for="start">Заезд</label>
+			<label for="start">Въезд</label>
 			<br>
 	    	<input id="start" class="ui-widget" type="date" class="form-control" name="start" />
 	    </div>
 
 	    <div class="form-group">
-			<label for="end">Отезд</label>
+			<label for="end">Оътезд</label>
 			<br>
 	    	<input id="end" class="ui-widget" type="date" class="form-control" name="end" />
 	    </div>
@@ -187,14 +188,22 @@
 		var s = ''; 
 		var res = JSON.parse(data);
 		for(var i in res) {
-			//console.log(res[i]);
+			console.log(res[i]);
+			var f=m=0;
 			for(var j in res[i].users) {
 				sex = res[i].users[j].sex;
+				if(sex == 'f') {
+					f++;
+				}
+				if(sex == 'm') {
+					m++;
+				}
 			}
-			var color = sex=='f' ? 'danger':'info';
 
+			var mNum = m * 100 / res[i].max;
+			var fNum = f * 100 / res[i].max;
 			var free = res[i].max - res[i].users.length;
-			var percentBusy = res[i].users.length * 100 / res[i].max;
+			var percentBusy = (m + f) * 100 / res[i].max;
 			var percentFree = 100 - percentBusy;
 			s += 
 			'<div data-id="' + i + '" class="item">'+
@@ -203,10 +212,13 @@
 					'Мест: ' + res[i].max + ' | Занято: ' + res[i].users.length + 
 				'</div>'+
 				'<div class="progress">'+
-					'<div class="progress-bar progress-bar-'+color+'" role="progressbar" style="width:'+percentBusy+'%">'+
-	   				 	res[i].users.length+
+					'<div class="progress-bar progress-bar-info" role="progressbar" style="width:'+mNum+'%">'+
+	   				 	m+
 	  				'</div>'+
- 				 '<div class="progress-bar progress-bar-success" role="progressbar" style="width:'+percentFree+'%">'+
+ 				 	'<div class="progress-bar progress-bar-danger" role="progressbar" style="width:'+fNum+'%">'+
+   						f+
+  					'</div>'+
+  					 	'<div class="progress-bar progress-bar-success" role="progressbar" style="width:'+percentFree+'%">'+
    						free+
   					'</div>'+
 				'</div>'+
