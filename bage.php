@@ -1,5 +1,32 @@
 <?php
 	
+	function transliterate($input){
+		$gost = array(
+		   "Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"-","є"=>"ye","ѓ"=>"g",
+		   "А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
+		   "Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
+		   "З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
+		   "М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
+		   "С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"X",
+		   "Ц"=>"C","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
+		   "Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
+		   "а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
+		   "е"=>"e","ё"=>"yo","ж"=>"zh",
+		   "з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
+		   "м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+		   "с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"x",
+		   "ц"=>"c","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
+		   "ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya",
+		   " "=>"_","—"=>"_",","=>"_","!"=>"_","@"=>"_",
+		   "#"=>"-","$"=>"","%"=>"","^"=>"","&"=>"","*"=>"",
+		   "("=>"",")"=>"","+"=>"","="=>"",";"=>"",":"=>"",
+		   "'"=>"","\""=>"","~"=>"","`"=>"","?"=>"","/"=>"",
+		   "\\"=>"","["=>"","]"=>"","{"=>"","}"=>"","|"=>""
+  		);
+
+		return strtr($input, $gost);
+	}
+
 	function getImageName($postname)
 	{
 		$uploaddir = './tmpimg/';
@@ -50,8 +77,8 @@
 	}
 
 
-	define("event1", "test");
-	define("event2", "test");
+	//define("event1", "test");
+	//define("event2", "test");
 	
 
 	@$foto_x = $_POST['foto_x'];
@@ -64,7 +91,7 @@
 	@$middlename = $_POST['middlename'];
 	@$event = $_POST['event'];
 
-	$fio = $lastname.' '.$firstname.' '.$middlename;
+	$fio = transliterate($lastname.'_'.$firstname.'_'.$middlename);
 
 	$imgname = getImageName('user_pic');
 
@@ -153,13 +180,33 @@
   	);
 
 
-	header('Content-type: image/png'); 
+	//header('Content-type: image/jpeg'); 
 
 	
-
+	$cons = 1;
 	imagecopyresized ($image, $foto, X_FACE, Y_FACE, $foto_x, $foto_y, W_FACE, H_FACE, $foto_width, $foto_height);
 
-	imagepng($image);
+	$imagesmall = imagecreatetruecolor($size[0]/$cons,$size[1]/$cons);
+
+	imagecopyresized($imagesmall, $image, 0, 0, 0, 0, $size[0]/$cons, $size[1]/$cons, $size[0], $size[1]);
+
+	imagejpeg($image, './photos/'.$fio.'.jpeg');
+	//imagejpeg($imagesmall);
+
+	echo '<img src="'.'./photos/'.$fio.'.jpeg'.'" style="width:100mm; height:70mm">';
+
 
 	imagedestroy($image);                // освобождаем память, выделенную для изображения
+	imagedestroy($imagesmall);
+	//Create & Open PDF-Object 
+	//require('./fpdf/fpdf.php');
+
+	//$pdf = new FPDF('P','cm',array(10,7.5));
+	//$pdf = new FPDF();
+	//$pdf->AddPage();
+	//$pdf->Image('./photos/'.$fio.'.jpeg', 0, 0, 100, 100);
+	//$pdf->Image('./logo.png',1,1,3,0,'PNG','http://www.fpdf.org/');
+	//$pdf->Image('http://chart.googleapis.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World',60,30,90,0,'PNG');
+	//$pdf->Output();
+
 ?>
