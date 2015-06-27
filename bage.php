@@ -77,8 +77,8 @@
 	}
 
 
-	define("event1", "test");
-	define("event2", "test");
+	//define("event1", "test");
+	//define("event2", "test");
 	
 
 	@$foto_x = $_POST['foto_x'];
@@ -180,14 +180,33 @@
   	);
 
 
-	header('Content-type: image/jpeg'); 
+	//header('Content-type: image/jpeg'); 
 
 	
-
+	$cons = 1;
 	imagecopyresized ($image, $foto, X_FACE, Y_FACE, $foto_x, $foto_y, W_FACE, H_FACE, $foto_width, $foto_height);
 
-	imagejpeg($image, './photos/'.$fio.'.jpg');
-	imagejpeg($image);
+	$imagesmall = imagecreatetruecolor($size[0]/$cons,$size[1]/$cons);
+
+	imagecopyresized($imagesmall, $image, 0, 0, 0, 0, $size[0]/$cons, $size[1]/$cons, $size[0], $size[1]);
+
+	imagejpeg($image, './photos/'.$fio.'.jpeg');
+	//imagejpeg($imagesmall);
+
+	echo '<img src="'.'./photos/'.$fio.'.jpeg'.'" style="width:100mm; height:70mm">';
+
 
 	imagedestroy($image);                // освобождаем память, выделенную для изображения
+	imagedestroy($imagesmall);
+	//Create & Open PDF-Object 
+	//require('./fpdf/fpdf.php');
+
+	//$pdf = new FPDF('P','cm',array(10,7.5));
+	//$pdf = new FPDF();
+	//$pdf->AddPage();
+	//$pdf->Image('./photos/'.$fio.'.jpeg', 0, 0, 100, 100);
+	//$pdf->Image('./logo.png',1,1,3,0,'PNG','http://www.fpdf.org/');
+	//$pdf->Image('http://chart.googleapis.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World',60,30,90,0,'PNG');
+	//$pdf->Output();
+
 ?>

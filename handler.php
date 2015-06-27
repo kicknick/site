@@ -28,9 +28,19 @@
 	if($action == 'getUser') {
 		fromPHPToJSON(getUser());
 	}
+
 	if($action == 'getUsers') {
 		$event = getEvent();
 		fromPHPToJSON(getListOfUsers($event));
+	}
+
+	if($action == 'getOldUsers') {
+		//$event = getEvent();
+		fromPHPToJSON(getOldUsers());
+	}
+
+	if($action == 'getOldUser') {
+		fromPHPToJSON(getOldUser());
 	}
 
 	if($action == 'getRooms') {
@@ -223,13 +233,16 @@
 		$age = $_POST['age'];
 		$sex = $_POST['sex'];
 		$usertype = $_POST['usertype'];
+		$country = $_POST['country'];
+		$city = $_POST['city'];
+		$notification = $_POST['$notification'];
 		
-		if($firstname && $lastname && $middlename && $mobnumber && $age && $sex && $usertype)
+		if($firstname && $lastname && $middlename && $mobnumber && is_numeric($age) && $sex && $usertype && $country && $city)
 		{
 			if(!isEmailAccept($email))
 				die("Некорректный eMail!");
-			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, `id_event`, 	`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`) 
-			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",	'.$event[0]['id_event'].',		'.$mobnumber.',"'.$email.'",'.$age.',"'.$sex.'", '.$usertype.')';
+			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, 	`id_event`, 			`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`,   `country`, `city` , 		`priezd` , `notification`)
+			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",'.$event[0]['id_event'].',"'.$mobnumber.'","'.$email.'",'.$age.',"'.$sex.'", '.$usertype.',"'.$country.'", "'.$city.'", 1,'.$notification.')';
 			//echo $query;
 			$conn->query($query) or die("Error");
 
@@ -297,7 +310,7 @@
 			$query = $query . '1';
 
 
-		$res = $conn->query($query);
+		$res = $conn->query($query) or die('Error: cannot connect to base');
 		$arr = array();
 		while(@$row = $res->fetch_assoc())
 		{
@@ -316,6 +329,48 @@
 
 		usort($arr, "cmpUsrName");
 
+		return $arr;
+	}
+
+	function getOldUsers(){
+		global $conn;
+
+		$query = 'Select `fio` from `Flat_table` where 1';
+
+		$res = $conn->query($query) or die('Error: cannot connect to base');
+
+		$arr = array();
+		while(@$row = $res->fetch_assoc())
+		{
+			array_push($arr, $row);
+		}
+
+		return $arr;
+	}
+
+	function getOldUser(){
+		global $conn;
+
+		@$firstname = $_POST['firstname'];
+		@$lastname = $_POST['lastname'];
+		@$middlename = $_POST['middlename'];
+		$fio = $lastname.' '.$firstname.' '.$middlename;
+
+		if($fio)
+		{	
+			$query = 'SELECT * FROM `Flat_table` 
+			WHERE `fio` LIKE "'.$fio.'"';
+			$res = $conn->query($query) or die("Error");
+		}
+		else
+			die("Заполните ФИО!");
+
+		$arr = array();
+
+		while(@$row = $res->fetch_assoc())
+		{
+			array_push($arr, $row);
+		}
 		return $arr;
 	}
 
