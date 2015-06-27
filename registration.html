@@ -110,6 +110,8 @@
 			<br>
 	    	<input id="email" class="ui-widget" type="email" class="form-control" name="email" />
 	    </div>
+	    <input type="checkbox" id="checkBox" > Согласие на уведомление</br></br> 
+
 	    <button id="button" class="btn btn-default" type="button">Подтвердить!</button>
 	</div>
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
@@ -119,7 +121,7 @@
 
 <script type="text/javascript">
 	var LFM = new Array();
-	var sex, userType;
+	var sex, userType, checkBox=0;
 	var status = localStorage.getItem("status");
 	paintBars(status, "reg");
 	putEvent();
@@ -143,7 +145,7 @@
 					$("#email").val(user[0].email);
 					$("#age").val(user[0].age);
 					var rb = user[0].sex;
-					console.log(rb);
+					// console.log(rb);
 					if(rb == 'm') {
 						$("#male").prop( "checked", true );
 					}
@@ -178,6 +180,13 @@
 			}
 			else {
 				userType = "3";
+			}
+
+			if( $( "#checkBox" ).prop( "checked" )) {
+				checkBox = 1;
+			}
+			else {
+				checkBox = 0;
 			}
 			sendData();
 		});
@@ -235,7 +244,9 @@
 					age: age,
 					event: Event,
 					usertype: userType, 
-					status: status};
+					status: status,
+					notification:checkBox
+				};
 		sendReq(params, function(data) {
 			if(data)
 				alert(data);
