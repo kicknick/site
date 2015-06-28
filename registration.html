@@ -5,11 +5,11 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/statusBar.css">
-
+ 
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   	<script type="text/javascript" src="js/custom.js"></script>
-
+ 
 </head>
 <body>
 <div>
@@ -22,25 +22,25 @@
 				<li id="reg"><a href="registration.html">Регистрация</a></li>
 				<li id="nut"><a href="nutrition.html">Питание</a></li>
 				<li id="room"><a href="rooms.html">Поселение</a></li>
-				<li id="bage"><a href="makebage.html">Сделать Бэйдж</a></li>
+				<li id="bage"><a href="makebage.html">Бэйдж</a></li>
 				<li id="userInfo"><a href="info.html">Информация о юзере</a></li>
 				<li id="infoTable"><a href="infoTable.html">Таблица</a></li>
 			</ul>
 		</div>
 	</nav>	
 </div>
-
+ 
 	<div style="margin-left:100px"> 						
 		<div id="events">
 			<h3>Мероприятие: <b>-----</b></h3> 
 		</div>
 	</div>
 </br>
-
+ 
 <div class="container">
 <form role="form" action="" method="post">
 	<div class="col-md-6">
-
+ 
 	    <div id="userType">
 		  	<b>Тип юзера</b> </br>
 		  	<label class="radio-inline">
@@ -59,31 +59,31 @@
 			<br>
 	    	<input id="lastName" autofocus class="ui-widget" type="text" class="form-control" name="lastname" />
 	    </div>
-
+ 
 		<div class="form-group">
 			<label for="firstName">Имя</label>
 			<br>
 			<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
 		</div>
-
+ 
 	    <div class="form-group">
 			<label for="middleName">Отчество</label>
 			<br>
 	    	<input id="middleName" class="ui-widget" type="text" class="form-control" name="middlename" />
 	    </div>
-
+ 
 	    <div class="form-group">
 			<label for="country">Страна</label>
 			<br>
 	    	<input id="country" class="ui-widget" type="text" class="form-control" name="country" />
 	    </div>
-
+ 
 	    <div class="form-group">
 			<label for="city">Город</label>
 			<br>
 	    	<input id="city" class="ui-widget" type="text" class="form-control" name="city" />
 	    </div>
-
+ 
 		<div class="container" id='sex'>
 			<div class="row">
 		  	<b>Пол</b> </br>
@@ -97,40 +97,44 @@
 		</div>
 		<br>
 	</div>
-
+ 
 	<div class="col-md-6">
 		<div class="form-group">
 			<label for="age">Возраст</label>
 			<br>
 			<input id="age" class="ui-widget" type="text" class="form-control" name="firstname"/>
 		</div>
-
+ 
 	    <div class="form-group">
 			<label for="mobNum">Мобильный телефон</label>
 			<br>
 	    	<input id="mobNum" class="ui-widget" type="text" class="form-control" name="mobnum" />
 	    </div>
-
+ 
 	    <div class="form-group">
 			<label for="email">Email</label>
 			<br>
 	    	<input id="email" class="ui-widget" type="email" class="form-control" name="email" />
 	    </div>
+	    <input type="checkbox" id="checkBox"> Согласие на СМС-уведомление </br></br>
+ 
 	    <button id="button" class="btn btn-default" type="button">Подтвердить!</button>
 	</div>
     <!-- <input id="button" type="submit" name="submit" value="Submit" /> -->
 </form>
 </div>
-
-
+ 
+ 
 <script type="text/javascript">
 	var LFM = new Array();
-	var sex, userType;
+	var sex, userType, checkBox;
 	var status = localStorage.getItem("status");
 	paintBars(status, "reg");
 	putEvent();
+ 
 	var type;
 	$(function() {
+ 
 		$( "#lastName" ).on( "autocompleteselect", function( event, ui ) {
 			var res = ui.item.value;
 			var arr = res.split(' ');
@@ -146,6 +150,7 @@
 					$( "#middleName" ).val(arr[2]);
 					$("#mobNum").val(user.number);
 					$("#email").val(user.email);
+ 
 					var birthdate = new Date(user.birthdate);
 					//console.log(birthdate);
 					var age = new Date(new Date() - birthdate).getFullYear() - new Date(0).getFullYear();
@@ -158,6 +163,7 @@
 					alert(data);
 			});														
 		});
+ 
 		$("#button").on("click", function() {
 			sex = null;
 			var sexCh = $("#sex input:checked").val();
@@ -167,6 +173,7 @@
 			else if(sexCh=='option2') {
 				sex = "f";
 			}
+ 
 			userType= null;
 			var ut = $("#userType input:checked").val();
 			if(ut=='option1') {
@@ -178,11 +185,22 @@
 			else {
 				userType = "3";
 			}
+ 
+			if($("#checkBox").prop("checked")) {
+				checkBox = 1;
+				console.log(1);
+			}
+			else {
+				checkBox = 0;
+			}
 			sendData();
 		});
+ 
+ 
 		if(e = localStorage.getItem("event"))
 			$( "#event" ).val(e);
 	});
+ 
 	var url = "handler.php";
 	var sendReq = function(params, callback) {
 		$.post(url, params, function(data) {
@@ -204,6 +222,9 @@
 		console.log(LFM);
 		$( "#lastName" ).autocomplete({source: LFM}); 
 	});
+ 
+ 
+ 
 	var sendData =  function() {
 		firstName =$("#firstName").val();
 		lastName = $("#lastName").val();
@@ -228,13 +249,17 @@
 					usertype: userType, 
 					country: country,
 					city: city,
-					status: status};
+					status: status, 
+					notification: checkBox
+				};
 		sendReq(params, function(data) {
 			if(data)
 				//console.log(data);
 				alert(data);
 			else{
 				status = status | 1;
+ 
+ 
 				localStorage.setItem("status", status);
 				localStorage.setItem("firstName", firstName);
 				localStorage.setItem("lastName", lastName);
@@ -245,6 +270,6 @@
 		//console.log(res);
 	};
 </script>
-
+ 
 </body>
 </html>

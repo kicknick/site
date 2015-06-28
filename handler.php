@@ -21,7 +21,8 @@
 	if($action == "nutrition" && $usr = getUser())
 		nutrition($usr);
 
-	if(($action == "lodge") && ($app = getRoom()) && ($usr = getUser())){
+	if(($action == "lodge") && ($usr = getUser())){
+		$app = getRoom();
 		lodge($usr, $app);
 	}
 
@@ -100,7 +101,7 @@
 			//echo $query;
 		}
 		else
-			die("Заполните все поля");
+			return 0;;
 
 		$arr = array();
 
@@ -235,7 +236,7 @@
 		$usertype = $_POST['usertype'];
 		$country = $_POST['country'];
 		$city = $_POST['city'];
-		$notification = $_POST['$notification'];
+		$notification = $_POST['notification'];
 		
 		if($firstname && $lastname && $middlename && $mobnumber && is_numeric($age) && $sex && $usertype && $country && $city)
 		{
@@ -274,7 +275,7 @@
 		global $conn;
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
-		if($start && $end)
+		if($start && $end && $app)
 		{	
 			$query = 'UPDATE `users` SET 
 					`id_app`='.$app[0]["id_app"].' , 
@@ -284,8 +285,19 @@
 					`id_user` = '.$usr[0]["id_user"];
 			$conn->query($query) or die( "Error" );
 		}
+		else if(!$app)
+		{
+			$query = 'UPDATE `users` SET 
+					`id_app`= 0 , 
+					`start` = "'.$start.'", 
+					`end` = "'.$end.'" 
+				WHERE 
+					`id_user` = '.$usr[0]["id_user"];
+			$conn->query($query) or die( "Error" );
+		}
 		else
 			die("Заполните все поля");	
+		
 	}
 
 	function getListOfEvents(){
