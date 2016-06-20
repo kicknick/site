@@ -1,16 +1,9 @@
 <?php
 
-	$servername = "localhost";
-	// $dbname = "u405631617_test";
-	// $username = "u405631617_odael";
-	// $password = "lollol";
-	$dbname = "u359935278_test";
-	$username = "u359935278_leto";
-	$password = "q1w2e3r4";
 
+	include ("config.php");
 	// Create connection
-	$conn =  new mysqli($servername, $username, $password, $dbname);
-	$conn->query("set_client='utf8'");
+
 
 	@$action = $_POST['action'];
 
@@ -61,7 +54,7 @@
 	}
 
 	function getEvent() {
-		global $conn;
+		global $db_conn;
 
 		@$event = $_POST['event'];
 		//die($event);
@@ -71,7 +64,7 @@
 			$query = 'SELECT * FROM `events` 
 			WHERE `description` LIKE "' . $event . '"';
 
-			$res = $conn->query($query);
+			$res = $db_conn->query($query);
 			//echo $query;
 		}
 		else
@@ -89,7 +82,7 @@
 	}
 	
 	function getRoom() {
-		global $conn;
+		global $db_conn;
 
 		@$id_app = $_POST['id_app'];
 
@@ -97,7 +90,7 @@
 		{	
 			$query = 'SELECT * FROM `appartment` 
 			WHERE `id_app` LIKE '.$id_app;
-			$res = $conn->query($query);
+			$res = $db_conn->query($query);
 			//echo $query;
 		}
 		else
@@ -113,7 +106,7 @@
 	}
 
 	function getUser() {	
-		global $conn;
+		global $db_conn;
 
 		@$firstname = $_POST['firstname'];
 		@$lastname = $_POST['lastname'];
@@ -126,7 +119,7 @@
 			WHERE `first_name` LIKE "'.$firstname.'" AND
 				`last_name` LIKE "'.$lastname.'" AND
 				`middle_name` LIKE "'.$middlename.'"';
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 		else
 			die("Заполните ФИО!");
@@ -145,7 +138,7 @@
 		{	
 			$query = 'SELECT * FROM `appartment` 
 			WHERE `id_app` LIKE '.$arr[0]['id_app'];
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 
 		@$row = $res->fetch_assoc();
@@ -156,7 +149,7 @@
 		{	
 			$query = 'SELECT * FROM `food` 
 			WHERE `id_user` LIKE '.$arr[0]['id_user'];
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 
 		@$row = $res->fetch_assoc();
@@ -167,7 +160,7 @@
 	}
 
 	function getUserBy($firstname, $lastname, $middlename) {	
-		global $conn;
+		global $db_conn;
 
 		//@$firstname = $_POST['firstname'];
 		// @$lastname = $_POST['lastname'];
@@ -180,7 +173,7 @@
 			WHERE `first_name` LIKE "'.$firstname.'" AND
 				`last_name` LIKE "'.$lastname.'" AND
 				`middle_name` LIKE "'.$middlename.'"';
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 		else
 			die("Заполните ФИО!");
@@ -199,7 +192,7 @@
 		{	
 			$query = 'SELECT * FROM `appartment` 
 			WHERE `id_app` LIKE '.$arr[0]['id_app'];
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 
 		@$row = $res->fetch_assoc();
@@ -210,7 +203,7 @@
 		{	
 			$query = 'SELECT * FROM `food` 
 			WHERE `id_user` LIKE '.$arr[0]['id_user'];
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 
 		@$row = $res->fetch_assoc();
@@ -221,7 +214,7 @@
 	}
 
 	function registration($event){
-		global $conn;
+		global $db_conn;
 
 		if(!$event)
 			die('Select Event');
@@ -245,7 +238,7 @@
 			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, 	`id_event`, 			`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`,   `country`, `city` , 		`priezd` , `notification`)
 			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",'.$event[0]['id_event'].',"'.$mobnumber.'","'.$email.'",'.$age.',"'.$sex.'", '.$usertype.',"'.$country.'", "'.$city.'", 1,'.$notification.')';
 			//echo $query;
-			$conn->query($query) or die("Error");
+			$db_conn->query($query) or die("Error");
 
 		}
 		else
@@ -253,26 +246,26 @@
 	}
 
 	function nutrition($usr){
-		global $conn;
+		global $db_conn;
 		
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
 		//echo $start;
 		$query = 'DELETE FROM `food` WHERE id_user = '.$usr[0]["id_user"];
-		$conn->query($query) or die("Error");
+		$db_conn->query($query) or die("Error");
 		
 		if($start && $end)
 		{	
 			$query = 'INSERT INTO `food`( `id_user`, `start`, `end`) 
 			VALUES ('.$usr[0]["id_user"].',"'.$start.'","'.$end.'")';
-			$conn->query($query) or die("Error");
+			$db_conn->query($query) or die("Error");
 		}
 		else
 			die("Заполните все поля");
 	}
 
 	function lodge($usr, $app){
-		global $conn;
+		global $db_conn;
 		$start = $_POST['start'];	
 		$end = $_POST['end'];	
 		if($start && $end && $app)
@@ -283,7 +276,7 @@
 					`end` = "'.$end.'" 
 				WHERE 
 					`id_user` = '.$usr[0]["id_user"];
-			$conn->query($query) or die( "Error" );
+			$db_conn->query($query) or die( "Error" );
 		}
 		else if(!$app)
 		{
@@ -293,27 +286,17 @@
 					`end` = "'.$end.'" 
 				WHERE 
 					`id_user` = '.$usr[0]["id_user"];
-			$conn->query($query) or die( "Error" );
+			$db_conn->query($query) or die( "Error" );
 		}
 		else
 			die("Заполните все поля");	
 		
 	}
 
-	function getListOfEvents(){
-		global $conn;
 
-		$res =$conn->query("Select * from `events` where 1");
-		$arr = array();
-		while(@$row = $res->fetch_assoc())
-		{
-			array_push($arr, $row["description"]);
-		}
-		return $arr;
-	}
 
 	function getListOfUsers($event){
-		global $conn;
+		global $db_conn;
 
 		$query = 'Select * from `users` where ';
 		if($event)
@@ -322,7 +305,7 @@
 			$query = $query . '1';
 
 
-		$res = $conn->query($query) or die('Error: cannot connect to base');
+		$res = $db_conn->query($query) or die('Error: cannot connect to base');
 		$arr = array();
 		while(@$row = $res->fetch_assoc())
 		{
@@ -345,11 +328,11 @@
 	}
 
 	function getOldUsers(){
-		global $conn;
+		global $db_conn;
 
 		$query = 'Select `fio` from `Flat_table` where 1';
 
-		$res = $conn->query($query) or die('Error: cannot connect to base');
+		$res = $db_conn->query($query) or die('Error: cannot connect to base');
 
 		$arr = array();
 		while(@$row = $res->fetch_assoc())
@@ -361,7 +344,7 @@
 	}
 
 	function getOldUser(){
-		global $conn;
+		global $db_conn;
 
 		@$firstname = $_POST['firstname'];
 		@$lastname = $_POST['lastname'];
@@ -372,7 +355,7 @@
 		{	
 			$query = 'SELECT * FROM `Flat_table` 
 			WHERE `fio` LIKE "'.$fio.'"';
-			$res = $conn->query($query) or die("Error");
+			$res = $db_conn->query($query) or die("Error");
 		}
 		else
 			die("Заполните ФИО!");
@@ -387,16 +370,16 @@
 	}
 
 	function getListOfRooms(){
-		global $servername, $dbname, $username, $password, $conn;
+		global $servername, $dbname, $username, $password, $db_conn;
 		$query = 'SELECT * FROM `appartment` WHERE 1';
-		$res = $conn->query($query);
+		$res = $db_conn->query($query);
 		$arr = array();
 		$i = 0;
 		while(@$row = $res->fetch_assoc())
 		{
 			array_push($arr, $row);
 			$query = 'SELECT * FROM `users` WHERE id_app = '.$row['id_app'];
-			$usrs = $conn->query($query);
+			$usrs = $db_conn->query($query);
 			$allusr = array();
 			while(@$usr = $usrs->fetch_assoc())
 			{
