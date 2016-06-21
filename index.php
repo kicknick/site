@@ -19,16 +19,17 @@
 		<br>
 	<!-- 	<input id="event" class="ui-widget" type="text" class="form-control" name="event" /> -->
 		<div id="events">
-			<select id="event_selecter">
+			<select id="event_selector">
 				<?php
 				include ("Controller/Events.php");
 				$events = getListOfEvents();
-				echo count($events);
 				if($events[0] == null)
 					echo "<option id='0'>"."Нет событий"."</option>";
-				else
-					for($i = 0 ; $i < count($events) ; $i++)
-						echo "<option id='".$events[$i]["idevent"]."'>".$events[$i]["name"]."</option>";
+				else {
+					echo "<option id='0'></option>";
+					for ($i = 0; $i < count($events); $i++)
+						echo "<option id='" . $events[$i]["idevent"] . "'>" . $events[$i]["name"] . "</option>";
+				}
 				?>
 			</select>
 		</div>
@@ -37,7 +38,11 @@
 
 
 <script type="text/javascript">
-
+	$("#event_selector").change(function(e){
+		localStorage.setItem("idevent", $("option:selected").attr("id"));
+		localStorage.setItem("eventname", this.value);
+		window.location ="registration.php";
+	});
 
 </script>
 

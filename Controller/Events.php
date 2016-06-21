@@ -6,7 +6,7 @@
  * Time: 17:37
  */
 
-include ("config.php");
+include ("../config.php");
 function getListOfEvents(){
     global $db_conn;
 

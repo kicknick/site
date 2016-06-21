@@ -105,7 +105,7 @@
 		return $arr;
 	}
 
-	function getUser() {	
+	function getUser($firstname, $lastname, $middlename) {
 		global $db_conn;
 
 		@$firstname = $_POST['firstname'];
@@ -214,35 +214,7 @@
 	}
 
 	function registration($event){
-		global $db_conn;
 
-		if(!$event)
-			die('Select Event');
-
-		$firstname = $_POST['firstname'];
-		$lastname = $_POST['lastname'];
-		$middlename = $_POST['middlename'];
-		$email = $_POST['email'];
-		$mobnumber = $_POST['mobnumber'];
-		$age = $_POST['age'];
-		$sex = $_POST['sex'];
-		$usertype = $_POST['usertype'];
-		$country = $_POST['country'];
-		$city = $_POST['city'];
-		$notification = $_POST['notification'];
-		
-		if($firstname && $lastname && $middlename && $mobnumber && is_numeric($age) && $sex && $usertype && $country && $city)
-		{
-			if(!isEmailAccept($email))
-				die("Некорректный eMail!");
-			$query = 'INSERT INTO `users`( `first_name`, 	`last_name`, 	`middle_name`, 	`id_event`, 			`mobile_number`,`email`,	`age`, 		`sex`,    `usertype`,   `country`, `city` , 		`priezd` , `notification`)
-			VALUES 						("'.$firstname.'","'.$lastname.'","'.$middlename.'",'.$event[0]['id_event'].',"'.$mobnumber.'","'.$email.'",'.$age.',"'.$sex.'", '.$usertype.',"'.$country.'", "'.$city.'", 1,'.$notification.')';
-			//echo $query;
-			$db_conn->query($query) or die("Error");
-
-		}
-		else
-			die("Заполните все поля");
 	}
 
 	function nutrition($usr){
