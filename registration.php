@@ -77,16 +77,20 @@
 				success: function(data){
 					if(! data){
 						console.log("success");
+						localStorage.setItem("lastname", lastname);
+						localStorage.setItem("firstname", firstname);
+						localStorage.setItem("middlename", middlename);
+						window.location = "makebage.php";
 						return;
 					}
 					var a = JSON.parse(data);
 					if (a["exitcode"])
 						alert(a["err"]);
 					else{
-						// Перенапривить на печать бэйджей
+
 					}
 				}
-			})
+			});
 		}
 		else{
 			alert("Заполните все поля");

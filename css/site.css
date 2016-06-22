@@ -1,0 +1,8 @@
+
+#userlist td{
+    padding: 10px 15px;
+}
+
+#userlist, #userlist td, #userlist tr{
+    border: solid gray 1px;
+}

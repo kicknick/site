@@ -20,23 +20,7 @@
 
 </head>
 <body>
-<div>
-	<nav class="navbar navbar-default navbar-top">
-		<div class="container-fluid">
-			<div class="navbar-header"> 
-				<a class="navbar-brand" href="index.php">Главная</a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li id="reg"><a href="registration.php">Регистрация</a></li>
-				<li id="nut"><a href="nutrition.html">Питание</a></li>
-				<li id="room"><a href="rooms.html">Поселение</a></li>
-				<li id="bage"><a href="makebage.html">Бэйдж</a></li>
-				<li id="userInfo"><a href="info.html">Информация о юзере</a></li>
-				<li id="infoTable"><a href="infoTable.html">Таблица</a></li>
-			</ul>
-		</div>
-	</nav>	
-</div>	
+<?php echo file_get_contents("templates/header.tpl"); ?>
 
 <div style="margin-left:100px"> 						
 	<div id="events">
@@ -47,7 +31,7 @@
 </br>
 
 <div class="container">
-<div class="col-md-6">
+<div class="col-md-6" id="form_content">
 	<form action="bage.php" method="post" enctype="multipart/form-data">
 
 	
@@ -76,11 +60,13 @@
 </div>
 
 <div class="col-md-6">
-	<img id="imgField">
+	<img id="imgFidfeld">
 </div>
 </div>
 
 <script type="text/javascript">
+
+/*
 	var status = localStorage.getItem("status");
 	paintBars(status, "bage");
 	putEvent();
@@ -200,7 +186,7 @@
 	// 	console.log(result.lastname);
 	// 	url ="bage.php?lastname="+result.lastname+"&firstname="+result.firstname+"&middlename="+result.middlename;
 	// 	//window.open(url);
-	// }
+	// }*/
 
 
 </script>

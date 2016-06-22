@@ -1,0 +1,5 @@
+@media print {
+    nav, #form_content, #events { display: none; }
+    body { background: none; }
+    #imgField{ display: block; top: 0; bottom: 0; }
+}

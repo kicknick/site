@@ -268,35 +268,7 @@
 
 
 	function getListOfUsers($event){
-		global $db_conn;
 
-		$query = 'Select * from `users` where ';
-		if($event)
-			$query = $query . '`id_event` LIKE ' . $event[0]['id_event'];
-		else
-			$query = $query . '1';
-
-
-		$res = $db_conn->query($query) or die('Error: cannot connect to base');
-		$arr = array();
-		while(@$row = $res->fetch_assoc())
-		{
-			array_push($arr, $row);
-		}
-
-		$l = count($arr);
-		for($i = 0 ; $i < $l ; $i++)
-		{
-			$usr = getUserBy($arr[$i]['first_name'], $arr[$i]['last_name'], $arr[$i]['middle_name']);
-			$arr[$i]['room_num'] = $usr[0]['room_num'];
-			$arr[$i]['hostel_num'] = $usr[0]['hostel_num'];
-			$arr[$i]['nut_start'] = $usr[0]['nut_start'];
-			$arr[$i]['nut_end'] = $usr[0]['nut_end'];
-		}
-
-		usort($arr, "cmpUsrName");
-
-		return $arr;
 	}
 
 	function getOldUsers(){

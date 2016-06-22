@@ -5,6 +5,7 @@
         </div>
         <ul class="nav navbar-nav">
             <li id="reg"><a href="registration.php">Регистрация</a></li>
+            <li id="reg"><a href="search.php">Поиск</a></li>
             <!--<li id="nut"><a href="nutrition.html">Питание</a></li>
             <li id="room"><a href="rooms.html">Поселение</a></li>-->
             <li id="bage"><a href="makebage.php">Бэйдж</a></li>
