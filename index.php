@@ -2,8 +2,8 @@
 <head>
 	<title>Главная</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/statusBar.css">
+	<link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="styles/site.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<?php
 	include ("config.php");
@@ -13,28 +13,25 @@
 
 <?php echo file_get_contents("templates/header.tpl"); ?>
 
+
 <div class="container">
-	<div class="form-group"> 						
-		<label for="events">Мероприятие</label>
-		<br>
-	<!-- 	<input id="event" class="ui-widget" type="text" class="form-control" name="event" /> -->
-		<div id="events">
-			<select id="event_selector">
-				<?php
-				include ("Controller/Events.php");
-				$events = getListOfEvents();
-				if($events[0] == null)
-					echo "<option id='0'>"."Нет событий"."</option>";
-				else {
-					echo "<option id='0'></option>";
-					for ($i = 0; $i < count($events); $i++)
-						echo "<option id='" . $events[$i]["idevent"] . "'>" . $events[$i]["name"] . "</option>";
-				}
-				?>
-			</select>
-		</div>
-	</div>
+	<h3>Мероприятие: <p id="current_event"></p></h3>
+
+	<select id="event_selector"  class="selectpicker">
+		<?php
+		include ("Controller/Events.php");
+		$events = getListOfEvents();
+		if($events[0] == null)
+			echo "<option id='0'>"."Нет событий"."</option>";
+		else {
+			echo "<option id='0'></option>";
+			for ($i = 0; $i < count($events); $i++)
+				echo "<option id='" . $events[$i]["idevent"] . "'>" . $events[$i]["name"] . "</option>";
+		}
+		?>
+	</select>
 </div>
+
 
 
 <script type="text/javascript">

@@ -1,0 +1,14 @@
+
+#userlist thead td{
+    font-weight: bold;
+}
+
+
+
+select{
+    font-size: 15pt;
+}
+
+.btn.edit{
+    float: right;
+}

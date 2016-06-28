@@ -2,10 +2,10 @@
 <head>
     <title>Регистрация</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="css/statusBar.css">
-    <link rel="stylesheet" type="text/css" href="css/site.css">
+    <link rel="stylesheet" type="text/css" href="styles/statusBar.css">
+    <link rel="stylesheet" type="text/css" href="styles/site.css">
 
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -16,45 +16,44 @@
 
 <?php echo file_get_contents("templates/header.tpl") ?>
 
-<div style="margin-left:100px">
-    <div>
-        <h3>Мероприятие: <b id="current_event"></b></h3>
-    </div>
-</div>
-<script type="text/javascript">
-    var eventname;
-    if((eventname = localStorage.getItem("eventname")) != undefined)
-        $("#current_event").html(eventname);
-    else
-        $("#current_event").html("-");
-</script>
+<?php echo file_get_contents("templates/currentEvent.tpl"); ?>
+
 </br>
 
 <div class="container">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="searchLine">Введите фразу для поиска</label>
                 <br>
-                <input id="searchLine" class="ui-widget" type="text" class="form-control" name="searchline" />
+                <input autofocus id="searchLine" class="form-control" type="text" class="form-control" name="searchline" />
             </div>
+        </div>
+        <div class="col-md-12">
+            <table id="userlist" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td width="5%">ID</td>
+                        <td width="25%">Фамилия</td>
+                        <td width="25%">Имя</td>
+                        <td width="25%">Отчество</td>
+                        <td width="20%"> </td>
+                    </tr>
+                </thead>
+            </table>
         </div>
 </div>
 
 <div class="container">
 
-    <table id="userlist">
-        <tr>
-            <td>ID</td> <td>Фамилия</td> <td>Имя</td> <td>Отчество</td> <td> </td>
-        </tr>
-    </table>
+
 
 </div>
 
 
 <script type="text/javascript">
 
-    var filerUsers = function() {
-        var searchline = $("#searchLine").val().trim();
+    var filerUsers = function(searchline) {
+        searchline = searchline.trim();
         if (searchline == '') searchline = null;
         $.ajax({
             type: "POST",
@@ -65,25 +64,39 @@
             success: function(data){
                 var a = JSON.parse(data);
                 $(".userline").html("");
+
                 var inner = "";
                 for (var i = 0 ; i < a.length ; i++)
-                    inner += "<tr id='" + a[i]["iduser"] + "' class='userline'><td>" + a[i]["iduser"] + "</td> <td>" + a[i]["lastname"] + "</td> <td>" + a[i]["firstname"] + "</td> <td>" + a[i]["middlename"] + "</td><td><input type='button' class='select_user btn btn-default' value='Выбрать'></td></tr>";
+                    inner +=
+                        "<tbody>" +
+                            "<tr id='" + a[i]["iduser"] + "' class='userline'>" +
+                                "<td class='iduser'>" + a[i]["iduser"] + "</td> " +
+                                "<td class='lastname'>" + a[i]["lastname"] + "</td> " +
+                                "<td class='firstname'>" + a[i]["firstname"] + "</td> " +
+                                "<td class='middlename'>" + a[i]["middlename"] + "</td>" +
+                                "<td><input type='button' class='select_user btn btn-default' value='Выбрать'></td>" +
+                            "</tr>" +
+                        "</tbody>";
+
                 $("#userlist").append(inner);
                 $(".select_user").click(function(){
-                    console.log($(this).parent().parent().attr("id")); // Обработка клика
+                    var useritem = $(this).parent().parent();
+                    localStorage.setItem("lastname", $(".lastname", useritem).first().html());
+                    localStorage.setItem("firstname", $(".firstname", useritem).first().html());
+                    localStorage.setItem("middlename", $(".middlename", useritem).first().html());
+                    window.location = "makebage.php";
                 });
             }
         });
-
     }
 
-    $(filerUsers());
+    $(filerUsers($("#searchLine").val()));
 
     $("#searchLine").keyup(function(event){
         if(event.keyCode == 13){
             $(".select_user").first().click();
         }
-        else filerUsers();
+        else filerUsers($("#searchLine").val());
     });
 
 </script>

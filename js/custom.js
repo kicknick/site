@@ -35,3 +35,13 @@ var fillFio = function() {
 	}	
 }
 
+var setFieldFromLS = function(selector, localvar){
+	var string, elem;
+	if((string = localStorage.getItem(localvar)) != undefined) {
+		if ((elem = $(selector)).attr("type") == "text")
+			elem.val(string);
+		else
+			elem.html(string);
+	}
+}
+

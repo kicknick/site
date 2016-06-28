@@ -2,9 +2,9 @@
 <head>
 	<title>Регистрация</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="css/statusBar.css">
+	<link rel="stylesheet" type="text/css" href="styles/statusBar.css">
  
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -14,46 +14,38 @@
 <body>
 
 <?php echo file_get_contents("templates/header.tpl") ?>
- 
-<div style="margin-left:100px">
-	<div>
-		<h3>Мероприятие: <b id="current_event"></b></h3>
-	</div>
-</div>
-<script type="text/javascript">
-	var eventname;
-	if((eventname = localStorage.getItem("eventname")) != undefined)
-		$("#current_event").html(eventname);
-	else
-		$("#current_event").html("-");
-</script>
-</br>
- 
-<div class="container">
-<form id="registration_form">
-	<div class="col-md-6">
 
-		</br>
-		<div class="form-group">
-			<label for="lastName">Фамилия</label>
-			<br>
-	    	<input id="lastName" autofocus class="ui-widget" type="text" class="form-control" name="lastname" />
-	    </div>
- 
-		<div class="form-group">
-			<label for="firstName">Имя</label>
-			<br>
-			<input id="firstName" class="ui-widget" type="text" class="form-control" name="firstname"/>
+<?php echo file_get_contents("templates/currentEvent.tpl"); ?>
+
+<br>
+<div class="container">
+	<div class="col-md-4">
+		<div>
+			<div class="form-group">
+				<label for="lastName">Фамилия</label>
+				<br>
+				<input id="lastName" class="form-control" type="text" class="form-control" name="lastname" autofocus/>
+			</div>
+			<div class="form-group">
+				<label for="firstName">Имя</label>
+				<br>
+				<input id="firstName" class="form-control" type="text" class="form-control" name="firstname"/>
+			</div>
+			<div class="form-group">
+				<label for="middleName">Отчество</label>
+				<br>
+				<input id="middleName" class="form-control" type="text" class="form-control" name="middlename" />
+			</div>
+			<div class="form-group">
+				<input id="button" class="btn btn-default" type="button" class="form-control" name="submit" value="Отправить">
+			</div>
 		</div>
- 
-	    <div class="form-group">
-			<label for="middleName">Отчество</label>
-			<br>
-	    	<input id="middleName" class="ui-widget" type="text" class="form-control" name="middlename" />
-	    </div>
-		<input id="button" class="ui-widget" type="button" class="form-control" name="submit" value="Отправить">
+		<script type="text/javascript">
+			setFieldFromLS("#lastName","lastname");
+			setFieldFromLS("#firstName","firstname");
+			setFieldFromLS("#middleName","middlename");
+		</script>
 	</div>
-</form>
 </div>
  
  
@@ -97,10 +89,8 @@
 		}
 	});
 
-	/*var LFM = new Array();
-	putEvent();
  
-	var type;
+	/*var type;
 	$(function() {
  
 		$("#submit").on("click", function() {
@@ -146,21 +136,6 @@
 			callback(data);
 		});
 	}
-	var users;
-	sendReq({action: "getOldUsers"}, function(data){
-		//console.log(data);
-		if(data[0] == '['){
-			users = JSON.parse(data);
-			//console.log(users);
-			for(var i in users) {
-				LFM.push(users[i].fio);
-			}
-		}
-		else
-			console.log(data);
-		console.log(LFM);
-		$( "#lastName" ).autocomplete({source: LFM}); 
-	});
  
  
  

@@ -2,122 +2,105 @@
 <head>
 	<title>Бэйдж</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="ias/css/imgareaselect-animated.css">
-    <link rel="stylesheet" type="text/css" href="css/statusBar.css">
+    <link rel="stylesheet" type="text/css" href="externals/ias/css/imgareaselect-animated.css">
+    <link rel="stylesheet" type="text/css" href="styles/statusBar.css">
 
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  	<script type="text/javascript" src="ias/scripts/jquery.imgareaselect.js"></script>
+  	<script type="text/javascript" src="externals/ias/scripts/jquery.imgareaselect.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   	<script type="text/javascript" src="js/custom.js"></script>
 
-	<style type="text/css">
-		#imgField{
-			width:400px;
-		}
-	</style>
+
 
 </head>
 <body>
+
 <?php echo file_get_contents("templates/header.tpl"); ?>
 
-<div style="margin-left:100px"> 						
-	<div id="events">
-		<h3>Мероприятие: <b>-----</b></h3> 
-	</div>
-</div>
+<?php echo file_get_contents("templates/currentEvent.tpl"); ?>
 
-</br>
-
-<div class="container">
-<div class="col-md-6" id="form_content">
-	<form action="bage.php" method="post" enctype="multipart/form-data">
-
-	
-		<div class="form-group">
-			<label for="lfm">ФИО</label>
+<form action="bage.php" method="post" enctype="multipart/form-data" onsubmit="lol()">
+	<div class="container" id="form_content">
+		<div class="col-md-4">
+			<div>
+				<div class="form-group">
+					<label for="lastName">Фамилия</label>
+					<br>
+					<input id="lastName" class="form-control" type="text" class="form-control" name="lastname" autofocus/>
+				</div>
+				<div class="form-group">
+					<label for="firstName">Имя</label>
+					<br>
+					<input id="firstName" class="form-control" type="text" class="form-control" name="firstname"/>
+				</div>
+				<div class="form-group">
+					<label for="middleName">Отчество</label>
+					<br>
+					<input id="middleName" class="form-control" type="text" class="form-control" name="middlename" />
+				</div>
+			</div>
+			<script type="text/javascript">
+				setFieldFromLS("#lastName","lastname");
+				setFieldFromLS("#firstName","firstname");
+				setFieldFromLS("#middleName","middlename");
+			</script>
+		</div>
+		<div class="col-md-4">
+			<label for="user_pic">Отправка изображения:</label>
+			<input id="user_pic" type="file" class="btn btn-default" name="user_pic" size="30" accept="image/*" onchange="openFile(event)">
 			<br>
-	    	<input id="lfm" class="ui-widget" type="text" class="form-control" name="lfm" />
-	    </div>
+			<input type="hidden" name="foto_x" value="" />
+			<input type="hidden" name="foto_y" value="" />
+			<input type="hidden" name="foto_width" value="" />
+			<input type="hidden" name="foto_height" value="" />
+			<input type="hidden" id="event" name="event" value="" />
+			<input type="hidden" id="usertype" name="usertype" value="" />
+			<input type="submit" class="btn btn-default" value="Получить бэйдж">
+		</div>
+		<div class="col-md-4">
+			<img id="imgField" style="max-width: 400px;">
+		</div>
+	</div>
+</form>
 
-		<label for="user_pic">Отправка изображения:</label>
-		<input id="user_pic" type="file" class="btn btn-default" name="user_pic" size="30">
-		<br>
-		<input type="hidden" name="foto_x" value="" />
-		<input type="hidden" name="foto_y" value="" />
-		<input type="hidden" name="foto_width" value="" />
-		<input type="hidden" name="foto_height" value="" />
 
-		<input type="hidden" id="firstname" name="firstname" value="" />
-		<input type="hidden" id="lastname" name="lastname" value="" />
-		<input type="hidden" id="middlename" name="middlename" value="" />
-		<input type="hidden" id="event" name="event" value="" />
-		<input type="hidden" id="usertype" name="usertype" value="" />
-
-		<input type="submit" class="btn btn-default" value="Получить бэйдж">
-	</form>
-</div>
-
-<div class="col-md-6">
-	<img id="imgFidfeld">
-</div>
-</div>
 
 <script type="text/javascript">
 
-/*
-	var status = localStorage.getItem("status");
-	paintBars(status, "bage");
-	putEvent();
+	var lol = function(){
+		alert($("#lastName").val());
+	}
 
-	var LFM = new Array();
-	var e;
-	var events = new Array();
-	var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null, event: null, usertype: null};
+	 var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null, event: null, usertype: null};
+
 	$(function() {
-		fillFio();
 		$("#user_pic").val("");
-		fillLFM($("#lfm").val());
-
-		$( "#lfm" ).autocomplete({source: LFM}); 
-
-		$( "#lfm" ).on( "autocompleteselect", function( event, ui ) {
-			var string = ui.item.value;
-			fillLFM(string);
-		});
-		
-		$( "#event" ).on( "autocompleteselect", function( event, ui ) {
-			localStorage.setItem("event", ui.item.value);							
-		});
-
-		if(e = localStorage.getItem("event"))
-			$( "#event" ).val(e);
-
 	});
 
 
+	 var openFile = function(event) { // Handle input[type:file] and make a preview
+		 var input = event.target;
 
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#imgField').attr('src', e.target.result);
-                image = e.target.result;
-                handleImgInit();
-            }       
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#user_pic").change(function(){
-        readURL(this);
-    });
-
+		 var reader = new FileReader();
+		 reader.onload = function(){
+			 var dataURL = reader.result;
+			 var output = document.getElementById('imgField');
+			 output.src = dataURL;
+			 handleImgInit();
+		 };
+		 $.when(reader.readAsDataURL(input.files[0])).then(handleImgInit());
+	 };
 
 
 	var handleImgInit = function() {
-		$("#imgField").imgAreaSelect({ aspectRatio: '1:1', x1: 0, y1: 0, x2: 0, y2: 0,
+		$("#imgField").imgAreaSelect({
+			aspectRatio: '1:1',
+			x1: 0,
+			y1: 0,
+			x2: 0,
+			y2: 0,
 	       	onSelectEnd: function (img, selection) { 
 	            $('input[name="foto_x"]').val(selection.x1);
 	            $('input[name="foto_y"]').val(selection.y1);
@@ -129,13 +112,13 @@
 	            console.log(selection.y1); 
 	            console.log(selection.x2); 
 	            console.log(selection.y2); 
-	        	}
+			}
 	    });
 	} 
 
 
 
-	var url = "handler.php"
+	var url = "handler.php";
 	var sendReq = function(params, callback) {
 		$.post(url, params, function(data) {
 			callback(data);
@@ -143,36 +126,7 @@
 	}
 
 	var users;
-	sendReq({action: "getUsers", event: localStorage.getItem('event')}, function(data){
-		if(data[0] == '['){
-			//console.log(data);
-			users = JSON.parse(data);
-			for(var i in users) {
-				var firstname = users[i].first_name;
-				var lastname= users[i].last_name;
-				var middlename = users[i].middle_name;
-				var lfm = lastname+' '+firstname+' '+middlename;
-				LFM.push(lfm);
-			}
-			console.log(LFM);
-		}
-		else
-			alert(data);
-	});
 
-	sendReq({action: "getEvents"}, function(data){ 	// Автокомплит Мероприятий
-		//console.log(data);
-		if(data[0] == '[')
-		{
-			events = JSON.parse(data);
-		}
-		else
-		{
-			alert(data);
-		}
-		console.log(events);
-		$( "#event" ).autocomplete({source: events}); 
-	});
 
 	// var sendData = function() {
 	// 	console.log("dfdf");
