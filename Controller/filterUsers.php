@@ -14,6 +14,7 @@ if($searchline) {
     $query .= 'lastname LIKE "%' . $searchline . '%" OR ';
     $query .= 'firstname LIKE "%' . $searchline . '%" OR ';
     $query .= 'middlename LIKE "%' . $searchline . '%" OR ';
+    $query .= 'squadid LIKE "%' . $searchline . '%" OR ';
     $query .= 'CONCAT(lastname," ",firstname," ",middlename) LIKE "%' . $searchline . '%" ';
 }
 else

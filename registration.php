@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="styles/site.css">
 	<link rel="stylesheet" type="text/css" href="styles/statusBar.css">
  
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -36,6 +37,13 @@
 				<br>
 				<input id="middleName" class="form-control" type="text" class="form-control" name="middlename" />
 			</div>
+
+			<div class="form-group">
+				<label for="squad">Отряд</label>
+				<br>
+				<input id="squad" class="form-control" type="text" class="form-control" name="squad" />
+			</div>
+
 			<div class="form-group">
 				<input id="button" class="btn btn-default" type="button" class="form-control" name="submit" value="Отправить">
 			</div>
@@ -44,6 +52,7 @@
 			setFieldFromLS("#lastName","lastname");
 			setFieldFromLS("#firstName","firstname");
 			setFieldFromLS("#middleName","middlename");
+			setFieldFromLS("#squad","squad");
 		</script>
 	</div>
 </div>
@@ -56,6 +65,7 @@
 		var lastname = $("#lastName").val().trim();
 		var firstname = $("#firstName").val().trim();
 		var middlename = $("#middleName").val().trim();
+		var squad = $("#squad").val().trim();
 
 		if(lastname != '' && firstname != '' && middlename != ''){
 			$.ajax({
@@ -64,7 +74,8 @@
 				data:{
 					lastname: lastname,
 					firstname: firstname,
-					middlename: middlename
+					middlename: middlename,
+					squad: squad
 				},
 				success: function(data){
 					if(! data){
@@ -72,6 +83,7 @@
 						localStorage.setItem("lastname", lastname);
 						localStorage.setItem("firstname", firstname);
 						localStorage.setItem("middlename", middlename);
+						localStorage.setItem("squad", squad);
 						window.location = "makebage.php";
 						return;
 					}

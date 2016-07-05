@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50622
 File Encoding         : 65001
 
-Date: 2016-06-28 23:50:04
+Date: 2016-06-29 01:39:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,9 +26,15 @@ CREATE TABLE `events` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of events
+-- Table structure for squad
 -- ----------------------------
-INSERT INTO `events` VALUES ('2', 'ЛШ PI');
+DROP TABLE IF EXISTS `squad`;
+CREATE TABLE `squad` (
+  `idsquad` int(100) NOT NULL AUTO_INCREMENT,
+  `firstcurator` varchar(100) DEFAULT NULL,
+  `secondcurator` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idsquad`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for users
@@ -39,12 +45,6 @@ CREATE TABLE `users` (
   `lastname` varchar(100) DEFAULT NULL,
   `firstname` varchar(100) DEFAULT NULL,
   `middlename` varchar(100) DEFAULT NULL,
+  `squadid` int(11) DEFAULT NULL,
   PRIMARY KEY (`iduser`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of users
--- ----------------------------
-INSERT INTO `users` VALUES ('1', 'Пенко', 'Александр', 'Валерьевич');
-INSERT INTO `users` VALUES ('2', 'Чернявский', 'Евгений', 'Владиславович');
-INSERT INTO `users` VALUES ('3', 'Чернявскийsaf', 'Евгенийadsfsad', 'Владиславовичadsfg');
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;

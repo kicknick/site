@@ -11,4 +11,21 @@ select{
 
 .btn.edit{
     float: right;
+    height: 25px;
+    background: url("/externals/images/edit.png");
+    background-size: contain;
+
+    background-repeat: no-repeat;
+}
+
+.btn.set{
+    float: right;
+    height: 25px;
+    background-size: contain;
+
+    background-repeat: no-repeat;
+}
+
+body {
+    background: url(/externals/images/cubes.png);
 }

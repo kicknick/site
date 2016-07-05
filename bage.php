@@ -34,7 +34,7 @@ function getImageName($postname)
     //echo $_FILES[$postname]['name'];
     if (!$_FILES[$postname]['name']) {
         echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-        die("Выберите изображение!");
+        return 0;
     }
     $uploadfile = $uploaddir . basename($_FILES[$postname]['name']);
     if (!move_uploaded_file($_FILES[$postname]['tmp_name'], $uploadfile)) {
@@ -96,10 +96,14 @@ function LoadPNG($imgname)
     return $im;
 }
 
+function getCenterX($textPosition, $fieldX, $fieldWidth){
+    $textWidth = $textPosition[2] - $textPosition[0];
+    return $fieldX + ($fieldWidth - $textWidth) / 2;
+}
 
-//define("event1", "test");
-//define("event2", "test");
+include ("/Controller/Squad.php");
 
+$emptyimgname = "externals/images/emptybage.jpg";
 
 $foto_x = $_POST['foto_x'];
 $foto_y = $_POST['foto_y'];
@@ -111,37 +115,61 @@ $lastname = $_POST['lastname'];
 $middlename = $_POST['middlename'];
 $event = $_POST['event'];
 
+$squad = getSquad($_POST['squad']);
+$firstcurator = $squad['firstcurator'];
+$secondcurator = $squad['secondcurator'];
+
 $fio = transliterate($lastname . '_' . $firstname . '_' . $middlename);
 
+$foto;
 $imgname = getImageName('user_pic');
-
-if (!$foto_x && !$foto_y && !$foto_width && !$foto_height) {
-    echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-    die("Выделите область на изображении!");
+if(!$imgname){
+    $imgname = $emptyimgname;
+    $foto = LoadJPEG($imgname);
+    $emptysize = getimagesize($imgname);
+    $foto_x = 0;
+    $foto_y = 0;
+    $foto_width = $emptysize[0]-115;
+    $foto_height = $emptysize[1]-115;
+} else{
+    $foto = LoadJPEG($imgname);
+    if (!$foto_x && !$foto_y && !$foto_width && !$foto_height) {
+        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+        die("Выделите область на изображении!");
+    }
 }
 
-$foto = LoadJPEG($imgname);
 
-//if($event != event1)
-//{
+
+
+
 $bageFrontName = './externals/images/bage.png';
 $bageBackName = './externals/images/bageback.jpg';
 define('FONT_NAME', 'arial.ttf');
-if ((strlen($lastname) > 20) || (strlen($firstname) > 20) || (strlen($middlename) > 20))
-    $FONT_SIZE = 45;
-else
-    $FONT_SIZE = 55;
+
+$LFM_FONT_SIZE = 45;
+$CUR_FONT_SIZE = 30;
+
+
 define('X_FACE', 165);
 define('Y_FACE', 292);
 define('W_FACE', 360);
 define('H_FACE', 360);
+
 define('X_TEXT_1', 50);
 define('Y_TEXT_1', 820);
 define('X_TEXT_2', 50);
 define('Y_TEXT_2', 890);
 define('X_TEXT_3', 50);
 define('Y_TEXT_3', 955);
+
+define('X_CURATOR_1', 700);
+define('Y_CURATOR_1', 470);
+define('X_CURATOR_2', 700);
+define('Y_CURATOR_2', 380);
+
 define('TEXT_COLOR', 0x585858);
+
 //}
 
 $bageFront = LoadPNG($bageFrontName);
@@ -150,11 +178,9 @@ $size = getimagesize($bageFrontName);
 $image = imagecreatetruecolor(2 * $size[0], $size[1]) // создаем изображение...
 or die('Cannot create image');     // ...или прерываем работу скрипта в случае ошибки
 
-$cons = 1;
 
-
-$size = getimagesize($imgname);
-$true_width = $size[0];
+$sizeFoto = getimagesize($imgname);
+$true_width = $sizeFoto[0];
 $prop = $true_width / 400;
 $foto_x *= $prop;
 $foto_y *= $prop;
@@ -162,15 +188,15 @@ $foto_width *= $prop;
 $foto_height *= $prop;
 imagecopyresized($image, $foto, X_FACE, Y_FACE, $foto_x, $foto_y, W_FACE, H_FACE, $foto_width, $foto_height);
 
-
-
-
 imagefill($image, 0, 0, 0xFFFFFF);
 
 
+/*
+ * Костыли для text-align:center;
+ */
 $lastnameTXT = imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
     X_TEXT_1, Y_TEXT_1,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
@@ -178,10 +204,9 @@ $lastnameTXT = imagettftext(
     FONT_NAME,   // имя ttf-файла
     $lastname//
 );
-
 $firstnameTXT = imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
     X_TEXT_2, Y_TEXT_2,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
@@ -189,10 +214,9 @@ $firstnameTXT = imagettftext(
     FONT_NAME,   // имя ttf-файла
     $firstname//
 );
-
 $middlenameTXT = imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
     X_TEXT_3, Y_TEXT_3,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
@@ -200,71 +224,88 @@ $middlenameTXT = imagettftext(
     FONT_NAME,   // имя ttf-файла
     $middlename//
 );
+$firstcuratorTXT = imagettftext(
+    $image,      // как всегда, идентификатор ресурса
+    $CUR_FONT_SIZE,    // размер шрифта
+    0,           // угол наклона шрифта
+    X_CURATOR_1, Y_CURATOR_1,      // координаты (x,y), соответствующие левому нижнему
+    // углу первого символа
+    TEXT_COLOR,    // цвет шрифта
+    FONT_NAME,   // имя ttf-файла
+    $firstcurator//
+);
+$secondcuratorTXT = imagettftext(
+    $image,      // как всегда, идентификатор ресурса
+    $CUR_FONT_SIZE,    // размер шрифта
+    0,           // угол наклона шрифта
+    X_CURATOR_2, Y_CURATOR_2,      // координаты (x,y), соответствующие левому нижнему
+    // углу первого символа
+    TEXT_COLOR,    // цвет шрифта
+    FONT_NAME,   // имя ttf-файла
+    $secondcurator//
+);
 
 imagecopy($image, $bageFront, 0, 0, 0, 0, $size[0], $size[1]);
-imagecopy($image, $bageBack, $size[0] - 35, 0, 0, 0, $size[0], $size[1]);
-
-function getTrueX($textPosition, $bageWidth){
-    $textWidth = $textPosition[2] - $textPosition[0];
-    return ($bageWidth - $textWidth) / 2;
-}
+imagecopy($image, $bageBack, $size[0], 0, 0, 0, $size[0], $size[1]);
 
 imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
-    getTrueX($lastnameTXT, 700), Y_TEXT_1,      // координаты (x,y), соответствующие левому нижнему
+    getCenterX($lastnameTXT, 0, 700), Y_TEXT_1,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
     TEXT_COLOR,    // цвет шрифта
     FONT_NAME,   // имя ttf-файла
     $lastname//
 );
-
 imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
-    getTrueX($firstnameTXT, 700), Y_TEXT_2,      // координаты (x,y), соответствующие левому нижнему
+    getCenterX($firstnameTXT, 0, 700), Y_TEXT_2,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
     TEXT_COLOR,    // цвет шрифта
     FONT_NAME,   // имя ttf-файла
     $firstname//
 );
-
 imagettftext(
     $image,      // как всегда, идентификатор ресурса
-    $FONT_SIZE,    // размер шрифта
+    $LFM_FONT_SIZE,    // размер шрифта
     0,           // угол наклона шрифта
-    getTrueX($middlenameTXT, 700), Y_TEXT_3,      // координаты (x,y), соответствующие левому нижнему
+    getCenterX($middlenameTXT, 0, 700), Y_TEXT_3,      // координаты (x,y), соответствующие левому нижнему
     // углу первого символа
     TEXT_COLOR,    // цвет шрифта
     FONT_NAME,   // имя ttf-файла
     $middlename//
 );
+imagettftext(
+    $image,      // как всегда, идентификатор ресурса
+    $CUR_FONT_SIZE,    // размер шрифта
+    0,           // угол наклона шрифта
+    getCenterX($firstcuratorTXT, 700, 700), Y_CURATOR_1,      // координаты (x,y), соответствующие левому нижнему
+    // углу первого символа
+    TEXT_COLOR,    // цвет шрифта
+    FONT_NAME,   // имя ttf-файла
+    $firstcurator//
+);
+imagettftext(
+    $image,      // как всегда, идентификатор ресурса
+    $CUR_FONT_SIZE,    // размер шрифта
+    0,           // угол наклона шрифта
+    getCenterX($secondcuratorTXT, 700, 700), Y_CURATOR_2,      // координаты (x,y), соответствующие левому нижнему
+    // углу первого символа
+    TEXT_COLOR,    // цвет шрифта
+    FONT_NAME,   // имя ttf-файла
+    $secondcurator//
+);
 
 //header('Content-type: image/jpeg');
 
-
-
-$imagesmall = imagecreatetruecolor($size[0] / $cons, $size[1] / $cons);
-
-imagecopyresized($imagesmall, $image, 0, 0, 0, 0, $size[0] / $cons, $size[1] / $cons, $size[0], $size[1]);
 
 imagejpeg($image, './photos/' . $fio . '.jpeg');
 echo '<img src="' . './photos/' . $fio . '.jpeg' . '" style="width:1400px; height:979px">';
 
 
 imagedestroy($image);                // освобождаем память, выделенную для изображения
-imagedestroy($imagesmall);
-//Create & Open PDF-Object
-//require('./fpdf/fpdf.php');
-
-//$pdf = new FPDF('P','cm',array(10,7.5));
-//$pdf = new FPDF();
-//$pdf->AddPage();
-//$pdf->Image('./photos/'.$fio.'.jpeg', 0, 0, 100, 100);
-//$pdf->Image('./logo.png',1,1,3,0,'PNG','http://www.fpdf.org/');
-//$pdf->Image('http://chart.googleapis.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World',60,30,90,0,'PNG');
-//$pdf->Output();
 
 ?>

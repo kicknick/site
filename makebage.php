@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="externals/css/bootstrap.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="externals/ias/css/imgareaselect-animated.css">
+	<link rel="stylesheet" type="text/css" href="styles/site.css">
     <link rel="stylesheet" type="text/css" href="styles/statusBar.css">
 
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -21,7 +22,7 @@
 
 <?php echo file_get_contents("templates/currentEvent.tpl"); ?>
 
-<form action="bage.php" method="post" enctype="multipart/form-data" onsubmit="lol()">
+<form action="bage.php" method="post" enctype="multipart/form-data">
 	<div class="container" id="form_content">
 		<div class="col-md-4">
 			<div>
@@ -40,11 +41,18 @@
 					<br>
 					<input id="middleName" class="form-control" type="text" class="form-control" name="middlename" />
 				</div>
+
+				<div class="form-group">
+					<label for="squad">Отряд</label>
+					<br>
+					<input id="squad" class="form-control" type="text" class="form-control" name="squad" />
+				</div>
 			</div>
 			<script type="text/javascript">
 				setFieldFromLS("#lastName","lastname");
 				setFieldFromLS("#firstName","firstname");
 				setFieldFromLS("#middleName","middlename");
+				setFieldFromLS("#squad","squad");
 			</script>
 		</div>
 		<div class="col-md-4">
@@ -68,10 +76,6 @@
 
 
 <script type="text/javascript">
-
-	var lol = function(){
-		alert($("#lastName").val());
-	}
 
 	 var result = {action: "bage", firstname: null, lastname: null, middlename: null, start: null, end: null, event: null, usertype: null};
 
